@@ -2425,7 +2425,7 @@ package BCs "Models for boundary conditions"
                   {120,100}}), graphics),
           Icon(coordinateSystem(preserveAspectRatio=true, extent={{-120,-100},{
                   120,100}}), graphics={Text(
-                extent={{0,-70},{100,-40}},
+                extent={{0,-76},{100,-46}},
                 lineColor={127,127,127},
                 textString="%formula")}));
       end Species;

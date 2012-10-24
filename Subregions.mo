@@ -872,7 +872,6 @@ package Subregions
               extent={{-100,-20},{100,20}},
               textString="%name",
               lineColor={0,0,0})}));
-
     end SimpleSpecies;
 
     model Cell "Test both half reactions of a cell"
@@ -1028,43 +1027,6 @@ package Subregions
               "resources/scripts/Dymola/Subregions.Examples.Reaction.mos"));
     end Reaction;
 
-    model temp
-      // TODO:  Remove this model later.
-
-      FCSys.Subregions.Reaction reaction(n_spec=3)
-        annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-      FCSys.BCs.Chemical.Species.Species speciesChemicalBC1(formula="e-", m=1*U.g
-            /U.mol)
-        annotation (Placement(transformation(extent={{-12,14},{12,34}})));
-      FCSys.BCs.Chemical.Species.Species speciesChemicalBC2(m=1*U.g/U.mol,
-          formula="H+")
-        annotation (Placement(transformation(extent={{18,14},{42,34}})));
-      FCSys.BCs.Chemical.Species.Species speciesChemicalBC3(
-        m=1*U.g/U.mol,
-        formula="H2",
-        bCTypeMaterial=FCSys.BCs.Chemical.Species.BaseClasses.BCTypeMaterial.Current,
-
-        redeclare Modelica.Blocks.Sources.Ramp materialSpec)
-        annotation (Placement(transformation(extent={{48,14},{72,34}})));
-
-    equation
-      connect(speciesChemicalBC1.chemical, reaction.chemical[1]) annotation (
-          Line(
-          points={{7.21645e-16,20},{5.55112e-16,20},{5.55112e-16,-0.666667}},
-          color={0,0,255},
-          smooth=Smooth.None));
-      connect(reaction.chemical[2], speciesChemicalBC2.chemical) annotation (
-          Line(
-          points={{5.55112e-16,5.55112e-16},{58,20},{30,20}},
-          color={208,104,0},
-          smooth=Smooth.None));
-      connect(speciesChemicalBC3.chemical, reaction.chemical[3]) annotation (
-          Line(
-          points={{60,20},{16,20},{16,0.666667},{5.55112e-16,0.666667}},
-          color={208,104,0},
-          smooth=Smooth.None));
-      annotation (Diagram(graphics));
-    end temp;
 
     model SubregionH22 "Test a subregion"
       extends Modelica.Icons.Example;
@@ -1216,6 +1178,76 @@ package Subregions
         Commands(file=
               "resources/scripts/Dymola/Subregions.Examples.Reaction.mos"));
     end Reaction2;
+
+    model Reaction3 "Test an electrochemical reaction"
+      extends Modelica.Icons.Example;
+      extends Modelica.Icons.UnderConstruction;
+      parameter Integer n_lin(
+        final min=1,
+        final max=3) = 1
+        "<html>Number of components of linear momentum (<i>n</i><sub>lin</sub>)</html>"
+        annotation (HideResult=true);
+
+      FCSys.Subregions.Reaction reaction(final n_lin=n_lin,n_spec=3)
+        annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+      FCSys.BCs.Chemical.Species.Species 'e-'(
+        materialBC=FCSys.BCs.Chemical.Species.BaseClasses.BCTypeMaterial.PotentialElectrochemical,
+
+        formula="e-",
+        m=FCSys.Characteristics.'e-'.graphite.m,
+        final n_lin=n_lin) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={-30,-24})));
+
+      FCSys.BCs.Chemical.Species.Species 'H+'(
+        materialBC=FCSys.BCs.Chemical.Species.BaseClasses.BCTypeMaterial.PotentialElectrochemical,
+
+        formula="H+",
+        m=FCSys.Characteristics.'H+'.solid.m,
+        final n_lin=n_lin) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={0,-24})));
+
+      FCSys.BCs.Chemical.Species.Species H2(
+        materialBC=FCSys.BCs.Chemical.Species.BaseClasses.BCTypeMaterial.Current,
+
+        redeclare Modelica.Blocks.Sources.Ramp materialSpec(height=100*U.A,
+            duration=3600e2),
+        formula="H2",
+        m=FCSys.Characteristics.H2.gas.m,
+        final n_lin=n_lin) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={30,-24})));
+
+      inner FCSys.BCs.Defaults defaults(analysis=true)
+        annotation (Placement(transformation(extent={{-90,70},{-70,90}})));
+    equation
+      connect('e-'.chemical, reaction.chemical1) annotation (Line(
+          points={{-30,-20},{-30,-10},{6.10623e-16,-10},{6.10623e-16,
+              6.10623e-16}},
+          color={208,104,0},
+          smooth=Smooth.None));
+
+      connect('H+'.chemical, reaction.chemical2) annotation (Line(
+          points={{-1.11528e-16,-20},{0,-20},{0,6.10623e-16},{2,6.10623e-16}},
+          color={208,104,0},
+          smooth=Smooth.None));
+
+      connect(H2.chemical, reaction.chemical3) annotation (Line(
+          points={{30,-20},{30,-10},{4,-10},{4,6.10623e-16}},
+          color={208,104,0},
+          smooth=Smooth.None));
+
+      annotation (
+        Diagram(graphics),
+        experiment(StopTime=360000),
+        experimentSetupOutput,
+        Commands(file=
+              "resources/scripts/Dymola/Subregions.Examples.Reaction.mos"));
+    end Reaction3;
   end Examples;
 
   model Subregion "Subregion with all phases included"
@@ -2015,9 +2047,9 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           "Subconnector for oxygen";
 
         annotation (Icon(graphics={Ellipse(
-                extent={{-100,100},{100,-100}},
-                lineColor={208,104,0},
-                lineThickness=0.5)}));
+                      extent={{-100,100},{100,-100}},
+                      lineColor={208,104,0},
+                      lineThickness=0.5)}));
       end ChemicalBus;
     equation
       // Chemical interactions
@@ -4944,9 +4976,9 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           "Subconnector for water";
 
         annotation (Icon(graphics={Ellipse(
-                extent={{-100,100},{100,-100}},
-                lineColor={208,104,0},
-                lineThickness=0.5)}));
+                      extent={{-100,100},{100,-100}},
+                      lineColor={208,104,0},
+                      lineThickness=0.5)}));
       end ChemicalBus;
     equation
       // H2O
@@ -5190,60 +5222,51 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
 <p>Notes:<ul>
   <li>The x-axis component of linear momentum is included by default.  At least one component must be included.</li></ul></html>"),
 
-          Icon(graphics={
-              Ellipse(
-                extent={{-40,100},{40,20}},
-                lineColor={127,127,127},
-                startAngle=30,
-                endAngle=149,
-                pattern=LinePattern.Dash,
-                fillPattern=FillPattern.Solid,
-                fillColor={225,225,225}),
-              Ellipse(
-                extent={{20,-4},{100,-84}},
-                lineColor={127,127,127},
-                startAngle=270,
-                endAngle=390,
-                pattern=LinePattern.Dash,
-                fillPattern=FillPattern.Solid,
-                fillColor={225,225,225}),
-              Ellipse(
-                extent={{-100,-4},{-20,-84}},
-                lineColor={127,127,127},
-                startAngle=149,
-                endAngle=270,
-                pattern=LinePattern.Dash,
-                fillPattern=FillPattern.Solid,
-                fillColor={225,225,225}),
-              Polygon(
-                points={{60,-84},{-60,-84},{-94.5,-24},{-34.5,80},{34.5,80},{
-                    94.5,-24},{60,-84}},
-                pattern=LinePattern.None,
-                fillPattern=FillPattern.Sphere,
-                smooth=Smooth.None,
-                fillColor={225,225,225},
-                lineColor={0,0,0}),
-              Line(
-                points={{-60,-84},{60,-84}},
-                color={127,127,127},
-                pattern=LinePattern.Dash,
-                smooth=Smooth.None),
-              Line(
-                points={{34.5,80},{94.5,-24}},
-                color={127,127,127},
-                pattern=LinePattern.Dash,
-                smooth=Smooth.None),
-              Line(
-                points={{-34.5,80},{-94.5,-24}},
-                color={127,127,127},
-                pattern=LinePattern.Dash,
-                smooth=Smooth.None),
-              Text(
-                extent={{-100,-20},{100,20}},
-                textString="%name",
-                lineColor={0,0,0})}),
+          Icon(graphics={Ellipse(
+                      extent={{-40,100},{40,20}},
+                      lineColor={127,127,127},
+                      startAngle=30,
+                      endAngle=149,
+                      pattern=LinePattern.Dash,
+                      fillPattern=FillPattern.Solid,
+                      fillColor={225,225,225}),Ellipse(
+                      extent={{20,-4},{100,-84}},
+                      lineColor={127,127,127},
+                      startAngle=270,
+                      endAngle=390,
+                      pattern=LinePattern.Dash,
+                      fillPattern=FillPattern.Solid,
+                      fillColor={225,225,225}),Ellipse(
+                      extent={{-100,-4},{-20,-84}},
+                      lineColor={127,127,127},
+                      startAngle=149,
+                      endAngle=270,
+                      pattern=LinePattern.Dash,
+                      fillPattern=FillPattern.Solid,
+                      fillColor={225,225,225}),Polygon(
+                      points={{60,-84},{-60,-84},{-94.5,-24},{-34.5,80},{34.5,
+                  80},{94.5,-24},{60,-84}},
+                      pattern=LinePattern.None,
+                      fillPattern=FillPattern.Sphere,
+                      smooth=Smooth.None,
+                      fillColor={225,225,225},
+                      lineColor={0,0,0}),Line(
+                      points={{-60,-84},{60,-84}},
+                      color={127,127,127},
+                      pattern=LinePattern.Dash,
+                      smooth=Smooth.None),Line(
+                      points={{34.5,80},{94.5,-24}},
+                      color={127,127,127},
+                      pattern=LinePattern.Dash,
+                      smooth=Smooth.None),Line(
+                      points={{-34.5,80},{-94.5,-24}},
+                      color={127,127,127},
+                      pattern=LinePattern.Dash,
+                      smooth=Smooth.None),Text(
+                      extent={{-100,-20},{100,20}},
+                      textString="%name",
+                      lineColor={0,0,0})}),
           Diagram(graphics));
-
       end NullPhase;
     end BaseClasses;
   end Phases;
@@ -7489,11 +7512,12 @@ The default global default settings will be used for the current simulation.",
 
         // Aliases (for clarity and simplification)
         v*N = inert.V;
-        s*T = chemical.sT;
+        s*T = chemical.sT "Outflow property";
         N*phi = I .* L[cartAxes];
-        mu = h - chemical.sT;
+        //  mu = h - chemical.sT;
+        mu = h - s*T;
         Deltamu = chemical.mu - mu;
-        Data.m*phi = chemical.mphi;
+        Data.m*phi = chemical.mphi "Outflow property";
         mphi_chem = actualStream(chemical.mphi);
         2*ke = if n_lin == 0 then 0 else Data.m*phi*phi;
 
@@ -8068,7 +8092,6 @@ The default global default settings will be used for the current simulation.",
             extent={{-170,120},{170,160}},
             textString="%name",
             lineColor={0,0,0})}));
-
   end PhaseBoundary;
 
   model Reaction "Model for a chemical or electrochemical reaction"
@@ -8077,15 +8100,16 @@ The default global default settings will be used for the current simulation.",
     parameter Integer n_lin=1
       "<html>Number of components of linear momentum (<i>n</i><sub>lin</sub>)</html>"
       annotation (Evaluate=true,HideResult=true);
-    parameter Integer n_spec(min=2) = 0 "Number of species"
+    parameter Integer n_spec(min=2) = 3 "Number of species"
       annotation (Dialog(connectorSizing=true));
     // Note:  Even though the minimum is 2, the default must be 0 to use
     // connectorSizing.  The default will a singularity error when this model
     // is checked alone, but that error can be ignored.
     //Integer nu[n_spec]={-4,-4,-1,2};
-    Integer nu[n_spec]=Chemistry.stoich(chemical.formula)
-      "Stoichiometric coefficients";
-    Q.MassSpecific m[n_spec]=chemical.m "Specific masses";
+    Integer nu[n_spec]=Chemistry.stoich({chemical1.formula,chemical2.formula,
+        chemical3.formula}) "Stoichiometric coefficients";
+    Q.MassSpecific m[n_spec]={chemical1.m,chemical2.m,chemical3.m}
+      "Specific masses";
     Q.MassSpecific m_max=max(m) "Maximum specific mass";
     Boolean isProd[n_spec]={nu[i] > 0 for i in 1:n_spec}
       "true, if each species is a product";
@@ -8099,24 +8123,43 @@ The default global default settings will be used for the current simulation.",
     // should recognize that these equations are static.
 
     Q.Current Xidot(nominal=1*U.A) "Reaction rate";
-    Connectors.ChemicalInput chemical[n_spec](each final n_lin=n_lin)
+    Connectors.ChemicalInput chemical1(each final n_lin=n_lin)
       "Chemical connector with advection of linear momentum"
       annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
 
+    Connectors.ChemicalInput chemical2(each final n_lin=n_lin)
+      "Chemical connector with advection of linear momentum"
+      annotation (Placement(transformation(extent={{10,-10},{30,10}})));
+    Connectors.ChemicalInput chemical3(each final n_lin=n_lin)
+      "Chemical connector with advection of linear momentum"
+      annotation (Placement(transformation(extent={{30,-10},{50,10}})));
   equation
     // Chemical equilibrium
-    nu*chemical.mu = 0;
+    nu*{chemical1.mu,chemical2.mu,chemical3.mu} = 0;
 
     // Material conservation (without storage)
-    nu*Xidot = chemical.Ndot;
+    nu*Xidot = {chemical1.Ndot,chemical2.Ndot,chemical3.Ndot};
 
     // Ideal mixing/conservation of linear momentum and energy (without storage)
-    for i in 1:n_spec loop
-      m_max*chemical[i].mphi = m[i]*sum(if isProd[j] <> isProd[i] then inStream(
-        chemical[j].mphi) else zeros(n_lin) for j in 1:n_spec);
-      m_max*chemical[i].sT = m[i]*sum(if isProd[j] <> isProd[i] then inStream(
-        chemical[j].sT) else 0 for j in 1:n_spec);
-    end for;
+    /*
+  for i in 1:n_spec loop
+    m_max*chemical[i].mphi = m[i]*sum(if isProd[i] <> isProd[j] then inStream(
+      chemical[j].mphi) else zeros(n_lin) for j in 1:n_spec);
+    m_max*chemical[i].sT_outflow = m[i]*sum(if isProd[i] <> isProd[j] then inStream(
+      chemical[j].sT_outflow) else 0 for j in 1:n_spec);
+  end for;
+*/
+    m[3]*chemical1.mphi = m[1]*inStream(chemical3.mphi);
+    m[3]*chemical1.sT_outflow = m[1]*inStream(chemical3.sT_outflow);
+
+    m[3]*chemical2.mphi = m[2]*inStream(chemical3.mphi);
+    m[3]*chemical2.sT_outflow = m[2]*inStream(chemical3.sT_outflow);
+
+    chemical3.mphi = inStream(chemical1.mphi) + inStream(chemical2.mphi);
+    chemical3.sT_outflow = inStream(chemical1.sT_outflow) + inStream(chemical2.sT_outflow);
+
+    0 = chemical2.mphi*nu2/m2 + inStream(chemical3.mphi)*nu3/m3;
+
     //  chemical.mphi = zeros(n_spec, n_lin);
     /*
   for ax in 1:n_lin loop
@@ -8124,8 +8167,8 @@ The default global default settings will be used for the current simulation.",
       chemical[i].mphi[ax] = 0;
     end for;
   end for;
-  chemical.sT = zeros(n_spec);
-*/
+  chemical.sT_outflow = zeros(n_spec);
+  */
 
     // This model is marked as structurally incomplete because it must
     // have no species by default (for automatic connector sizing), yet
@@ -8177,7 +8220,6 @@ The default global default settings will be used for the current simulation.",
             lineColor={127,127,127},
             textString="%n_spec")}),
       Diagram(graphics));
-
   end Reaction;
 
   model Volume "Model to establish a fixed volume for phases"
@@ -8236,7 +8278,6 @@ The default global default settings will be used for the current simulation.",
       Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
               100,100}}), graphics),
       Icon(graphics));
-
   end Volume;
 
   package BaseClasses "Base classes (not for direct use)"
@@ -8439,6 +8480,21 @@ The default global default settings will be used for the current simulation.",
 
     end PartialSubregion;
 
+    model ReactAdapt "**"
+
+      parameter Integer nu=1 "**Stoich coeff";
+      Connectors.BaseClasses.PartialChemical chemical
+        annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+      Connectors.BaseClasses.PartialReaction reaction
+        annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
+    equation
+      reaction.munu = nu*chemical.mu;
+      chemical.Ndot = nu*reaction.Xidot annotation (Diagram(graphics));
+      inStream(reaction.mphi) = chemical.mphi;
+      inStream(chemical.mphi) = reaction.mphi;
+      inStream(reaction.sT) = chemical.sT;
+      inStream(chemical.sT) = reaction.sT;
+    end ReactAdapt;
   end BaseClasses;
 
   annotation (Documentation(info="<html>
@@ -8454,4 +8510,123 @@ FCSys.UsersGuide.ModelicaLicense2</a> or visit <a href=\"http://www.modelica.org
 http://www.modelica.org/licenses/ModelicaLicense2</a>.</i>
 </p>
 </html>"));
+  model Reaction2 "Model for a chemical or electrochemical reaction"
+    //extends FCSys.BaseClasses.Icons.Names.Top2;
+
+    parameter Integer n_lin=1
+      "<html>Number of components of linear momentum (<i>n</i><sub>lin</sub>)</html>"
+      annotation (Evaluate=true,HideResult=true);
+    parameter Integer n_spec(min=2) = 0 "Number of species"
+      annotation (Dialog(connectorSizing=true));
+    // Note:  Even though the minimum is 2, the default must be 0 to use
+    // connectorSizing.  The default will a singularity error when this model
+    // is checked alone, but that error can be ignored.
+    //Integer nu[n_spec]={-4,-4,-1,2};
+    Integer nu[n_spec]=Chemistry.stoich(chemical.formula)
+      "Stoichiometric coefficients";
+    Q.MassSpecific m[n_spec]=chemical.m "Specific masses";
+    Q.MassSpecific m_max=max(m) "Maximum specific mass";
+    Boolean isProd[n_spec]={nu[i] > 0 for i in 1:n_spec}
+      "true, if each species is a product";
+    // Note:  The reactant vs. product designation is arbitrary, yet the
+    // grouping is necessary.
+    // Note:  As of Modelica 3.2 and Dymola 7.4, these variables may not be
+    // parameters or constants even though they are not time-varying.  The
+    // strings that represent the chemical formulas and the Real variables
+    // that represent the specific masses may not be passed through the
+    // connector with parameter or constant prefixes.  However, the translator
+    // should recognize that these equations are static.
+
+    Q.Current Xidot(nominal=1*U.A) "Reaction rate";
+    Connectors.ChemicalInput chemical[n_spec](each final n_lin=n_lin)
+      "Chemical connector with advection of linear momentum"
+      annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+
+  equation
+    // Chemical equilibrium
+    nu*chemical.mu = 0;
+
+    // Material conservation (without storage)
+    nu*Xidot = chemical.Ndot;
+
+    // Ideal mixing/conservation of linear momentum and energy (without storage)
+    /*
+  for i in 1:n_spec loop
+    m_max*chemical[i].mphi = m[i]*sum(if isProd[i] <> isProd[j] then inStream(
+      chemical[j].mphi) else zeros(n_lin) for j in 1:n_spec);
+    m_max*chemical[i].sT = m[i]*sum(if isProd[i] <> isProd[j] then inStream(
+      chemical[j].sT) else 0 for j in 1:n_spec);
+  end for;
+*/
+    /*
+  m[3]*chemical[1].mphi = m[1]*inStream(chemical[3].mphi);
+  m[3]*chemical[1].sT = m[1]*inStream(chemical[3].sT);
+
+  m[3]*chemical[2].mphi = m[2]*inStream(chemical[3].mphi);
+  m[3]*chemical[2].sT = m[2]*inStream(chemical[3].sT);
+
+  chemical[3].mphi = inStream(chemical[1].mphi) + inStream(chemical[2].mphi);
+  chemical[3].sT = inStream(chemical[1].sT) + inStream(chemical[2].sT);
+*/
+    //  chemical.mphi = zeros(n_spec, n_lin);
+    /*
+  for ax in 1:n_lin loop
+    for i in 1:n_spec loop
+      chemical[i].mphi[ax] = 0;
+    end for;
+  end for;
+  chemical.sT = zeros(n_spec);
+  */
+
+    // This model is marked as structurally incomplete because it must
+    // have no species by default (for automatic connector sizing), yet
+    // least one species is mathematically required (and two species
+    // for a meaningful reaction).
+    annotation (
+      structurallyIncomplete=true,
+      Documentation(info="<html>
+    <p>The size of the chemical connector is automatically increased each time a connection is made.
+    At least two species must be connected.
+    The stoichiometry is determined automatically from the chemical formulas
+    of the connected species.  No intermediate species are considered. Each reaction must be
+    completely and uniquely defined by the connected species.  Otherwise an error message is given.
+    If you suspect a bug in the library, please report it using the
+    <a href=\"modelica://FCSys.UsersGuide.Contact\">contact information</a>.</p>
+
+    <p>For material, this model is essentially the opposite of a standard single-species connection.
+    The stoichiometric sum of the efforts (&Sigma; &nu;<sub><i>i</i></sub> &mu;<sub><i>i</i></sub>)
+    is zero, which is analogous to Kirchhoff's Current Law.  The flow rates divided by the
+    stoichiometric coefficients (<i>N&#775;</i><sub><i>i</i></sub> /&nu;<sub><i>i</i></sub>)
+    are equal&mdash;analogous to Kirchhoff's Voltage Law.</p>
+
+    <p>Momentum and energy are advected using <code>stream</code> variables.  There is no diffusion;
+    it is included in the inert connections among species
+    (see the <a href=\"modelica://FCSys.Subregions.BaseClasses.PartialSpecies\">PartialSpecies</a> model).<p>
+
+    <p>Assumptions:<ul>
+    <li>No storage of material, linear momentum, or energy</li></ul>
+    </p>
+    </html>"),
+      Icon(graphics={
+          Rectangle(
+            extent={{-140,40},{140,80}},
+            fillColor={255,255,255},
+            fillPattern=FillPattern.Solid,
+            pattern=LinePattern.None),
+          Text(
+            extent={{-140,40},{140,80}},
+            textString="%name",
+            lineColor={0,0,0}),
+          Ellipse(
+            extent={{-100,40},{100,-40}},
+            fillColor={255,255,255},
+            fillPattern=FillPattern.Solid,
+            lineColor={127,127,127},
+            pattern=LinePattern.Dash),
+          Text(
+            extent={{-100,-14},{100,-38}},
+            lineColor={127,127,127},
+            textString="%n_spec")}),
+      Diagram(graphics));
+  end Reaction2;
 end Subregions;

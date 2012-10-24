@@ -514,13 +514,13 @@ Connector with one input signal of type <code>Real</code>.</p>
         initialScale=0.1,
         extent={{-100,-100},{100,100}},
         grid={2,2}), graphics={Polygon(
-            points={{0,20},{40,0},{0,-20},{0,20}},
-            lineColor={0,0,127},
-            fillColor={0,0,127},
-            fillPattern=FillPattern.Solid),Text(
-            extent={{-200,24},{200,64}},
-            textString="%name",
-            lineColor={0,0,0})}),
+          points={{0,20},{40,0},{0,-20},{0,20}},
+          lineColor={0,0,127},
+          fillColor={0,0,127},
+          fillPattern=FillPattern.Solid), Text(
+          extent={{-200,24},{200,64}},
+          textString="%name",
+          lineColor={0,0,0})}),
     Documentation(info="<html>
 <p>
 Protected connector with one input signal of type <code>Real</code>.</p>
@@ -549,14 +549,14 @@ Protected connector with one input signal of type <code>Real</code>.</p>
           initialScale=0.1,
           extent={{-100,-100},{100,100}},
           grid={2,2}), graphics={Polygon(
-              points={{0,50},{100,0},{0,-50},{0,50}},
-              lineColor={0,0,127},
-              fillColor={0,0,127},
-              fillPattern=FillPattern.Solid,
-              lineThickness=0.5),Text(
-              extent={{-200,50},{200,90}},
-              textString="%name",
-              lineColor={0,0,0})}));
+            points={{0,50},{100,0},{0,-50},{0,50}},
+            lineColor={0,0,127},
+            fillColor={0,0,127},
+            fillPattern=FillPattern.Solid,
+            lineThickness=0.5), Text(
+            extent={{-200,50},{200,90}},
+            textString="%name",
+            lineColor={0,0,0})}));
 
   end RealInputBus;
 
@@ -720,7 +720,49 @@ Protected connector with one output signal of type <code>Real</code>.</p>
   package BaseClasses "Base classes (not for direct use)"
     extends Modelica.Icons.BasesPackage;
 
-    partial connector PartialChemical
+    connector PartialReaction
+      "**Connector to exchange material with advection of linear momentum and entropy"
+
+      parameter Integer n_lin(
+        final min=0,
+        final max=3) = 1
+        "<html>Number of axes of linear momentum (<i>n</i><sub>lin</sub>)</html>"
+        annotation (HideResult=true);
+
+      // Material
+      Q.Current Xidot(nominal=1*U.A) "Rate of reaction";
+      flow Q.Potential munu(nominal=1*U.V)
+        "Electrochemical potential times stoichiometric coefficient";
+
+      // For linear momentum
+      stream Q.VelocityMassSpecific mphi[n_lin](each nominal=1*U.g*U.cm/(U.mol*
+            U.s)) "Specific momentum";
+
+      // For entropy
+      stream Q.PotentialAbsolute sT(nominal=10*298.15*U.K)
+        "Specific entropy times temperature";
+
+      annotation (
+        Documentation(info="<html><p>For more information, see the documentation in the
+    <a href=\"modelica://FCSys.Connectors\">Connectors</a> package.</p></html>"),
+
+        Icon(graphics={Ellipse(
+              extent={{-100,100},{100,-100}},
+              lineColor={208,104,0},
+              fillPattern=FillPattern.Solid,
+              fillColor={0,200,0})}),
+        Diagram(graphics={Text(
+              extent={{-100,36},{100,76}},
+              textString="%name",
+              lineColor={0,0,0}), Ellipse(
+              extent={{-30,30},{30,-30}},
+              lineColor={208,104,0},
+              fillPattern=FillPattern.Solid,
+              fillColor={0,200,0})}));
+
+    end PartialReaction;
+
+    connector PartialChemical
       "Connector to exchange material with advection of linear momentum and entropy"
 
       parameter Integer n_lin(
@@ -753,7 +795,7 @@ Protected connector with one output signal of type <code>Real</code>.</p>
         Diagram(graphics={Text(
               extent={{-100,36},{100,76}},
               textString="%name",
-              lineColor={0,0,0}), Ellipse(
+              lineColor={0,0,0}),Ellipse(
               extent={{-30,30},{30,-30}},
               lineColor={208,104,0},
               fillPattern=FillPattern.Solid,
@@ -788,14 +830,14 @@ Protected connector with one output signal of type <code>Real</code>.</p>
               fillColor={255,128,0},
               lineThickness=0.5)}),
         Diagram(graphics={Text(
-              extent={{-100,36},{100,76}},
-              textString="%name",
-              lineColor={0,0,0}), Ellipse(
-              extent={{-30,30},{30,-30}},
-              lineColor={208,104,0},
-              fillPattern=FillPattern.Solid,
-              fillColor={255,128,0},
-              lineThickness=0.5)}));
+                  extent={{-100,36},{100,76}},
+                  textString="%name",
+                  lineColor={0,0,0}),Ellipse(
+                  extent={{-30,30},{30,-30}},
+                  lineColor={208,104,0},
+                  fillPattern=FillPattern.Solid,
+                  fillColor={255,128,0},
+                  lineThickness=0.5)}));
 
     end PartialChemicalBus;
 
