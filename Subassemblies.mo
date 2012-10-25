@@ -29,8 +29,13 @@ package Subassemblies "Combinations of regions (e.g., cells)"
       model CellProfile
         "Apply boundary conditions to a cell according to a test profile"
 
-        extends FCSys.BCs.TestStands.TestProfile;
-        replaceable FCSys.Subassemblies.Cells.CellSSIC cell annotation (
+        extends FCSys.BCs.TestStands.TestProfile(anEnd(each graphite('incle-'=
+                  true, 'e-'(redeclare Modelica.Blocks.Sources.Ramp
+                  materialSpec(height=1*U.A, duration=50)))), caEnd(each
+              graphite('incle-'=true, 'e-'(redeclare
+                  Modelica.Blocks.Sources.Ramp materialSpec(height=-1*U.A,
+                    duration=50)))));
+        replaceable FCSys.Subassemblies.Cells.Cell cell annotation (
             __Dymola_choicesFromPackage=true, Placement(transformation(extent={
                   {-10,-10},{10,10}})));
 
@@ -82,6 +87,7 @@ package Subassemblies "Combinations of regions (e.g., cells)"
           experiment(StopTime=600, Tolerance=1e-08),
           experimentSetupOutput,
           Icon(graphics));
+
       end CellProfile;
 
       model Polarization "Run a cell polarization"
@@ -726,7 +732,8 @@ of a PEMFC is given in the top-level documentation of <a href=\"modelica://FCSys
               color={127,127,127},
               visible=inclX,
               thickness=0.5)}),
-        experimentSetupOutput);
+        experimentSetupOutput,
+        experiment(StopTime=120, Tolerance=1e-06));
 
     end Cell;
 
