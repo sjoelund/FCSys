@@ -7,7 +7,6 @@ package Regions "3D arrays of discrete, interconnected subregions"
     model FPToFP "Test one flow plate to the other"
       import FCSys.Subregions.Phases;
       extends Modelica.Icons.Example;
-      extends Modelica.Icons.UnderConstruction;
 
       parameter Q.Length L_y[:]=fill(1*U.m/1, 1)
         "<html>Lengths along the channel (<i>L</i><sub>y</sub>)</html>"
@@ -183,7 +182,7 @@ package Regions "3D arrays of discrete, interconnected subregions"
         Commands(file(ensureSimulated=true) =
             "resources/scripts/Dymola/Regions.Examples.FPToFP.mos"),
         experiment(
-          StopTime=1.5e-05,
+          StopTime=20,
           Tolerance=1e-06,
           Algorithm="Dassl"),
         experimentSetupOutput);
@@ -193,7 +192,6 @@ package Regions "3D arrays of discrete, interconnected subregions"
     model GDLToGDL "Test one GDL to the other"
       import FCSys.Subregions.Phases;
       extends Modelica.Icons.Example;
-      extends Modelica.Icons.UnderConstruction;
 
       parameter Q.Length L_y[:]=fill(1*U.m/1, 1)
         "<html>Lengths along the channel (<i>L</i><sub>y</sub>)</html>"
@@ -303,7 +301,7 @@ package Regions "3D arrays of discrete, interconnected subregions"
         Commands(file(ensureSimulated=true) =
             "resources/scripts/Dymola/Regions.Examples.GDLToGDL.mos"),
         experiment(
-          StopTime=1e-05,
+          StopTime=30,
           Tolerance=1e-06,
           Algorithm="Dassl"),
         experimentSetupOutput);
@@ -313,7 +311,6 @@ package Regions "3D arrays of discrete, interconnected subregions"
     model CLToCL "Test one catalyst layer to the other"
       import FCSys.Subregions.Phases;
       extends Modelica.Icons.Example;
-      extends Modelica.Icons.UnderConstruction;
 
       parameter Q.Length L_y[:]=fill(1*U.m/1, 1)
         "<html>Lengths along the channel (<i>L</i><sub>y</sub>)</html>"
@@ -418,7 +415,10 @@ package Regions "3D arrays of discrete, interconnected subregions"
         Diagram(graphics),
         Commands(file(ensureSimulated=true) =
             "resources/scripts/Dymola/Regions.Examples.CLToCL.mos"),
-        experiment(StopTime=25, Algorithm="Dassl"),
+        experiment(
+          StopTime=25,
+          Tolerance=1e-06,
+          Algorithm="Dassl"),
         experimentSetupOutput);
 
     end CLToCL;
@@ -511,7 +511,7 @@ package Regions "3D arrays of discrete, interconnected subregions"
           smooth=Smooth.None));
       annotation (
         Diagram(graphics),
-        experiment(StopTime=10),
+        experiment(Tolerance=1e-06,StopTime=10),
         experimentSetupOutput,
         Commands(file(ensureSimulated=true) =
             "resources/scripts/Dymola/Regions.Examples.AnFP.mos"));
@@ -580,7 +580,7 @@ package Regions "3D arrays of discrete, interconnected subregions"
 
       annotation (
         Diagram(graphics),
-        experiment(StopTime=10),
+        experiment(Tolerance=1e-06,StopTime=10),
         Commands(file(ensureSimulated=true) =
             "resources/scripts/Dymola/Regions.Examples.AnGDL.mos"));
     end AnGDL;
@@ -733,7 +733,7 @@ package Regions "3D arrays of discrete, interconnected subregions"
 
       annotation (
         Diagram(graphics),
-        experiment(StopTime=10),
+        experiment(Tolerance=1e-06,StopTime=10),
         experimentSetupOutput,
         Commands(file(ensureSimulated=true) =
             "resources/scripts/Dymola/Regions.Examples.PEM.mos"));
@@ -899,7 +899,10 @@ package Regions "3D arrays of discrete, interconnected subregions"
           thickness=0.5,
           smooth=Smooth.None));
 
-      annotation (Diagram(graphics), Commands(file(ensureSimulated=true) =
+      annotation (
+        experiment(StopTime=10, Tolerance=1e-06),
+        Diagram(graphics),
+        Commands(file(ensureSimulated=true) =
             "resources/scripts/Dymola/Regions.Examples.CaGDL.mos"));
     end CaGDL;
 
@@ -1002,867 +1005,12 @@ package Regions "3D arrays of discrete, interconnected subregions"
             "resources/scripts/Dymola/Regions.Examples.CaFP.mos"));
     end CaFP;
 
-    model anCLToPEM "Test one catalyst layer to the other"
-      import FCSys.Subregions.Phases;
-      extends Modelica.Icons.Example;
-      extends Modelica.Icons.UnderConstruction;
 
-      parameter Q.Length L_y[:]=fill(1*U.m/1, 1)
-        "<html>Lengths along the channel (<i>L</i><sub>y</sub>)</html>"
-        annotation (Dialog(group="Geometry"));
-      parameter Q.Length L_z[:]=fill(5*U.mm/1, 1)
-        "<html>Lengths across the channel (<i>L</i><sub>z</sub>)</html>"
-        annotation (Dialog(group="Geometry"));
-      final parameter Integer n_y=size(L_y, 1)
-        "Number of regions along the channel" annotation (HideResult=true);
-      final parameter Integer n_z=size(L_z, 1)
-        "Number of regions across the channel" annotation (HideResult=true);
 
-      AnCLs.AnCL anCL(final L_y=L_y, final L_z=L_z)
-        annotation (Placement(transformation(extent={{-36,-10},{-16,10}})));
-      // **temp alpha_N
-      PEMs.PEM pEM(final L_y=L_y, final L_z=L_z)
-        annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-      // **temp initmeth
-      FCSys.BCs.Face.SubregionFlow bC1[n_y, n_z](
-        each gas(inclH2O=true, inclH2=true),
-        each graphite(inclC=true,'incle-'=true),
-        each ionomer(inclC19HF37O5S=true,'inclH+'=true)) annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=90,
-            origin={-44,-8.88178e-16})));
 
-      inner FCSys.BCs.Defaults defaults(analysis=true)
-        annotation (Placement(transformation(extent={{70,70},{90,90}})));
 
-      BCs.Face.SubregionFlow bC2[n_y, n_z](each gas(inclH2O=true), each ionomer(
-            inclC19HF37O5S=true, 'inclH+'=true)) annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={24,0})));
-    initial equation
-      //pEM.subregions.graphite.'e-'.mu = anCL.subregions.v.'e-'.mu;
-      // **temp
 
-    equation
-      connect(anCL.positiveX, pEM.negativeX) annotation (Line(
-          points={{-16,6.10623e-16},{-16,-3.36456e-22},{-12,0},{-10,6.10623e-16}},
 
-          color={240,0,0},
-          smooth=Smooth.None,
-          thickness=0.5));
-
-      connect(anCL.negativeX, bC1.face) annotation (Line(
-          points={{-36,6.10623e-16},{-40,6.10623e-16},{-40,3.65701e-16}},
-          color={240,0,0},
-          thickness=0.5,
-          smooth=Smooth.None));
-
-      connect(bC2.face, pEM.positiveX) annotation (Line(
-          points={{20,1.23436e-15},{10,1.23436e-15},{10,6.10623e-16}},
-          color={0,0,240},
-          thickness=0.5,
-          smooth=Smooth.None));
-
-      annotation (
-        Diagram(graphics),
-        Commands(file(ensureSimulated=true) =
-            "resources/scripts/Dymola/Regions.Examples.CLToCL.mos"),
-        experiment(
-          StopTime=0.5,
-          Tolerance=1e-06,
-          Algorithm="Dassl"),
-        experimentSetupOutput);
-    end anCLToPEM;
-
-    model PEMTocaCL "Test one catalyst layer to the other"
-      import FCSys.Subregions.Phases;
-      extends Modelica.Icons.Example;
-      extends Modelica.Icons.UnderConstruction;
-
-      parameter Q.Length L_y[:]=fill(1*U.m/1, 1)
-        "<html>Lengths along the channel (<i>L</i><sub>y</sub>)</html>"
-        annotation (Dialog(group="Geometry"));
-      parameter Q.Length L_z[:]=fill(5*U.mm/1, 1)
-        "<html>Lengths across the channel (<i>L</i><sub>z</sub>)</html>"
-        annotation (Dialog(group="Geometry"));
-      final parameter Integer n_y=size(L_y, 1)
-        "Number of regions along the channel" annotation (HideResult=true);
-      final parameter Integer n_z=size(L_z, 1)
-        "Number of regions across the channel" annotation (HideResult=true);
-
-      PEMs.PEM pEM(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each ionomer('H+'(partNumInitMeth=InitMethScalar.None,
-                setXVel=true))))
-        annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-      /*subregions(each ionomer('H+'(
-          partNumInitMeth=InitMethScalar.Pressure,
-          N_IC=1000*U.q,
-          p_IC=1e-5*U.kPa,
-          setTemp=true,
-          setXVel=true))),
-    */
-      // **temp IC for H+
-      CaCLs.CaCL caCL(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each gas(
-            N2(setXVel=true),
-            H2O(setXVel=true),
-            O2(setXVel=true)), each ionomer('H+'(setXVel=true))))
-        annotation (Placement(transformation(extent={{10,-10},{30,10}})));
-      /*
-    subregions(each graphite('e-'(setTemp=true)),each ionomer('H+'(          partNumInitMeth=InitMethScalar.Pressure,
-          p_IC=1e-5*U.kPa,alpha_N=1e50,
-setTemp=true,
-            setXVel=true))),
-   */
-
-      BCs.Face.Subregion0Current bC1[n_y, n_z](each gas(inclH2O=true), each
-          ionomer(inclC19HF37O5S=true, 'inclH+'=true)) annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=90,
-            origin={-24,0})));
-
-      inner FCSys.BCs.Defaults defaults(analysis=true)
-        annotation (Placement(transformation(extent={{70,70},{90,90}})));
-
-      BCs.Face.Subregion0Current bC2[n_y, n_z](
-        each gas(
-          inclH2O=true,
-          inclN2=true,
-          inclO2=true),
-        each graphite(inclC=true,'incle-'=true),
-        each ionomer(inclC19HF37O5S=true, 'inclH+'=true)) annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={44,0})));
-    initial equation
-      pEM.subregions.ionomer.'H+'.mu = caCL.subregions.ionomer.'H+'.mu;
-      // **temp
-
-    equation
-      connect(pEM.positiveX, caCL.negativeX) annotation (Line(
-          points={{10,6.10623e-16},{10,6.10623e-16},{10,6.10623e-16},{10,
-              6.10623e-16}},
-          color={0,0,240},
-          smooth=Smooth.None,
-          thickness=0.5));
-
-      connect(bC1.face, pEM.negativeX) annotation (Line(
-          points={{-20,3.65701e-16},{-20,0},{-10,0},{-10,6.10623e-16}},
-          color={240,0,0},
-          thickness=0.5,
-          smooth=Smooth.None));
-
-      connect(bC2.face, caCL.positiveX) annotation (Line(
-          points={{40,1.23436e-15},{40,6.10623e-16},{30,6.10623e-16}},
-          color={0,0,240},
-          thickness=0.5,
-          smooth=Smooth.None));
-      annotation (
-        Diagram(graphics),
-        Commands(file(ensureSimulated=true) =
-            "resources/scripts/Dymola/Regions.Examples.CLToCL.mos"),
-        experiment(
-          StopTime=8e-07,
-          Tolerance=1e-06,
-          Algorithm="Dassl"),
-        experimentSetupOutput);
-    end PEMTocaCL;
-
-    model CLToCL2 "Test one catalyst layer to the other"
-      import FCSys.Subregions.Phases;
-      extends Modelica.Icons.Example;
-      extends Modelica.Icons.UnderConstruction;
-
-      parameter Q.Length L_y[:]=fill(1*U.m/1, 1)
-        "<html>Lengths along the channel (<i>L</i><sub>y</sub>)</html>"
-        annotation (Dialog(group="Geometry"));
-      parameter Q.Length L_z[:]=fill(5*U.mm/1, 1)
-        "<html>Lengths across the channel (<i>L</i><sub>z</sub>)</html>"
-        annotation (Dialog(group="Geometry"));
-      final parameter Integer n_y=size(L_y, 1)
-        "Number of regions along the channel" annotation (HideResult=true);
-      final parameter Integer n_z=size(L_z, 1)
-        "Number of regions across the channel" annotation (HideResult=true);
-
-      PEMs.PEM pEM(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each ionomer('H+'(partNumInitMeth=InitMethScalar.None,
-                setXVel=true))))
-        annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-      /*subregions(each ionomer('H+'(
-          partNumInitMeth=InitMethScalar.Pressure,
-          N_IC=1000*U.q,
-          p_IC=1e-5*U.kPa,
-          setTemp=true,
-          setXVel=true))),
-    */
-      // **temp IC for H+
-      CaCLs.CaCL caCL(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each gas(
-            N2(setXVel=true),
-            H2O(setXVel=true),
-            O2(setXVel=true)), each ionomer('H+'(setXVel=true,Ndot_IC=0*U.A))))
-        annotation (Placement(transformation(extent={{10,-10},{30,10}})));
-      /*
-    subregions(each graphite('e-'(setTemp=true)),each ionomer('H+'(          partNumInitMeth=InitMethScalar.Pressure,
-          p_IC=1e-5*U.kPa,alpha_N=1e50,
-setTemp=true,
-            setXVel=true))),
-   */
-
-      inner FCSys.BCs.Defaults defaults(analysis=true)
-        annotation (Placement(transformation(extent={{70,70},{90,90}})));
-
-      BCs.Face.Subregion0Current bC2[n_y, n_z](
-        each gas(
-          inclH2O=true,
-          inclN2=true,
-          inclO2=true),
-        each graphite(inclC=true,'incle-'=true),
-        each ionomer(inclC19HF37O5S=true, 'inclH+'=true)) annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={44,0})));
-      AnCLs.AnCL anCL(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each graphite('e-'(
-              partNumInitMeth=InitMethScalar.ReactionRate,
-              Ndot_IC=1*U.A,
-              setXVel=true)), each ionomer('H+'(partNumInitMeth=InitMethScalar.None,
-                setXVel=true))))
-        annotation (Placement(transformation(extent={{-26,0},{-6,20}})));
-      BCs.Face.SubregionFlow bC1[n_y, n_z](
-        each gas(inclH2O=true, inclH2=true),
-        each graphite(inclC=true,'incle-'=true),
-        each ionomer(inclC19HF37O5S=true,'inclH+'=true)) annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=90,
-            origin={-34,10})));
-    initial equation
-      pEM.subregions.ionomer.'H+'.mu = anCL.subregions.ionomer.'H+'.mu;
-      pEM.subregions.ionomer.'H+'.mu = caCL.subregions.ionomer.'H+'.mu;
-      // **temp
-
-    equation
-      connect(pEM.positiveX, caCL.negativeX) annotation (Line(
-          points={{10,6.10623e-16},{10,6.10623e-16},{10,6.10623e-16},{10,
-              6.10623e-16}},
-          color={0,0,240},
-          smooth=Smooth.None,
-          thickness=0.5));
-
-      connect(bC2.face, caCL.positiveX) annotation (Line(
-          points={{40,1.23436e-15},{40,6.10623e-16},{30,6.10623e-16}},
-          color={0,0,240},
-          thickness=0.5,
-          smooth=Smooth.None));
-      connect(anCL.positiveX, pEM.negativeX) annotation (Line(
-          points={{-6,10},{-6,10},{-10,10},{-10,6.10623e-16}},
-          color={240,0,0},
-          smooth=Smooth.None,
-          thickness=0.5));
-
-      connect(anCL.negativeX, bC1.face) annotation (Line(
-          points={{-26,10},{-30,10},{-30,10}},
-          color={240,0,0},
-          thickness=0.5,
-          smooth=Smooth.None));
-      annotation (
-        Diagram(graphics),
-        Commands(file(ensureSimulated=true) =
-            "resources/scripts/Dymola/Regions.Examples.CLToCL.mos"),
-        experiment(Tolerance=1e-06, Algorithm="Dassl"),
-        experimentSetupOutput);
-    end CLToCL2;
-
-    model GDLtoGDL2 "Test one catalyst layer to the other"
-      import FCSys.Subregions.Phases;
-      extends Modelica.Icons.Example;
-      extends Modelica.Icons.UnderConstruction;
-
-      parameter Q.Length L_y[:]=fill(1*U.m/1, 1)
-        "<html>Lengths along the channel (<i>L</i><sub>y</sub>)</html>"
-        annotation (Dialog(group="Geometry"));
-      parameter Q.Length L_z[:]=fill(5*U.mm/1, 1)
-        "<html>Lengths across the channel (<i>L</i><sub>z</sub>)</html>"
-        annotation (Dialog(group="Geometry"));
-      final parameter Integer n_y=size(L_y, 1)
-        "Number of regions along the channel" annotation (HideResult=true);
-      final parameter Integer n_z=size(L_z, 1)
-        "Number of regions across the channel" annotation (HideResult=true);
-
-      PEMs.PEM pEM(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each ionomer('H+'(partNumInitMeth=InitMethScalar.None,
-                setXVel=true))))
-        annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-      /*subregions(each ionomer('H+'(
-          partNumInitMeth=InitMethScalar.Pressure,
-          N_IC=1000*U.q,
-          p_IC=1e-5*U.kPa,
-          setTemp=true,
-          setXVel=true))),
-    */
-      // **temp IC for H+
-      CaCLs.CaCL caCL(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(
-          each gas(
-            N2(setXVel=true),
-            H2O(setXVel=true),
-            O2(setXVel=true)),
-          each ionomer('H+'(setXVel=true, Ndot_IC=0*U.A)),
-          each graphite('e-'(setTemp=true))))
-        annotation (Placement(transformation(extent={{10,-10},{30,10}})));
-      /*
-    subregions(each graphite('e-'(setTemp=true)),each ionomer('H+'(          partNumInitMeth=InitMethScalar.Pressure,
-          p_IC=1e-5*U.kPa,alpha_N=1e50,
-setTemp=true,
-            setXVel=true))),
-   */
-
-      inner FCSys.BCs.Defaults defaults(analysis=true)
-        annotation (Placement(transformation(extent={{70,70},{90,90}})));
-
-      AnCLs.AnCL anCL(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each graphite('e-'(
-              partNumInitMeth=InitMethScalar.ReactionRate,
-              Ndot_IC=1e-3*U.A,
-              setXVel=true)), each ionomer('H+'(partNumInitMeth=InitMethScalar.None,
-                setXVel=true))))
-        annotation (Placement(transformation(extent={{-26,0},{-6,20}})));
-      AnGDLs.AnGDL anGDL(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each graphite('e-'(partNumInitMeth=InitMethScalar.None))))
-        annotation (Placement(transformation(extent={{-46,-2},{-26,18}})));
-      BCs.Face.Subregion0Current bC1[n_y, n_z](each gas(inclH2O=true, inclH2=
-              true), each graphite('incle-'=true)) annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=90,
-            origin={-54,10})));
-      CaGDLs.CaGDL caGDL(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each graphite('e-'(partNumInitMeth=InitMethScalar.None))))
-        annotation (Placement(transformation(extent={{48,0},{68,20}})));
-      BCs.Face.Subregion0Current bC2[n_y, n_z](each gas(
-          inclH2O=true,
-          inclN2=true,
-          inclO2=true), each graphite('incle-'=true)) annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={74,10})));
-    initial equation
-      pEM.subregions.ionomer.'H+'.mu = anCL.subregions.ionomer.'H+'.mu;
-      pEM.subregions.ionomer.'H+'.mu = caCL.subregions.ionomer.'H+'.mu;
-      caGDL.subregions.graphite.'e-'.mu = caCL.subregions.graphite.'e-'.mu;
-      anGDL.subregions.graphite.'e-'.mu = anCL.subregions.graphite.'e-'.mu;
-      // **temp
-
-    equation
-      connect(pEM.positiveX, caCL.negativeX) annotation (Line(
-          points={{10,6.10623e-16},{10,6.10623e-16},{10,6.10623e-16},{10,
-              6.10623e-16}},
-          color={0,0,240},
-          smooth=Smooth.None,
-          thickness=0.5));
-
-      connect(anCL.positiveX, pEM.negativeX) annotation (Line(
-          points={{-6,10},{-6,10},{-10,10},{-10,6.10623e-16}},
-          color={240,0,0},
-          smooth=Smooth.None,
-          thickness=0.5));
-
-      connect(anGDL.positiveX, anCL.negativeX) annotation (Line(
-          points={{-26,8},{-26,10},{-26,10},{-26,10}},
-          color={240,0,0},
-          smooth=Smooth.None,
-          thickness=0.5));
-      connect(bC1.face, anGDL.negativeX) annotation (Line(
-          points={{-50,10},{-46,10},{-46,8}},
-          color={240,0,0},
-          thickness=0.5,
-          smooth=Smooth.None));
-      connect(caCL.positiveX, caGDL.negativeX) annotation (Line(
-          points={{30,6.10623e-16},{42,6.10623e-16},{42,10},{48,10}},
-          color={0,0,240},
-          smooth=Smooth.None,
-          thickness=0.5));
-      connect(caGDL.positiveX, bC2.face) annotation (Line(
-          points={{68,10},{68,10},{70,10}},
-          color={0,0,240},
-          thickness=0.5,
-          smooth=Smooth.None));
-      annotation (
-        Diagram(graphics),
-        Commands(file(ensureSimulated=true) =
-            "resources/scripts/Dymola/Regions.Examples.CLToCL.mos"),
-        experiment(Tolerance=1e-06, Algorithm="Dassl"),
-        experimentSetupOutput);
-    end GDLtoGDL2;
-
-    model FPtoFP2 "Test one catalyst layer to the other"
-      import FCSys.Subregions.Phases;
-      extends Modelica.Icons.Example;
-      extends Modelica.Icons.UnderConstruction;
-
-      parameter Q.Length L_y[:]=fill(1*U.m/1, 1)
-        "<html>Lengths along the channel (<i>L</i><sub>y</sub>)</html>"
-        annotation (Dialog(group="Geometry"));
-      parameter Q.Length L_z[:]=fill(5*U.mm/1, 1)
-        "<html>Lengths across the channel (<i>L</i><sub>z</sub>)</html>"
-        annotation (Dialog(group="Geometry"));
-      final parameter Integer n_y=size(L_y, 1)
-        "Number of regions along the channel" annotation (HideResult=true);
-      final parameter Integer n_z=size(L_z, 1)
-        "Number of regions across the channel" annotation (HideResult=true);
-
-      inner FCSys.BCs.Defaults defaults(analysis=true)
-        annotation (Placement(transformation(extent={{70,70},{90,90}})));
-      AnFPs.AnFP anFP(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each graphite('e-'(partNumInitMeth=InitMethScalar.None))))
-        annotation (Placement(transformation(extent={{-60,0},{-40,20}})));
-      AnGDLs.AnGDL anGDL(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each graphite('e-'(partNumInitMeth=InitMethScalar.None))))
-        annotation (Placement(transformation(extent={{-46,-2},{-26,18}})));
-      AnCLs.AnCL anCL(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each graphite('e-'(
-              partNumInitMeth=InitMethScalar.ReactionRate,
-              Ndot_IC=1e-3*U.A,
-              setXVel=true)), each ionomer('H+'(partNumInitMeth=InitMethScalar.None,
-                setXVel=true))))
-        annotation (Placement(transformation(extent={{-26,0},{-6,20}})));
-      PEMs.PEM pEM(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each ionomer('H+'(partNumInitMeth=InitMethScalar.None,
-                setXVel=true))))
-        annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-      CaCLs.CaCL caCL(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(
-          each gas(
-            N2(setXVel=true),
-            H2O(setXVel=true),
-            O2(setXVel=true)),
-          each ionomer('H+'(setXVel=true, Ndot_IC=0*U.A)),
-          each graphite('e-'(setTemp=true))))
-        annotation (Placement(transformation(extent={{10,-10},{30,10}})));
-      CaGDLs.CaGDL caGDL(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each graphite('e-'(partNumInitMeth=InitMethScalar.None))))
-        annotation (Placement(transformation(extent={{48,0},{68,20}})));
-      CaFPs.CaFP caFP(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each graphite('e-'(partNumInitMeth=InitMethScalar.None))))
-        annotation (Placement(transformation(extent={{60,0},{80,20}})));
-      BCs.Face.Subregion0Current anEnd[n_y, n_z](each gas(inclH2=true, inclH2O=
-              true), each graphite('incle-'=true)) annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=90,
-            origin={-74,10})));
-      BCs.Face.Subregion0Current anSource[anFP.n_x, n_z](each gas(inclH2=true,
-            inclH2O=true), each graphite('incle-'=true)) annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=180,
-            origin={-50,-14})));
-      BCs.Face.Subregion0Current anSink[anFP.n_x, n_z](each gas(inclH2=true,
-            inclH2O=true), each graphite('incle-'=true)) annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=0,
-            origin={-50,34})));
-      BCs.Face.Subregion0Current caEnd[n_y, n_z](each graphite('incle-'=true),
-          each gas(
-          inclH2O=true,
-          inclN2=true,
-          inclO2=true)) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={94,10})));
-      BCs.Face.Subregion0Current caSource[caFP.n_x, n_z](each gas(
-          inclH2O=true,
-          inclN2=true,
-          inclO2=true), each graphite('incle-'=true)) annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=180,
-            origin={70,-14})));
-      BCs.Face.Subregion0Current caSink[caFP.n_x, n_z](each gas(
-          inclH2O=true,
-          inclN2=true,
-          inclO2=true), each graphite('incle-'=true)) annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=0,
-            origin={70,34})));
-
-    initial equation
-      pEM.subregions.ionomer.'H+'.mu = anCL.subregions.ionomer.'H+'.mu;
-      pEM.subregions.ionomer.'H+'.mu = caCL.subregions.ionomer.'H+'.mu;
-      caGDL.subregions.graphite.'e-'.mu = caCL.subregions.graphite.'e-'.mu;
-      anGDL.subregions.graphite.'e-'.mu = anCL.subregions.graphite.'e-'.mu;
-      caGDL.subregions.graphite.'e-'.mu = caFP.subregions.graphite.'e-'.mu;
-      anGDL.subregions.graphite.'e-'.mu = anFP.subregions.graphite.'e-'.mu;
-      // **temp
-
-    equation
-      connect(pEM.positiveX, caCL.negativeX) annotation (Line(
-          points={{10,6.10623e-16},{10,6.10623e-16},{10,6.10623e-16},{10,
-              6.10623e-16}},
-          color={0,0,240},
-          smooth=Smooth.None,
-          thickness=0.5));
-
-      connect(anCL.positiveX, pEM.negativeX) annotation (Line(
-          points={{-6,10},{-6,10},{-10,10},{-10,6.10623e-16}},
-          color={240,0,0},
-          smooth=Smooth.None,
-          thickness=0.5));
-
-      connect(anGDL.positiveX, anCL.negativeX) annotation (Line(
-          points={{-26,8},{-26,10},{-26,10},{-26,10}},
-          color={240,0,0},
-          smooth=Smooth.None,
-          thickness=0.5));
-      connect(caCL.positiveX, caGDL.negativeX) annotation (Line(
-          points={{30,6.10623e-16},{42,6.10623e-16},{42,10},{48,10}},
-          color={0,0,240},
-          smooth=Smooth.None,
-          thickness=0.5));
-      connect(anFP.positiveX, anGDL.negativeX) annotation (Line(
-          points={{-40,10},{-26,10},{-26,8},{-46,8}},
-          color={0,0,0},
-          thickness=0.5,
-          smooth=Smooth.None));
-      connect(anEnd.face, anFP.negativeX) annotation (Line(
-          points={{-70,10},{-60,10}},
-          color={127,127,127},
-          pattern=LinePattern.None,
-          thickness=0.5,
-          smooth=Smooth.None));
-      connect(anSink.face, anFP.positiveY) annotation (Line(
-          points={{-50,30},{-50,20}},
-          color={240,0,0},
-          thickness=0.5,
-          smooth=Smooth.None));
-      connect(anSource.face, anFP.negativeY) annotation (Line(
-          points={{-50,-10},{-50,-5.55112e-16}},
-          color={240,0,0},
-          thickness=0.5,
-          smooth=Smooth.None));
-      connect(caGDL.positiveX, caFP.negativeX) annotation (Line(
-          points={{68,10},{56,10},{56,10},{60,10}},
-          color={0,0,0},
-          thickness=0.5,
-          smooth=Smooth.None));
-      connect(caFP.positiveX, caEnd.face) annotation (Line(
-          points={{80,10},{85,10},{85,10},{90,10}},
-          color={127,127,127},
-          pattern=LinePattern.None,
-          thickness=0.5,
-          smooth=Smooth.None));
-      connect(caSink.face, caFP.positiveY) annotation (Line(
-          points={{70,30},{70,20}},
-          color={0,0,240},
-          thickness=0.5,
-          smooth=Smooth.None));
-      connect(caSource.face, caFP.negativeY) annotation (Line(
-          points={{70,-10},{70,-5.55112e-16}},
-          color={0,0,240},
-          thickness=0.5,
-          smooth=Smooth.None));
-      annotation (
-        Diagram(graphics),
-        Commands(file(ensureSimulated=true) =
-            "resources/scripts/Dymola/Regions.Examples.CLToCL.mos"),
-        experiment(Tolerance=1e-06, Algorithm="Dassl"),
-        experimentSetupOutput);
-    end FPtoFP2;
-
-    model CaCL2 "Test the cathode catalyst layer"
-      import FCSys.Subregions.Phases;
-      extends Modelica.Icons.Example;
-
-      parameter Q.Length L_y[:]=fill(1*U.m/1, 1)
-        "<html>Lengths along the channel (<i>L</i><sub>y</sub>)</html>"
-        annotation (Dialog(group="Geometry"));
-      parameter Q.Length L_z[:]=fill(5*U.mm/1, 1)
-        "<html>Lengths across the channel (<i>L</i><sub>z</sub>)</html>"
-        annotation (Dialog(group="Geometry"));
-      final parameter Integer n_y=size(L_y, 1)
-        "Number of regions along the channel" annotation (HideResult=true);
-      final parameter Integer n_z=size(L_z, 1)
-        "Number of regions across the channel" annotation (HideResult=true);
-      inner FCSys.BCs.Defaults defaults(
-        p=149.6*U.kPa,
-        T=333.15*U.K,
-        analysis=true)
-        annotation (Placement(transformation(extent={{70,70},{90,90}})));
-
-      CaCLs.CaCL caCL(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each ionomer('H+'(partNumInitMeth=InitMethScalar.PotentialElectrochemical))))
-        annotation (Placement(transformation(extent={{10,-10},{30,10}})));
-
-      FCSys.BCs.Face.Subregion0Current bC1[n_y, n_z](
-        each gas(
-          inclH2O=true,
-          inclN2=true,
-          inclO2=true),
-        each graphite(inclC=true,'incle-'=true),
-        each ionomer(inclC19HF37O5S=true, 'inclH+'=true)) annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=90,
-            origin={-4,-8.88178e-16})));
-      FCSys.BCs.Face.Subregion0Current bC2[n_y, n_z](
-        each gas(
-          inclH2O=true,
-          inclN2=true,
-          inclO2=true),
-        each graphite(inclC=true,'incle-'=true),
-        each ionomer(inclC19HF37O5S=true, 'inclH+'=true)) annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={44,0})));
-
-    equation
-      connect(bC1.face, caCL.negativeX) annotation (Line(
-          points={{6.66134e-16,3.65701e-16},{10,3.65701e-16},{10,6.10623e-16}},
-
-          color={0,0,240},
-          thickness=0.5,
-          smooth=Smooth.None));
-
-      connect(bC2.face, caCL.positiveX) annotation (Line(
-          points={{40,1.23436e-15},{40,6.10623e-16},{30,6.10623e-16}},
-          color={0,0,240},
-          thickness=0.5,
-          smooth=Smooth.None));
-
-      annotation (
-        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},
-                {100,100}}), graphics),
-        experiment(
-          StopTime=50,
-          Tolerance=1e-06,
-          Algorithm="Dassl"),
-        experimentSetupOutput,
-        Commands(file(ensureSimulated=true) =
-            "resources/scripts/Dymola/Regions.Examples.CaCL.mos"));
-    end CaCL2;
-
-    model GDLToGDL2 "Test one GDL to the other"
-      import FCSys.Subregions.Phases;
-      extends Modelica.Icons.Example;
-      extends Modelica.Icons.UnderConstruction;
-
-      parameter Q.Length L_y[:]=fill(1*U.m/1, 1)
-        "<html>Lengths along the channel (<i>L</i><sub>y</sub>)</html>"
-        annotation (Dialog(group="Geometry"));
-      parameter Q.Length L_z[:]=fill(5*U.mm/1, 1)
-        "<html>Lengths across the channel (<i>L</i><sub>z</sub>)</html>"
-        annotation (Dialog(group="Geometry"));
-      final parameter Integer n_y=size(L_y, 1)
-        "Number of regions along the channel" annotation (HideResult=true);
-      final parameter Integer n_z=size(L_z, 1)
-        "Number of regions across the channel" annotation (HideResult=true);
-      AnGDLs.AnGDL anGDL(final L_y=L_y, final L_z=L_z)
-        annotation (Placement(transformation(extent={{-56,-12},{-36,8}})));
-
-      AnCLs.AnCL anCL(final L_y=L_y, final L_z=L_z)
-        annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
-
-      PEMs.PEM pEM(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each ionomer('H+'(partNumInitMeth=InitMethScalar.None))))
-        annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-
-      CaCLs.CaCL caCL(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each ionomer('H+'(partNumInitMeth=InitMethScalar.None))))
-        annotation (Placement(transformation(extent={{10,-10},{30,10}})));
-
-      CaGDLs.CaGDL caGDL(final L_y=L_y, final L_z=L_z)
-        annotation (Placement(transformation(extent={{38,-10},{58,10}})));
-
-      FCSys.BCs.Face.Subregion0Current bC1[n_y, n_z](each gas(inclH2O=true,
-            inclH2=true), each graphite('incle-'=true)) annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=90,
-            origin={-90,2})));
-
-      FCSys.BCs.Face.Subregion0Current bC2[n_y, n_z](each gas(
-          inclH2O=true,
-          inclN2=true,
-          inclO2=true), each graphite('incle-'=true)) annotation (Placement(
-            transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={100,0})));
-
-      inner FCSys.BCs.Defaults defaults(analysis=true)
-        annotation (Placement(transformation(extent={{70,70},{90,90}})));
-    initial equation
-      anCL.subregions.ionomer.'H+'.mu = pEM.subregions.ionomer.'H+'.mu;
-      pEM.subregions.ionomer.'H+'.mu = caCL.subregions.ionomer.'H+'.mu;
-
-    equation
-      connect(anGDL.positiveX, anCL.negativeX) annotation (Line(
-          points={{-36,-2},{-36,-3.36456e-22},{-32,0},{-30,6.10623e-16}},
-          color={240,0,0},
-          smooth=Smooth.None,
-          thickness=0.5));
-
-      connect(anCL.positiveX, pEM.negativeX) annotation (Line(
-          points={{-10,6.10623e-16},{-10,6.10623e-16},{-10,6.10623e-16}},
-          color={240,0,0},
-          smooth=Smooth.None,
-          thickness=0.5));
-
-      connect(pEM.positiveX, caCL.negativeX) annotation (Line(
-          points={{10,6.10623e-16},{10,6.10623e-16},{10,6.10623e-16}},
-          color={0,0,240},
-          smooth=Smooth.None,
-          thickness=0.5));
-
-      connect(caCL.positiveX, caGDL.negativeX) annotation (Line(
-          points={{30,6.10623e-16},{32,0},{32,6.10623e-16},{38,6.10623e-16}},
-          color={0,0,240},
-          smooth=Smooth.None,
-          thickness=0.5));
-
-      connect(bC1.face, anGDL.negativeX) annotation (Line(
-          points={{-86,2},{-72,2},{-72,-2},{-56,-2}},
-          color={127,127,127},
-          thickness=0.5,
-          smooth=Smooth.None));
-
-      connect(bC2.face, caGDL.positiveX) annotation (Line(
-          points={{96,1.23436e-15},{78,1.23436e-15},{78,6.10623e-16},{58,
-              6.10623e-16}},
-          color={127,127,127},
-          thickness=0.5,
-          smooth=Smooth.None));
-      annotation (
-        Diagram(graphics),
-        Commands(file(ensureSimulated=true) =
-            "resources/scripts/Dymola/Regions.Examples.GDLToGDL.mos"),
-        experiment(
-          StopTime=1e-05,
-          Tolerance=1e-06,
-          Algorithm="Dassl"),
-        experimentSetupOutput);
-    end GDLToGDL2;
-
-    model CaFP2 "Test the cathode flow plate"
-      import FCSys.Subregions.Phases;
-      extends Modelica.Icons.Example;
-
-      parameter Q.Length L_y[:]=fill(1*U.m/1, 1)
-        "<html>Lengths along the channel (<i>L</i><sub>y</sub>)</html>"
-        annotation (Dialog(group="Geometry"));
-      parameter Q.Length L_z[:]=fill(5*U.mm/1, 1)
-        "<html>Lengths across the channel (<i>L</i><sub>z</sub>)</html>"
-        annotation (Dialog(group="Geometry"));
-      final parameter Integer n_y=size(L_y, 1)
-        "Number of regions along the channel" annotation (HideResult=true);
-      final parameter Integer n_z=size(L_z, 1)
-        "Number of regions across the channel" annotation (HideResult=true);
-      inner FCSys.BCs.Defaults defaults(
-        p=149.6*U.kPa,
-        T=333.15*U.K,
-        analysis=true)
-        annotation (Placement(transformation(extent={{70,70},{90,90}})));
-      CaFPs.CaFP caFP(final L_y=L_y, final L_z=L_z)
-        annotation (Placement(transformation(extent={{50,-10},{70,10}})));
-
-      BCs.Face.Subregion0Current bC1[n_y, n_z](each gas(
-          inclH2O=true,
-          inclN2=true,
-          inclO2=true), each graphite(inclC=true, 'incle-'=true)) annotation (
-          Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=90,
-            origin={36,0})));
-      BCs.Face.Subregion0Current bC4[caFP.n_x, n_z](each gas(
-          inclH2O=true,
-          inclN2=true,
-          inclO2=true)) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=0,
-            origin={60,24})));
-      BCs.Face.Subregion0Current bC3[caFP.n_x, n_z](each gas(
-          inclH2O=true,
-          inclN2=true,
-          inclO2=true)) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=180,
-            origin={60,-24})));
-    equation
-
-      annotation (
-        Diagram(graphics),
-        experiment(StopTime=10, Tolerance=1e-06),
-        experimentSetupOutput,
-        Commands(file(ensureSimulated=true) =
-            "resources/scripts/Dymola/Regions.Examples.CaFP.mos"));
-      connect(bC4.face, caFP.positiveY) annotation (Line(
-          points={{60,20},{60,10}},
-          color={0,0,240},
-          thickness=0.5,
-          smooth=Smooth.None));
-      connect(bC3.face, caFP.negativeY) annotation (Line(
-          points={{60,-20},{60,-10}},
-          color={0,0,240},
-          thickness=0.5,
-          smooth=Smooth.None));
-      connect(bC1.face, caFP.negativeX) annotation (Line(
-          points={{40,3.65701e-16},{52,3.65701e-16},{52,6.10623e-16},{50,
-              6.10623e-16}},
-          color={0,0,240},
-          thickness=0.5,
-          smooth=Smooth.None));
-    end CaFP2;
   end Examples;
 
   package AnFPs "Anode flow plates"
@@ -1889,7 +1037,8 @@ setTemp=true,
               setXVel=true,
               setYVel=true,
               negativeY(viscousX=false),
-              positiveY(viscousX=false))),
+              positiveY(viscousX=false),
+              setTemp=true)),
           each gas(
             inclH2=true,
             inclH2O=true,
@@ -2181,7 +1330,8 @@ In reality, there are cut-outs and holes for thermocouples, hardware, etc.</li>
               final epsilon=0,
               setXVel=true,
               negativeY(viscousX=false),
-              positiveY(viscousX=false)))));
+              positiveY(viscousX=false),
+              setTemp=true))));
 
       parameter Q.NumberAbsolute x(nominal=1) = 0.76 "Volumetric porosity";
       // The default porosity is for Sigracet 24 BC.
@@ -3019,6 +2169,7 @@ the z axis extends across the width of the channel.</p>
             inclN2=true,
             inclO2=true,
             H2O(
+              setXVel=true,
               p_IC=defaults.y_H2O*defaults.p,
               negativeY(viscousX=false),
               positiveY(viscousX=false)),
@@ -3030,15 +2181,18 @@ the z axis extends across the width of the channel.</p>
             O2(
               p_IC=(1 - defaults.y_H2O)*defaults.y_O2_dry*defaults.p,
               negativeY(viscousX=false),
-              positiveY(viscousX=false))),
+              positiveY(viscousX=false),
+              setXVel=true)),
           each graphite(
             inclC=true,
             'incle-'=true,
             C(V_IC=(V - xV)/2),
             'e-'(
+              setXVel=true,
               mu_IC=-0.3*U.V,
               negativeY(viscousX=false),
-              positiveY(viscousX=false))),
+              positiveY(viscousX=false),
+              setTemp=true)),
           each ionomer(
             inclC19HF37O5S=true,
             'inclH+'=true,
