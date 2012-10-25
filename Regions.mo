@@ -186,7 +186,6 @@ package Regions "3D arrays of discrete, interconnected subregions"
           Tolerance=1e-06,
           Algorithm="Dassl"),
         experimentSetupOutput);
-
     end FPToFP;
 
     model GDLToGDL "Test one GDL to the other"
@@ -305,7 +304,6 @@ package Regions "3D arrays of discrete, interconnected subregions"
           Tolerance=1e-06,
           Algorithm="Dassl"),
         experimentSetupOutput);
-
     end GDLToGDL;
 
     model CLToCL "Test one catalyst layer to the other"
@@ -420,7 +418,6 @@ package Regions "3D arrays of discrete, interconnected subregions"
           Tolerance=1e-06,
           Algorithm="Dassl"),
         experimentSetupOutput);
-
     end CLToCL;
 
     model AnFP "Test the anode flow plate"
@@ -1004,12 +1001,6 @@ package Regions "3D arrays of discrete, interconnected subregions"
         Commands(file(ensureSimulated=true) =
             "resources/scripts/Dymola/Regions.Examples.CaFP.mos"));
     end CaFP;
-
-
-
-
-
-
 
   end Examples;
 
