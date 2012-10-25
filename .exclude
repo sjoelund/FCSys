@@ -44,9 +44,6 @@ Python/control/build
 Python/doc
 *.pyc
 
-# Installation scripts
-install/*
-
 # Support for MATLAB and model-predictive control (MPC)
 resources/source/MATLAB
 test/MPC
