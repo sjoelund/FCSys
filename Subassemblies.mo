@@ -1613,7 +1613,6 @@ of a PEMFC is given in the top-level documentation of <a href=\"modelica://FCSys
       pEM.subregions.ionomer.'H+'.mu = caCL.subregions.ionomer.'H+'.mu;
       caCL.subregions.graphite.'e-'.mu = caGDL.subregions.graphite.'e-'.mu;
       caFP.subregions.graphite.'e-'.mu = caGDL.subregions.graphite.'e-'.mu;
-
     end CellSSIC;
   end Cells;
   annotation (Documentation(info="

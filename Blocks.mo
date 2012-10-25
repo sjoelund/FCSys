@@ -3062,7 +3062,7 @@ This is discussed in the description of package
           "Optimizer gain ([estimated state; estimated disturbance; reference] to dynamic optimizer constraint)";
         parameter Real H[:, size(H, 1)]={if i == j then 1 else 0 for j in 1:5,
             i in 1:5} "Hessian matrix of the quadratic problem  (QP)";
-        // If the default is identity(5) in Dymola 7.4, the parameter dialog does not allow the values
+        // If the default is identity(5) in Dymola 7.4, the parameter dialog doesn't allow the values
         // to be loaded from a MAT file, so the identity matrix is created by nested loops.
         parameter Real J[size(H, 1)] "Jacobian vector of the QP";
         parameter Real G[:, size(H, 1)]=zeros(1, size(H, 1))

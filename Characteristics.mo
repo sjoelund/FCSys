@@ -182,7 +182,6 @@ package Characteristics "Data and functions to correlate physical properties"
         Commands(file=
               "resources/scripts/Dymola/Characteristics.Examples.TestCorrelations.mos"));
     end TestCorrelations;
-
   end Examples;
 
   package C "C"
@@ -769,7 +768,7 @@ package Characteristics "Data and functions to correlate physical properties"
       constant Q.Pressure p_min=1e-323*p0
         "Minimum pressure for numerical protection";
       // Note:  In Dymola 7.4, ln(1e-323) returns a valid result, but ln(1e-324)
-      // does not.
+      // doesn't.
       constant Real b_v[:, :]=[1]
         "Coefficients of specific volume as a polynomial in p/T and T"
         annotation (HideResult=false);

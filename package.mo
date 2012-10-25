@@ -9,7 +9,6 @@ package FCSys "Modelica library of fuel cell models"
 // the LaTeX document:
 // -----------------------------------------------------------------------
 
-
 extends Modelica.Icons.Package;
 // extends FCSys.Icons.Cell.Small;
 
@@ -31,11 +30,10 @@ import FCSys.BaseClasses.Utilities.*;
 
 // Enumerations
 import FCSys.BaseClasses.Axis;
-import FCSys.Subregions.Species.BaseClasses.InitMethScalar;
-import FCSys.Subregions.Species.BaseClasses.InitMethLinear;
+import FCSys.Subregions.BaseClasses.InitMethScalar;
+import FCSys.Subregions.BaseClasses.InitMethLinear;
 import FCSys.Characteristics.BaseClasses.ReferenceEnthalpy;
-import FCSys.Connectors.BaseClasses.MaterialEntropyOptions;
-
+import FCSys.Connectors.BaseClasses.MaterialEntropyOpt;
 
 package UsersGuide "User's Guide"
   extends Modelica.Icons.Information;
@@ -880,24 +878,9 @@ a selling fee for a (in this case physical) copy. However, mere
 printing and shipping costs may be recovered.</p>
 </body>
 </html>"));
-
     end ModelicaLicense2;
   annotation (preferedView="info", DocumentationClass=true);
   end UsersGuide;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 annotation (
   uses(Modelica(version="3.2"), Modelica_LinearSystems2(version="2.1")),

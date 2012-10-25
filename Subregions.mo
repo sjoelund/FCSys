@@ -88,8 +88,8 @@ package Subregions
           thickness=0.5,
           smooth=Smooth.None));
       connect(bC1.face, subregion.negativeX) annotation (Line(
-          points={{-16,3.65701e-16},{-17.5,3.65701e-16},{-17.5,1.11022e-15},{-15,
-              1.11022e-15},{-15,6.10623e-16},{-10,6.10623e-16}},
+          points={{-16,3.65701e-16},{-17.5,3.65701e-16},{-17.5,1.11022e-15},{
+              -15,1.11022e-15},{-15,6.10623e-16},{-10,6.10623e-16}},
           color={127,127,127},
           pattern=LinePattern.None,
           thickness=0.5,
@@ -819,9 +819,9 @@ package Subregions
       Q.Potential h(nominal=1*U.V) "Specific enthalpy";
       Q.Potential mu(nominal=1*U.V) "Electrochemical potential";
 
-      FCSys.Connectors.Chemical chemical annotation (Placement(transformation(
-              extent={{-10,-50},{10,-30}}), iconTransformation(extent={{-10,-50},
-                {10,-30}})));
+      FCSys.Connectors.ChemicalOutput chemical annotation (Placement(
+            transformation(extent={{-10,-50},{10,-30}}), iconTransformation(
+              extent={{-10,-50},{10,-30}})));
 
     protected
       outer FCSys.BCs.Defaults defaults "Default settings" annotation (
@@ -958,7 +958,7 @@ package Subregions
 
     model Reaction "Test an electrochemical reaction"
       extends Modelica.Icons.Example;
-      extends Modelica.Icons.UnderConstruction;
+
       parameter Integer n_lin(
         final min=1,
         final max=3) = 1
@@ -971,7 +971,6 @@ package Subregions
         materialBC=FCSys.BCs.Chemical.Species.BaseClasses.BCTypeMaterial.PotentialElectrochemical,
 
         formula="e-",
-        m=FCSys.Characteristics.'e-'.graphite.m,
         final n_lin=n_lin) annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
@@ -981,7 +980,6 @@ package Subregions
         materialBC=FCSys.BCs.Chemical.Species.BaseClasses.BCTypeMaterial.PotentialElectrochemical,
 
         formula="H+",
-        m=FCSys.Characteristics.'H+'.solid.m,
         final n_lin=n_lin) annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
@@ -990,11 +988,10 @@ package Subregions
       FCSys.BCs.Chemical.Species.Species H2(
         materialBC=FCSys.BCs.Chemical.Species.BaseClasses.BCTypeMaterial.Current,
 
-        redeclare Modelica.Blocks.Sources.Ramp materialSpec(height=100*U.A,
-            duration=3600e2),
         formula="H2",
-        m=FCSys.Characteristics.H2.gas.m,
-        final n_lin=n_lin) annotation (Placement(transformation(
+        final n_lin=n_lin,
+        redeclare Modelica.Blocks.Sources.Ramp materialSpec(height=100*U.A,
+            duration=100)) annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
             origin={30,-24})));
@@ -1021,12 +1018,11 @@ package Subregions
 
       annotation (
         Diagram(graphics),
-        experiment(StopTime=360000),
+        experiment(StopTime=100),
         experimentSetupOutput,
         Commands(file=
               "resources/scripts/Dymola/Subregions.Examples.Reaction.mos"));
     end Reaction;
-
 
     model SubregionH22 "Test a subregion"
       extends Modelica.Icons.Example;
@@ -1148,106 +1144,7 @@ package Subregions
             "resources/scripts/Dymola/Subregions.Examples.SubregionH2.mos"));
     end Species;
 
-    model Reaction2 "Test an electrochemical reaction"
-      extends Modelica.Icons.Example;
-      extends Modelica.Icons.UnderConstruction;
-      parameter Integer n_lin(
-        final min=1,
-        final max=3) = 1
-        "<html>Number of components of linear momentum (<i>n</i><sub>lin</sub>)</html>"
-        annotation (HideResult=true);
 
-      FCSys.BCs.Chemical.Species.Species 'e-'(
-        materialBC=FCSys.BCs.Chemical.Species.BaseClasses.BCTypeMaterial.PotentialElectrochemical,
-
-        formula="e-",
-        m=FCSys.Characteristics.'e-'.graphite.m,
-        final n_lin=n_lin) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=180,
-            origin={-30,-24})));
-
-      inner FCSys.BCs.Defaults defaults(analysis=true)
-        annotation (Placement(transformation(extent={{-90,70},{-70,90}})));
-    equation
-
-      annotation (
-        Diagram(graphics),
-        experiment(StopTime=360000),
-        experimentSetupOutput,
-        Commands(file=
-              "resources/scripts/Dymola/Subregions.Examples.Reaction.mos"));
-    end Reaction2;
-
-    model Reaction3 "Test an electrochemical reaction"
-      extends Modelica.Icons.Example;
-      extends Modelica.Icons.UnderConstruction;
-      parameter Integer n_lin(
-        final min=1,
-        final max=3) = 1
-        "<html>Number of components of linear momentum (<i>n</i><sub>lin</sub>)</html>"
-        annotation (HideResult=true);
-
-      FCSys.Subregions.Reaction reaction(final n_lin=n_lin,n_spec=3)
-        annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-      FCSys.BCs.Chemical.Species.Species 'e-'(
-        materialBC=FCSys.BCs.Chemical.Species.BaseClasses.BCTypeMaterial.PotentialElectrochemical,
-
-        formula="e-",
-        m=FCSys.Characteristics.'e-'.graphite.m,
-        final n_lin=n_lin) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=180,
-            origin={-30,-24})));
-
-      FCSys.BCs.Chemical.Species.Species 'H+'(
-        materialBC=FCSys.BCs.Chemical.Species.BaseClasses.BCTypeMaterial.PotentialElectrochemical,
-
-        formula="H+",
-        m=FCSys.Characteristics.'H+'.solid.m,
-        final n_lin=n_lin) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=180,
-            origin={0,-24})));
-
-      FCSys.BCs.Chemical.Species.Species H2(
-        materialBC=FCSys.BCs.Chemical.Species.BaseClasses.BCTypeMaterial.Current,
-
-        redeclare Modelica.Blocks.Sources.Ramp materialSpec(height=100*U.A,
-            duration=3600e2),
-        formula="H2",
-        m=FCSys.Characteristics.H2.gas.m,
-        final n_lin=n_lin) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=180,
-            origin={30,-24})));
-
-      inner FCSys.BCs.Defaults defaults(analysis=true)
-        annotation (Placement(transformation(extent={{-90,70},{-70,90}})));
-    equation
-      connect('e-'.chemical, reaction.chemical1) annotation (Line(
-          points={{-30,-20},{-30,-10},{6.10623e-16,-10},{6.10623e-16,
-              6.10623e-16}},
-          color={208,104,0},
-          smooth=Smooth.None));
-
-      connect('H+'.chemical, reaction.chemical2) annotation (Line(
-          points={{-1.11528e-16,-20},{0,-20},{0,6.10623e-16},{2,6.10623e-16}},
-          color={208,104,0},
-          smooth=Smooth.None));
-
-      connect(H2.chemical, reaction.chemical3) annotation (Line(
-          points={{30,-20},{30,-10},{4,-10},{4,6.10623e-16}},
-          color={208,104,0},
-          smooth=Smooth.None));
-
-      annotation (
-        Diagram(graphics),
-        experiment(StopTime=360000),
-        experimentSetupOutput,
-        Commands(file=
-              "resources/scripts/Dymola/Subregions.Examples.Reaction.mos"));
-    end Reaction3;
   end Examples;
 
   model Subregion "Subregion with all phases included"
@@ -1258,15 +1155,14 @@ package Subregions
       HideResult=true,
       Dialog(tab="Assumptions"),
       choices(__Dymola_checkBox=true));
-    // Note:  This is listed above the extends clause so that it is
+    // Note:  This is listed above the extends clause so that it's
     // listed first in the parameter dialog.
     extends BaseClasses.PartialSubregion;
 
-    replaceable FCSys.Subregions.Phases.Gas gas(
-      inclH2O=true,
-      inclReact=false,
-      final inclLin={inclXMom,inclYMom,inclZMom}) "Gas" annotation (Dialog(
-          group="Phases"), Placement(transformation(extent={{-10,-10},{10,10}})));
+    replaceable FCSys.Subregions.Phases.Gas gas(inclH2O=true, final inclLin={
+          inclXMom,inclYMom,inclZMom}) "Gas" annotation (Dialog(group="Phases"),
+        Placement(transformation(extent={{-10,-10},{10,10}})));
+
     // **Currently, both reactions must be included at this level.
 
     replaceable FCSys.Subregions.Phases.Graphite graphite(final inclLin={
@@ -1288,11 +1184,11 @@ package Subregions
     FCSys.Subregions.Reaction HOR(final n_lin=n_lin,n_spec=3) if inclReact and
       (graphite.'incle-' and ionomer.'inclH+' and gas.inclH2 and not (gas.inclO2
        and gas.inclH2O)) "Hydrogen oxidation reaction"
-      annotation (Placement(transformation(extent={{-30,10},{-10,30}})));
+      annotation (Placement(transformation(extent={{-50,30},{-30,50}})));
     FCSys.Subregions.Reaction ORR(final n_lin=n_lin,n_spec=4) if inclReact and
       (graphite.'incle-' and ionomer.'inclH+' and gas.inclO2 and gas.inclH2O
        and not gas.inclH2) "Oxygen reduction reaction"
-      annotation (Placement(transformation(extent={{-30,10},{-10,30}})));
+      annotation (Placement(transformation(extent={{-50,30},{-30,50}})));
 
     /* **Note: Multiple reactions cannot be included at once due to the following error:
 Error: Failed to expand the variable HOR.chemical[1].mphi
@@ -1301,86 +1197,53 @@ Error: Failed to expand the variable ORR.chemical[1].mphi
 Error: Failed to expand the variable ORR.chemical[2].mphi
   */
 
-    Connectors.FaceBus graphiteChem
-      annotation (Placement(transformation(extent={{-50,20},{-30,40}})));
-    Connectors.FaceBus ionomerChem
-      annotation (Placement(transformation(extent={{-40,30},{-20,50}})));
-    Connectors.FaceBus gasChem
-      annotation (Placement(transformation(extent={{-66,6},{-46,26}})));
+  protected
+    Connectors.ChemicalBusInternal chemical
+      "Internal connector to route chemical reaction"
+      annotation (Placement(transformation(extent={{-30,10},{-10,30}})));
   equation
     // Chemical interactions
-    connect(HOR.chemical[1], graphite.chemical.'e-') annotation (Line(
-        points={{-20,19.3333},{-5,5}},
+    connect(HOR.chemical[1], chemical.'e-') annotation (Line(
+        points={{-40,39.3333},{-20,20}},
         color={208,104,0},
         smooth=Smooth.None));
-    connect(HOR.chemical[2], ionomer.chemical.'H+') annotation (Line(
-        points={{-20,20},{-5,5}},
+    connect(HOR.chemical[2], chemical.'H+') annotation (Line(
+        points={{-40,40},{-20,20}},
         color={208,104,0},
         smooth=Smooth.None));
-    connect(HOR.chemical[3], gas.chemical.H2) annotation (Line(
-        points={{-20,20.6667},{-5,5}},
-        color={208,104,0},
-        smooth=Smooth.None));
-    /*
-  connect(ORR.chemical[1], graphite.chemical.'e-') annotation (Line(
-      points={{-20,19.25},{-5,5}},
-      color={208,104,0},
-      smooth=Smooth.None));
-  connect(ORR.chemical[2], ionomer.chemical.'H+') annotation (Line(
-      points={{-20,19.75},{-5,5}},
-      color={208,104,0},
-      smooth=Smooth.None));
-  connect(ORR.chemical[3], gas.chemical.O2) annotation (Line(
-      points={{-20,20.25},{-5,5}},
-      color={208,104,0},
-      smooth=Smooth.None));
-  connect(ORR.chemical[4], gas.chemical.H2O) annotation (Line(
-      points={{-20,20.75},{-5,5}},
-      color={208,104,0},
-      smooth=Smooth.None));
-*/
-    connect(graphiteChem, graphite.chemical) annotation (Line(
-        points={{-40,30},{-5,5}},
-        color={208,104,0},
-        smooth=Smooth.None));
-    connect(ionomerChem, ionomer.chemical) annotation (Line(
-        points={{-30,40},{-5,5}},
-        color={208,104,0},
-        smooth=Smooth.None));
-    connect(gasChem, gas.chemical) annotation (Line(
-        points={{-56,16},{-5,5}},
-        color={208,104,0},
-        smooth=Smooth.None));
-    connect(gasChem, gas.chemical) annotation (Line(
-        points={{-56,16},{-5,5}},
+    connect(HOR.chemical[3], chemical.H2) annotation (Line(
+        points={{-40,40.6667},{-20,20}},
         color={208,104,0},
         smooth=Smooth.None));
 
-    connect(ORR.chemical[1], graphiteChem.'e-') annotation (Line(
-        points={{-20,19.25},{-40,30}},
+    connect(ORR.chemical[1], chemical.'e-') annotation (Line(
+        points={{-40,39.25},{-20,20}},
         color={208,104,0},
         smooth=Smooth.None));
-    connect(ORR.chemical[2], ionomerChem.'H+') annotation (Line(
-        points={{-20,19.75},{-30,40}},
+    connect(ORR.chemical[2], chemical.'H+') annotation (Line(
+        points={{-40,39.75},{-20,20}},
         color={208,104,0},
         smooth=Smooth.None));
-    connect(ORR.chemical[3], gasChem.O2) annotation (Line(
-        points={{-20,20.25},{-56,16}},
+    connect(ORR.chemical[3], chemical.O2) annotation (Line(
+        points={{-40,40.25},{-20,20}},
         color={208,104,0},
         smooth=Smooth.None));
-    connect(ORR.chemical[4], gasChem.H2O) annotation (Line(
-        points={{-20,20.75},{-56,16}},
+    connect(ORR.chemical[4], chemical.H2O) annotation (Line(
+        points={{-40,40.75},{-20,20}},
         color={208,104,0},
         smooth=Smooth.None));
 
     // Gas
+    connect(gas.chemical, chemical) annotation (Line(
+        points={{-5,5},{-20,20}},
+        color={208,104,0},
+        smooth=Smooth.None));
     connect(gas.inert, volume.inert) annotation (Line(
-        points={{8,-8},{12.375,-12.375}},
+        points={{8,-8},{11,-11}},
         color={72,90,180},
         smooth=Smooth.None));
     connect(gas.negativeX, negativeX.gas) annotation (Line(
-        points={{-8,6.10623e-16},{-8,1.16573e-15},{-25,1.16573e-15},{-25,
-            5.55112e-16},{-40,5.55112e-16}},
+        points={{-8,6.10623e-16},{-8,5.55112e-16},{-40,5.55112e-16}},
         color={127,127,127},
         pattern=LinePattern.None,
         thickness=0.5,
@@ -1398,8 +1261,8 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
         thickness=0.5,
         smooth=Smooth.None));
     connect(gas.positiveY, positiveY.gas) annotation (Line(
-        points={{6.10623e-16,10},{-4.87687e-22,10},{-4.87687e-22,40},{
-            5.55112e-16,40}},
+        points={{6.10623e-16,10},{0,10},{0,10},{-4.87687e-22,40},{-4.87687e-22,
+            40},{5.55112e-16,40}},
         color={127,127,127},
         pattern=LinePattern.None,
         thickness=0.5,
@@ -1418,13 +1281,17 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
         smooth=Smooth.None));
 
     // Graphite
+    connect(graphite.chemical, chemical) annotation (Line(
+        points={{-5,5},{-20,20}},
+        color={208,104,0},
+        smooth=Smooth.None));
+
     connect(graphite.inert, volume.inert) annotation (Line(
-        points={{8,-8},{12.375,-12.375}},
+        points={{8,-8},{11,-11}},
         color={72,90,180},
         smooth=Smooth.None));
     connect(graphite.negativeX, negativeX.graphite) annotation (Line(
-        points={{-8,6.10623e-16},{-8,1.16573e-15},{-25,1.16573e-15},{-25,
-            5.55112e-16},{-40,5.55112e-16}},
+        points={{-8,6.10623e-16},{-8,5.55112e-16},{-40,5.55112e-16}},
         color={127,127,127},
         pattern=LinePattern.None,
         thickness=0.5,
@@ -1442,8 +1309,8 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
         thickness=0.5,
         smooth=Smooth.None));
     connect(graphite.positiveY, positiveY.graphite) annotation (Line(
-        points={{6.10623e-16,10},{-4.87687e-22,10},{-4.87687e-22,40},{
-            5.55112e-16,40}},
+        points={{6.10623e-16,10},{0,10},{0,10},{-4.87687e-22,40},{-4.87687e-22,
+            40},{5.55112e-16,40}},
         color={127,127,127},
         pattern=LinePattern.None,
         thickness=0.5,
@@ -1462,13 +1329,17 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
         smooth=Smooth.None));
 
     // Ionomer
+    connect(ionomer.chemical, chemical) annotation (Line(
+        points={{-5,5},{-20,20}},
+        color={208,104,0},
+        smooth=Smooth.None));
+
     connect(ionomer.inert, volume.inert) annotation (Line(
-        points={{8,-8},{12.375,-12.375}},
+        points={{8,-8},{11,-11}},
         color={72,90,180},
         smooth=Smooth.None));
     connect(ionomer.negativeX, negativeX.ionomer) annotation (Line(
-        points={{-8,6.10623e-16},{-8,1.16573e-15},{-25,1.16573e-15},{-25,
-            5.55112e-16},{-40,5.55112e-16}},
+        points={{-8,6.10623e-16},{-8,5.55112e-16},{-40,5.55112e-16}},
         color={127,127,127},
         pattern=LinePattern.None,
         thickness=0.5,
@@ -1486,8 +1357,8 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
         thickness=0.5,
         smooth=Smooth.None));
     connect(ionomer.positiveY, positiveY.ionomer) annotation (Line(
-        points={{6.10623e-16,10},{-4.87687e-22,10},{-4.87687e-22,40},{
-            5.55112e-16,40}},
+        points={{6.10623e-16,10},{0,10},{0,10},{-4.87687e-22,40},{-4.87687e-22,
+            40},{5.55112e-16,40}},
         color={127,127,127},
         pattern=LinePattern.None,
         thickness=0.5,
@@ -1565,6 +1436,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
 
       Icon(graphics),
       Diagram(graphics));
+
   end Subregion;
 
   model SubregionNoGraphite "Subregion with all phases except graphite"
@@ -1574,7 +1446,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
       HideResult=true,
       choices(__Dymola_checkBox=true),
       Dialog(tab="Assumptions"));
-    // Note:  This is listed above the extension clause so that it is
+    // Note:  This is listed above the extension clause so that it's
     // listed first in the parameter dialog.
     extends BaseClasses.PartialSubregion;
 
@@ -1593,7 +1465,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
   equation
     // Gas
     connect(gas.inert, volume.inert) annotation (Line(
-        points={{8,-8},{12.375,-12.375}},
+        points={{8,-8},{11,-11}},
         color={72,90,180},
         smooth=Smooth.None));
     connect(gas.negativeX, negativeX.gas) annotation (Line(
@@ -1637,7 +1509,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
 
     // Ionomer
     connect(ionomer.inert, volume.inert) annotation (Line(
-        points={{8,-8},{12.375,-12.375}},
+        points={{8,-8},{11,-11}},
         color={72,90,180},
         smooth=Smooth.None));
     connect(ionomer.negativeX, negativeX.ionomer) annotation (Line(
@@ -1701,7 +1573,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
       HideResult=true,
       choices(__Dymola_checkBox=true),
       Dialog(tab="Assumptions"));
-    // Note:  This is listed above the extends clause so that it is
+    // Note:  This is listed above the extends clause so that it's
     // listed first in the parameter dialog.
     extends BaseClasses.PartialSubregion;
 
@@ -1823,16 +1695,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
     extends Modelica.Icons.Package;
     model Phase "Phase with all species conditionally included"
       extends BaseClasses.NullPhase(final hasSpecies=inclC or inclC19HF37O5S
-             or 'incle-' or inclH2 or inclH2O or 'inclH+' or inclN2 or inclO2,
-          redeclare ChemicalBus chemical(
-          final inclC=inclC,
-          final inclC19HF37O5S=inclC19HF37O5S,
-          final 'incle-'='incle-',
-          final inclH2=inclH2,
-          final inclH2O=inclH2O,
-          final 'inclH+'='inclH+',
-          final inclN2=inclN2,
-          final inclO2=inclO2));
+             or 'incle-' or inclH2 or inclH2O or 'inclH+' or inclN2 or inclO2);
 
       parameter Boolean inclReact=true "Include reaction(s), as appropriate"
         annotation (
@@ -1852,8 +1715,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           __Dymola_joinNext=true));
       replaceable FCSys.Subregions.Species.C.graphite.Fixed C(final k=k, final
           inclLin=inclLin) if inclC constrainedby
-        'e-'.FCSys.Subregions.Species.BaseClasses.PartialSpecies "C model"
-        annotation (
+        FCSys.Subregions.Species.Species "C model" annotation (
         __Dymola_choicesFromPackage=true,
         Dialog(
           group="Species",
@@ -1873,7 +1735,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           __Dymola_joinNext=true));
       replaceable FCSys.Subregions.Species.C19HF37O5S.solid.Fixed C19HF37O5S(
           final k=k, final inclLin=inclLin) if inclC19HF37O5S constrainedby
-        'e-'.FCSys.Subregions.Species.BaseClasses.PartialSpecies
+        FCSys.Subregions.Species.Species
         "<html>C<sub>19</sub>HF<sub>37</sub>O<sub>5</sub>S model</html>"
         annotation (
         __Dymola_choicesFromPackage=true,
@@ -1894,8 +1756,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           __Dymola_joinNext=true));
       replaceable FCSys.Subregions.Species.'e-'.graphite.Fixed 'e-'(final k=k,
           final inclLin=inclLin) if 'incle-' constrainedby
-        'e-'.FCSys.Subregions.Species.BaseClasses.PartialSpecies
-        "<html>'e-' model</html>" annotation (
+        FCSys.Subregions.Species.Species "<html>'e-' model</html>" annotation (
         __Dymola_choicesFromPackage=true,
         Dialog(
           group="Species",
@@ -1914,8 +1775,8 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           __Dymola_joinNext=true));
       replaceable FCSys.Subregions.Species.H2.gas.Fixed H2(final k=k, final
           inclLin=inclLin) if inclH2 constrainedby
-        'e-'.FCSys.Subregions.Species.BaseClasses.PartialSpecies
-        "<html>H<sub>2</sub> model</html>" annotation (
+        FCSys.Subregions.Species.Species "<html>H<sub>2</sub> model</html>"
+        annotation (
         __Dymola_choicesFromPackage=true,
         Dialog(
           group="Species",
@@ -1934,8 +1795,8 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           __Dymola_joinNext=true));
       replaceable FCSys.Subregions.Species.H2O.gas.Fixed H2O(final k=k, final
           inclLin=inclLin) if inclH2O constrainedby
-        'e-'.FCSys.Subregions.Species.BaseClasses.PartialSpecies
-        "<html>H<sub>2</sub>O model</html>" annotation (
+        FCSys.Subregions.Species.Species "<html>H<sub>2</sub>O model</html>"
+        annotation (
         __Dymola_choicesFromPackage=true,
         Dialog(
           group="Species",
@@ -1954,8 +1815,8 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           __Dymola_joinNext=true));
       replaceable FCSys.Subregions.Species.'H+'.solid.Fixed 'H+'(final k=k,
           final inclLin=inclLin) if 'inclH+' constrainedby
-        'e-'.FCSys.Subregions.Species.BaseClasses.PartialSpecies
-        "<html>H<sup>+</sup> model</html>" annotation (
+        FCSys.Subregions.Species.Species "<html>H<sup>+</sup> model</html>"
+        annotation (
         __Dymola_choicesFromPackage=true,
         Dialog(
           group="Species",
@@ -1974,8 +1835,8 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           __Dymola_joinNext=true));
       replaceable FCSys.Subregions.Species.N2.gas.Fixed N2(final k=k, final
           inclLin=inclLin) if inclN2 constrainedby
-        'e-'.FCSys.Subregions.Species.BaseClasses.PartialSpecies
-        "<html>N<sub>2</sub> model</html>" annotation (
+        FCSys.Subregions.Species.Species "<html>N<sub>2</sub> model</html>"
+        annotation (
         __Dymola_choicesFromPackage=true,
         Dialog(
           group="Species",
@@ -1994,8 +1855,8 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           __Dymola_joinNext=true));
       replaceable FCSys.Subregions.Species.O2.gas.Fixed O2(final k=k, final
           inclLin=inclLin) if inclO2 constrainedby
-        'e-'.FCSys.Subregions.Species.BaseClasses.PartialSpecies
-        "<html>O<sub>2</sub> model</html>" annotation (
+        FCSys.Subregions.Species.Species "<html>O<sub>2</sub> model</html>"
+        annotation (
         __Dymola_choicesFromPackage=true,
         Dialog(
           group="Species",
@@ -2013,44 +1874,6 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
         inclH2O))
         annotation (Placement(transformation(extent={{-50,30},{-30,50}})));
 
-    protected
-      connector ChemicalBus
-        "Bus of FCSys.Connectors.Chemical connectors (for multiple species)"
-
-        import FCSys.Connectors.ChemicalOutput;
-        extends FCSys.Connectors.BaseClasses.PartialChemicalBus;
-
-        parameter Boolean inclC=false "true, if carbon is included";
-        parameter Boolean inclC19HF37O5S=false
-          "true, if Nafion sulfonate is included";
-        parameter Boolean 'incle-'=false "true, if electrons are included";
-        parameter Boolean inclH2=false "true, if hydrogen is included";
-        parameter Boolean inclH2O=false "true, if water is included";
-        parameter Boolean 'inclH+'=false "true, if protons are included";
-        parameter Boolean inclN2=false "true, if nitrogen is included";
-        parameter Boolean inclO2=true "true, if oxygen is included";
-
-        ChemicalOutput C(final n_lin=n_lin) if inclC "Subconnector for carbon";
-        ChemicalOutput C19HF37O5S(final n_lin=n_lin) if inclC19HF37O5S
-          "Subconnector for Nafion sulfonate";
-        ChemicalOutput 'e-'(final n_lin=n_lin) if 'incle-'
-          "Subconnector for electrons";
-        ChemicalOutput H2(final n_lin=n_lin) if inclH2
-          "Subconnector for hydrogen";
-        ChemicalOutput H2O(final n_lin=n_lin) if inclH2O
-          "Subconnector for water";
-        ChemicalOutput 'H+'(final n_lin=n_lin) if 'inclH+'
-          "Subconnector for protons";
-        ChemicalOutput N2(final n_lin=n_lin) if inclN2
-          "Subconnector for nitrogen";
-        ChemicalOutput O2(final n_lin=n_lin) if inclO2
-          "Subconnector for oxygen";
-
-        annotation (Icon(graphics={Ellipse(
-                      extent={{-100,100},{100,-100}},
-                      lineColor={208,104,0},
-                      lineThickness=0.5)}));
-      end ChemicalBus;
     equation
       // Chemical interactions
       connect('2e-+2H+=H2'.chemical[1], chemical.'e-') annotation (Line(
@@ -3278,16 +3101,13 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
 
         Diagram(graphics),
         Icon(graphics));
+
     end Phase;
 
     model Gas "Phase to represent gas"
 
       extends BaseClasses.NullPhase(final hasSpecies=inclH2 or inclH2O or
-            inclN2 or inclO2, redeclare ChemicalBus chemical(
-          final inclH2=inclH2,
-          final inclH2O=inclH2O,
-          final inclN2=inclN2,
-          final inclO2=inclO2));
+            inclN2 or inclO2);
 
       parameter Boolean inclReact=true "Include reaction(s), as appropriate"
         annotation (
@@ -3307,9 +3127,8 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           __Dymola_descriptionLabel=true,
           __Dymola_joinNext=true));
       replaceable FCSys.Subregions.Species.H2.gas.Fixed H2 if inclH2
-        constrainedby 'e-'.FCSys.Subregions.Species.BaseClasses.PartialSpecies(
-          final k=k, final inclLin=inclLin) "<html>H<sub>2</sub> model</html>"
-        annotation (
+        constrainedby FCSys.Subregions.Species.Species(final k=k, final inclLin
+          =inclLin) "<html>H<sub>2</sub> model</html>" annotation (
         __Dymola_choicesFromPackage=true,
         Dialog(
           group="Species",
@@ -3327,9 +3146,8 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           __Dymola_descriptionLabel=true,
           __Dymola_joinNext=true));
       replaceable FCSys.Subregions.Species.H2O.gas.Fixed H2O if inclH2O
-        constrainedby 'e-'.FCSys.Subregions.Species.BaseClasses.PartialSpecies(
-          final k=k, final inclLin=inclLin) "<html>H<sub>2</sub>O model</html>"
-        annotation (
+        constrainedby FCSys.Subregions.Species.Species(final k=k, final inclLin
+          =inclLin) "<html>H<sub>2</sub>O model</html>" annotation (
         __Dymola_choicesFromPackage=true,
         Dialog(
           group="Species",
@@ -3347,9 +3165,8 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           __Dymola_descriptionLabel=true,
           __Dymola_joinNext=true));
       replaceable FCSys.Subregions.Species.N2.gas.Fixed N2 if inclN2
-        constrainedby 'e-'.FCSys.Subregions.Species.BaseClasses.PartialSpecies(
-          final k=k, final inclLin=inclLin) "<html>N<sub>2</sub> model</html>"
-        annotation (
+        constrainedby FCSys.Subregions.Species.Species(final k=k, final inclLin
+          =inclLin) "<html>N<sub>2</sub> model</html>" annotation (
         __Dymola_choicesFromPackage=true,
         Dialog(
           group="Species",
@@ -3367,9 +3184,8 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           __Dymola_descriptionLabel=true,
           __Dymola_joinNext=true));
       replaceable FCSys.Subregions.Species.O2.gas.Fixed O2 if inclO2
-        constrainedby 'e-'.FCSys.Subregions.Species.BaseClasses.PartialSpecies(
-          final k=k, final inclLin=inclLin) "<html>O<sub>2</sub> model</html>"
-        annotation (
+        constrainedby FCSys.Subregions.Species.Species(final k=k, final inclLin
+          =inclLin) "<html>O<sub>2</sub> model</html>" annotation (
         __Dymola_choicesFromPackage=true,
         Dialog(
           group="Species",
@@ -3380,30 +3196,6 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
       Reaction '2H2+O2=2H2O'(final n_lin=n_lin, n_spec=3) if inclReact and (
         inclH2 and inclH2O and inclO2)
         annotation (Placement(transformation(extent={{-50,30},{-30,50}})));
-
-    protected
-      connector ChemicalBus
-        "Bus of FCSys.Connectors.Chemical connectors (for multiple species)"
-
-        import FCSys.Connectors.ChemicalOutput;
-        extends FCSys.Connectors.BaseClasses.PartialChemicalBus;
-
-        parameter Boolean inclH2=false "true, if hydrogen is included";
-        parameter Boolean inclH2O=false "true, if water is included";
-        parameter Boolean inclN2=false "true, if nitrogen is included";
-        parameter Boolean inclO2=false "true, if oxygen is included";
-
-        ChemicalOutput H2(final n_lin=n_lin) if inclH2
-          "Subconnector for hydrogen";
-        ChemicalOutput H2O(final n_lin=n_lin) if inclH2O
-          "Subconnector for water";
-        ChemicalOutput N2(final n_lin=n_lin) if inclN2
-          "Subconnector for nitrogen";
-        ChemicalOutput O2(final n_lin=n_lin) if inclO2
-          "Subconnector for oxygen";
-
-        annotation (Icon(graphics));
-      end ChemicalBus;
 
     equation
       // Chemical interactions
@@ -3998,12 +3790,11 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
  <a href=\"modelica://FCSys.Subregions.Phases.BaseClasses.NullPhase\">NullPhase</a> model.</p></html>"),
 
         Diagram(graphics));
+
     end Gas;
 
     model Graphite "Phase to represent graphite"
-      extends BaseClasses.NullPhase(final hasSpecies=inclC or 'incle-',
-          redeclare ChemicalBus chemical(final inclC=inclC, final 'incle-'=
-              'incle-'));
+      extends BaseClasses.NullPhase(final hasSpecies=inclC or 'incle-');
 
       // Conditionally include species.
       parameter Boolean inclC=false "Carbon (C)" annotation (
@@ -4015,8 +3806,8 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           __Dymola_descriptionLabel=true,
           __Dymola_joinNext=true));
       replaceable FCSys.Subregions.Species.C.graphite.Fixed C if inclC
-        constrainedby 'e-'.FCSys.Subregions.Species.BaseClasses.PartialSpecies(
-          final k=k, final inclLin=inclLin) "C model" annotation (
+        constrainedby FCSys.Subregions.Species.Species(final k=k, final inclLin
+          =inclLin) "C model" annotation (
         __Dymola_choicesFromPackage=true,
         Dialog(
           group="Species",
@@ -4034,32 +3825,14 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           __Dymola_descriptionLabel=true,
           __Dymola_joinNext=true));
       replaceable FCSys.Subregions.Species.'e-'.graphite.Fixed 'e-' if 'incle-'
-        constrainedby 'e-'.FCSys.Subregions.Species.BaseClasses.PartialSpecies(
-          final k=k, final inclLin=inclLin) "<html>e<sup>-</sup> model</html>"
-        annotation (
+        constrainedby FCSys.Subregions.Species.Species(final k=k, final inclLin
+          =inclLin) "<html>e<sup>-</sup> model</html>" annotation (
         __Dymola_choicesFromPackage=true,
         Dialog(
           group="Species",
           __Dymola_descriptionLabel=true,
           enable='incle-'),
         Placement(transformation(extent={{-10,-10},{10,10}})));
-
-    protected
-      connector ChemicalBus
-        "Bus of FCSys.Connectors.Chemical connectors (for multiple species)"
-
-        import FCSys.Connectors.ChemicalOutput;
-        extends FCSys.Connectors.BaseClasses.PartialChemicalBus;
-
-        parameter Boolean inclC=false "true, if carbon is included";
-        parameter Boolean 'incle-'=false "true, if electrons are included";
-
-        ChemicalOutput C(final n_lin=n_lin) if inclC "Subconnector for carbon";
-        ChemicalOutput 'e-'(final n_lin=n_lin) if 'incle-'
-          "Subconnector for electrons";
-
-        annotation (Icon(graphics));
-      end ChemicalBus;
 
     equation
       // C
@@ -4363,10 +4136,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
 
     model Ionomer "Phase to represent ionomer"
       extends BaseClasses.NullPhase(final hasSpecies=inclC19HF37O5S or inclH2O
-             or 'inclH+', redeclare ChemicalBus chemical(
-          final inclC19HF37O5S=inclC19HF37O5S,
-          final inclH2O=inclH2O,
-          final 'inclH+'='inclH+'));
+             or 'inclH+');
 
       // Conditionally include species.
       parameter Boolean inclC19HF37O5S=false
@@ -4380,9 +4150,8 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           __Dymola_descriptionLabel=true,
           __Dymola_joinNext=true));
       replaceable FCSys.Subregions.Species.C19HF37O5S.solid.Fixed C19HF37O5S
-        if inclC19HF37O5S constrainedby
-        'e-'.FCSys.Subregions.Species.BaseClasses.PartialSpecies(final k=k,
-          final inclLin=inclLin)
+        if inclC19HF37O5S constrainedby FCSys.Subregions.Species.Species(final
+          k=k, final inclLin=inclLin)
         "<html>C<sub>19</sub>HF<sub>37</sub>O<sub>5</sub>S model</html>"
         annotation (
         __Dymola_choicesFromPackage=true,
@@ -4402,9 +4171,8 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           __Dymola_descriptionLabel=true,
           __Dymola_joinNext=true));
       replaceable FCSys.Subregions.Species.H2O.gas.Fixed H2O if inclH2O
-        constrainedby 'e-'.FCSys.Subregions.Species.BaseClasses.PartialSpecies(
-          final k=k, final inclLin=inclLin) "<html>H<sub>2</sub>O model</html>"
-        annotation (
+        constrainedby FCSys.Subregions.Species.Species(final k=k, final inclLin
+          =inclLin) "<html>H<sub>2</sub>O model</html>" annotation (
         __Dymola_choicesFromPackage=true,
         Dialog(
           group="Species",
@@ -4422,37 +4190,14 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           __Dymola_descriptionLabel=true,
           __Dymola_joinNext=true));
       replaceable FCSys.Subregions.Species.'H+'.solid.Fixed 'H+' if 'inclH+'
-        constrainedby 'e-'.FCSys.Subregions.Species.BaseClasses.PartialSpecies(
-          final k=k, final inclLin=inclLin) "<html>H<sup>+</sup> model</html>"
-        annotation (
+        constrainedby FCSys.Subregions.Species.Species(final k=k, final inclLin
+          =inclLin) "<html>H<sup>+</sup> model</html>" annotation (
         __Dymola_choicesFromPackage=true,
         Dialog(
           group="Species",
           __Dymola_descriptionLabel=true,
           enable='inclH+'),
         Placement(transformation(extent={{-10,-10},{10,10}})));
-
-    protected
-      connector ChemicalBus
-        "Bus of FCSys.Connectors.Chemical connectors (for multiple species)"
-
-        import FCSys.Connectors.ChemicalOutput;
-        extends FCSys.Connectors.BaseClasses.PartialChemicalBus;
-
-        parameter Boolean inclC19HF37O5S=false
-          "true, if Nafion sulfonate is included";
-        parameter Boolean inclH2O=false "true, if water is included";
-        parameter Boolean 'inclH+'=false "true, if protons are included";
-
-        ChemicalOutput C19HF37O5S(final n_lin=n_lin) if inclC19HF37O5S
-          "Subconnector for Nafion sulfonate";
-        ChemicalOutput H2O(final n_lin=n_lin) if inclH2O
-          "Subconnector for water";
-        ChemicalOutput 'H+'(final n_lin=n_lin) if 'inclH+'
-          "Subconnector for protons";
-
-        annotation (Icon(graphics));
-      end ChemicalBus;
 
     equation
       // C19HF37O5S
@@ -4934,12 +4679,12 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
  <a href=\"modelica://FCSys.Subregions.Phases.BaseClasses.NullPhase\">NullPhase</a> model.</p></html>"),
 
         Diagram(graphics));
+
     end Ionomer;
 
     model Liquid "Phase to represent liquid"
 
-      extends BaseClasses.NullPhase(final hasSpecies=inclH2O, redeclare
-          ChemicalBus chemical(final inclH2O=inclH2O));
+      extends BaseClasses.NullPhase(final hasSpecies=inclH2O);
 
       // Conditionally include species.
       parameter Boolean inclH2O=false "<html>Water (H<sub>2</sub>O)</html>"
@@ -4952,9 +4697,8 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
           __Dymola_descriptionLabel=true,
           __Dymola_joinNext=true));
       replaceable FCSys.Subregions.Species.H2O.gas.Fixed H2O if inclH2O
-        constrainedby 'e-'.FCSys.Subregions.Species.BaseClasses.PartialSpecies(
-          final k=k, final inclLin=inclLin) "<html>H<sub>2</sub>O model</html>"
-        annotation (
+        constrainedby FCSys.Subregions.Species.Species(final k=k, final inclLin
+          =inclLin) "<html>H<sub>2</sub>O model</html>" annotation (
         __Dymola_choicesFromPackage=true,
         Dialog(
           group="Species",
@@ -4963,23 +4707,6 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
         Placement(transformation(extent={{-10,-10},{10,10}})));
 
       // TODO: Add and use a model for H2O liquid.
-    protected
-      connector ChemicalBus
-        "Bus of FCSys.Connectors.Chemical connectors (for multiple species)"
-
-        import FCSys.Connectors.ChemicalOutput;
-        extends FCSys.Connectors.BaseClasses.PartialChemicalBus;
-
-        parameter Boolean inclH2O=false "true, if water is included";
-
-        ChemicalOutput H2O(final n_lin=n_lin) if inclH2O
-          "Subconnector for water";
-
-        annotation (Icon(graphics={Ellipse(
-                      extent={{-100,100},{100,-100}},
-                      lineColor={208,104,0},
-                      lineThickness=0.5)}));
-      end ChemicalBus;
     equation
       // H2O
       // Exchange
@@ -5139,6 +4866,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
 
         Diagram(graphics),
         Icon(graphics));
+
     end Liquid;
 
     package BaseClasses "Base classes (not for direct use)"
@@ -5198,12 +4926,12 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
         // (without any species included) are connected within a subregion, there
         // would be a mathematical singularity.
 
-        replaceable Connectors.BaseClasses.PartialChemicalBus chemical(final
-            n_lin=n_lin) annotation (Placement(transformation(extent={{-30,10},
-                  {-10,30}}), iconTransformation(extent={{-60,40},{-40,60}})));
+        FCSys.Connectors.ChemicalBus chemical annotation (Placement(
+              transformation(extent={{-30,10},{-10,30}}), iconTransformation(
+                extent={{-60,40},{-40,60}})));
 
       protected
-        parameter Boolean hasSpecies "true, if the phase contains any species";
+        parameter Boolean hasSpecies "true, if any species are included";
 
       equation
         // Inert interactions
@@ -5222,51 +4950,60 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
 <p>Notes:<ul>
   <li>The x-axis component of linear momentum is included by default.  At least one component must be included.</li></ul></html>"),
 
-          Icon(graphics={Ellipse(
-                      extent={{-40,100},{40,20}},
-                      lineColor={127,127,127},
-                      startAngle=30,
-                      endAngle=149,
-                      pattern=LinePattern.Dash,
-                      fillPattern=FillPattern.Solid,
-                      fillColor={225,225,225}),Ellipse(
-                      extent={{20,-4},{100,-84}},
-                      lineColor={127,127,127},
-                      startAngle=270,
-                      endAngle=390,
-                      pattern=LinePattern.Dash,
-                      fillPattern=FillPattern.Solid,
-                      fillColor={225,225,225}),Ellipse(
-                      extent={{-100,-4},{-20,-84}},
-                      lineColor={127,127,127},
-                      startAngle=149,
-                      endAngle=270,
-                      pattern=LinePattern.Dash,
-                      fillPattern=FillPattern.Solid,
-                      fillColor={225,225,225}),Polygon(
-                      points={{60,-84},{-60,-84},{-94.5,-24},{-34.5,80},{34.5,
-                  80},{94.5,-24},{60,-84}},
-                      pattern=LinePattern.None,
-                      fillPattern=FillPattern.Sphere,
-                      smooth=Smooth.None,
-                      fillColor={225,225,225},
-                      lineColor={0,0,0}),Line(
-                      points={{-60,-84},{60,-84}},
-                      color={127,127,127},
-                      pattern=LinePattern.Dash,
-                      smooth=Smooth.None),Line(
-                      points={{34.5,80},{94.5,-24}},
-                      color={127,127,127},
-                      pattern=LinePattern.Dash,
-                      smooth=Smooth.None),Line(
-                      points={{-34.5,80},{-94.5,-24}},
-                      color={127,127,127},
-                      pattern=LinePattern.Dash,
-                      smooth=Smooth.None),Text(
-                      extent={{-100,-20},{100,20}},
-                      textString="%name",
-                      lineColor={0,0,0})}),
+          Icon(graphics={
+              Ellipse(
+                extent={{-40,100},{40,20}},
+                lineColor={127,127,127},
+                startAngle=30,
+                endAngle=149,
+                pattern=LinePattern.Dash,
+                fillPattern=FillPattern.Solid,
+                fillColor={225,225,225}),
+              Ellipse(
+                extent={{20,-4},{100,-84}},
+                lineColor={127,127,127},
+                startAngle=270,
+                endAngle=390,
+                pattern=LinePattern.Dash,
+                fillPattern=FillPattern.Solid,
+                fillColor={225,225,225}),
+              Ellipse(
+                extent={{-100,-4},{-20,-84}},
+                lineColor={127,127,127},
+                startAngle=149,
+                endAngle=270,
+                pattern=LinePattern.Dash,
+                fillPattern=FillPattern.Solid,
+                fillColor={225,225,225}),
+              Polygon(
+                points={{60,-84},{-60,-84},{-94.5,-24},{-34.5,80},{34.5,80},{
+                    94.5,-24},{60,-84}},
+                pattern=LinePattern.None,
+                fillPattern=FillPattern.Sphere,
+                smooth=Smooth.None,
+                fillColor={225,225,225},
+                lineColor={0,0,0}),
+              Line(
+                points={{-60,-84},{60,-84}},
+                color={127,127,127},
+                pattern=LinePattern.Dash,
+                smooth=Smooth.None),
+              Line(
+                points={{34.5,80},{94.5,-24}},
+                color={127,127,127},
+                pattern=LinePattern.Dash,
+                smooth=Smooth.None),
+              Line(
+                points={{-34.5,80},{-94.5,-24}},
+                color={127,127,127},
+                pattern=LinePattern.Dash,
+                smooth=Smooth.None),
+              Text(
+                extent={{-100,-20},{100,20}},
+                textString="%name",
+                lineColor={0,0,0})}),
           Diagram(graphics));
+
       end NullPhase;
     end BaseClasses;
   end Phases;
@@ -5279,15 +5016,14 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
       package graphite "C graphite"
         extends Modelica.Icons.Package;
         model Calibrated "Ideal correlations, with adjustment factors"
-          extends
-            FCSys.Subregions.Species.BaseClasses.PartialSpeciesInertStagnant(
+          extends SpeciesInertStagnant(
             redeclare FCSys.Characteristics.C.graphite Data,
             redeclare Q.Resistivity alpha_Phi,
             redeclare Q.Resistivity alpha_S,
             redeclare Q.Resistivity beta_S,
             redeclare final parameter Q.Permittivity epsilon=0,
             final Deltamu_IC=0);
-          // Note:  Permittivity and double layer electrochemical potential do not
+          // Note:  Permittivity and double layer electrochemical potential don't
           // apply since the species is electrically neutral.
 
           parameter Q.NumberAbsolute k_alpha_Phi(final nominal=1) = 1
@@ -5319,15 +5055,14 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
         end Calibrated;
 
         model Correlated "Ideal correlations from kinetic theory"
-          extends
-            FCSys.Subregions.Species.BaseClasses.PartialSpeciesInertStagnant(
+          extends SpeciesInertStagnant(
             redeclare FCSys.Characteristics.C.graphite Data,
             redeclare Q.Resistivity alpha_Phi,
             redeclare Q.Resistivity alpha_S,
             redeclare Q.Resistivity beta_S,
             redeclare final parameter Q.Permittivity epsilon=0,
             final Deltamu_IC=0);
-          // Note:  Permittivity and double layer electrochemical potential do not
+          // Note:  Permittivity and double layer electrochemical potential don't
           // apply since the species is electrically neutral.
 
         equation
@@ -5345,8 +5080,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
         end Correlated;
 
         model Fixed "Fixed properties"
-          extends
-            FCSys.Subregions.Species.BaseClasses.PartialSpeciesInertStagnant(
+          extends SpeciesInertStagnant(
             redeclare FCSys.Characteristics.C.graphite Data(
               Deltah0_f=0,
               Deltah0=0,
@@ -5362,7 +5096,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
             final Deltamu_IC=0);
 
           // See the documentation for a table of values.
-          // Note:  Permittivity and double layer electrochemical potential do not
+          // Note:  Permittivity and double layer electrochemical potential don't
           // apply since the species is electrically neutral.
           // Note:  Parameter expressions (e.g., involving defaults.T) are not used
           // here since they would render the parameters unadjustable in Dymola 7.4.
@@ -5429,15 +5163,14 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
         "<html>C<sub>19</sub>HF<sub>37</sub>O<sub>5</sub>S solid</html>"
         extends Modelica.Icons.Package;
         model Calibrated "Ideal correlations, with adjustment factors"
-          extends
-            FCSys.Subregions.Species.BaseClasses.PartialSpeciesInertStagnant(
+          extends SpeciesInertStagnant(
             redeclare FCSys.Characteristics.C19HF37O5S.solid Data,
             redeclare Q.Resistivity alpha_Phi,
             redeclare Q.Resistivity alpha_S,
             redeclare Q.Resistivity beta_S,
             redeclare final parameter Q.Permittivity epsilon=0,
             final Deltamu_IC=0);
-          // Note:  Permittivity and double layer electrochemical potential do not
+          // Note:  Permittivity and double layer electrochemical potential don't
           // apply since the species is electrically neutral.
 
           parameter Q.NumberAbsolute k_alpha_Phi(final nominal=1) = 1
@@ -5464,15 +5197,14 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
         end Calibrated;
 
         model Correlated "Ideal correlations from kinetic theory"
-          extends
-            FCSys.Subregions.Species.BaseClasses.PartialSpeciesInertStagnant(
+          extends SpeciesInertStagnant(
             redeclare FCSys.Characteristics.C19HF37O5S.solid Data,
             redeclare Q.Resistivity alpha_Phi,
             redeclare Q.Resistivity alpha_S,
             redeclare Q.Resistivity beta_S,
             redeclare final parameter Q.Permittivity epsilon=0,
             final Deltamu_IC=0);
-          // Note:  Permittivity and double layer electrochemical potential do not
+          // Note:  Permittivity and double layer electrochemical potential don't
           // apply since the species is electrically neutral.
 
         equation
@@ -5487,15 +5219,14 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
         end Correlated;
 
         model Fixed "Fixed properties"
-          extends
-            FCSys.Subregions.Species.BaseClasses.PartialSpeciesInertStagnant(
+          extends SpeciesInertStagnant(
             redeclare FCSys.Characteristics.C19HF37O5S.solid Data,
             redeclare parameter Q.Resistivity alpha_Phi=Data.beta(),
             redeclare parameter Q.Resistivity alpha_S=Data.beta(),
             redeclare parameter Q.Resistivity beta_S=U.m*U.K/(0.16*U.W),
             redeclare final parameter Q.Permittivity epsilon=0,
             final Deltamu_IC=0);
-          // Note:  Permittivity and double layer electrochemical potential do not
+          // Note:  Permittivity and double layer electrochemical potential don't
           // apply since the species is electrically neutral.
 
           annotation (
@@ -5521,7 +5252,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
       package graphite "<html>e<sup>-</sup> in graphite</html>"
         extends Modelica.Icons.Package;
         model Calibrated "Ideal correlations, with adjustment factors"
-          extends FCSys.Subregions.Species.BaseClasses.PartialSpecies(
+          extends Species(
             redeclare FCSys.Characteristics.'e-'.graphite Data,
             redeclare Q.Resistivity alpha_N,
             redeclare Q.Resistivity alpha_Phi,
@@ -5568,7 +5299,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
         end Calibrated;
 
         model Correlated "Ideal correlations from kinetic theory"
-          extends FCSys.Subregions.Species.BaseClasses.PartialSpecies(
+          extends Species(
             redeclare FCSys.Characteristics.'e-'.graphite Data,
             redeclare Q.Resistivity alpha_N,
             redeclare Q.Resistivity alpha_Phi,
@@ -5595,7 +5326,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
         end Correlated;
 
         model Fixed "Fixed properties"
-          extends FCSys.Subregions.Species.BaseClasses.PartialSpecies(
+          extends Species(
             redeclare FCSys.Characteristics.'e-'.graphite Data,
             redeclare parameter Q.Resistivity alpha_N=1e4*Data.beta(),
             redeclare parameter Q.Resistivity alpha_Phi=Data.beta(),
@@ -5603,10 +5334,10 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
             redeclare parameter Q.Resistivity beta_N=Data.beta(),
             redeclare parameter Q.Resistivity beta_Phi=Data.beta(),
             redeclare parameter Q.Resistivity beta_S=Data.beta(),
-            redeclare parameter Q.Permittivity epsilon=1e9*U.epsilon_0,
+            redeclare parameter Q.Permittivity epsilon=1e4*U.epsilon_0,
             partNumInitMeth=InitMethScalar.PotentialElectrochemical,
             Deltamu(fixed=true));
-          // **temp high epsilon
+
           annotation (
             group="Material properties",
             defaultComponentPrefixes="replaceable",
@@ -5633,7 +5364,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
         extends Modelica.Icons.Package;
         model Calibrated
           "Ideal or empirical correlations, w/ adjustment factors"
-          extends FCSys.Subregions.Species.BaseClasses.PartialSpeciesNeutral(
+          extends SpeciesNeutral(
             redeclare FCSys.Characteristics.H2.gas Data(b_v=[1], specVolPow={-1,
                   0}),
             redeclare Q.Resistivity alpha_N,
@@ -5699,7 +5430,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
         end Calibrated;
 
         model Correlated "Ideal (kinetic) or empirical correlations"
-          extends FCSys.Subregions.Species.BaseClasses.PartialSpeciesNeutral(
+          extends SpeciesNeutral(
             redeclare FCSys.Characteristics.H2.gas Data(b_v=[1], specVolPow={-1,
                   0}),
             redeclare Q.Resistivity alpha_N,
@@ -5746,7 +5477,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
         end Correlated;
 
         model Fixed "Fixed properties"
-          extends FCSys.Subregions.Species.BaseClasses.PartialSpeciesNeutral(
+          extends SpeciesNeutral(
             redeclare FCSys.Characteristics.H2.gas Data(b_v=[1], specVolPow={-1,
                   0}),
             redeclare parameter Q.Resistivity alpha_N=1e4*Data.beta(),
@@ -5833,7 +5564,7 @@ and <code>beta_S=U.m*U.K/(183e-3*U.W)</code>) are based on data of H<sub>2</sub>
         extends Modelica.Icons.Package;
         model Calibrated
           "Ideal or empirical correlations, w/ adjustment factors"
-          extends FCSys.Subregions.Species.BaseClasses.PartialSpeciesNeutral(
+          extends SpeciesNeutral(
             redeclare FCSys.Characteristics.H2O.gas Data(b_v=[1], specVolPow={-1,
                   0}),
             redeclare Q.Resistivity alpha_N,
@@ -5899,7 +5630,7 @@ and <code>beta_S=U.m*U.K/(183e-3*U.W)</code>) are based on data of H<sub>2</sub>
         end Calibrated;
 
         model Correlated "Ideal (kinetic) or empirical correlations"
-          extends FCSys.Subregions.Species.BaseClasses.PartialSpeciesNeutral(
+          extends SpeciesNeutral(
             redeclare FCSys.Characteristics.H2O.gas Data(b_v=[1], specVolPow={-1,
                   0}),
             redeclare Q.Resistivity alpha_N,
@@ -5946,7 +5677,7 @@ and <code>beta_S=U.m*U.K/(183e-3*U.W)</code>) are based on data of H<sub>2</sub>
         end Correlated;
 
         model Fixed "Fixed properties"
-          extends FCSys.Subregions.Species.BaseClasses.PartialSpeciesNeutral(
+          extends SpeciesNeutral(
             redeclare FCSys.Characteristics.H2O.gas Data(b_v=[1], specVolPow={-1,
                   0}),
             redeclare parameter Q.Resistivity alpha_N=1e10*Data.beta(),
@@ -6092,7 +5823,7 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
       package solid "<html>H<sup>+</sup> in solid</html>"
         extends Modelica.Icons.Package;
         model Calibrated "Ideal correlations, with adjustment factors"
-          extends FCSys.Subregions.Species.BaseClasses.PartialSpecies(
+          extends Species(
             redeclare FCSys.Characteristics.'H+'.solid Data,
             redeclare Q.Resistivity alpha_N,
             redeclare Q.Resistivity alpha_Phi,
@@ -6137,7 +5868,7 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
         end Calibrated;
 
         model Correlated "Ideal correlations from kinetic theory"
-          extends FCSys.Subregions.Species.BaseClasses.PartialSpecies(
+          extends Species(
             redeclare FCSys.Characteristics.'H+'.solid Data,
             redeclare Q.Resistivity alpha_N,
             redeclare Q.Resistivity alpha_Phi,
@@ -6164,7 +5895,7 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
         end Correlated;
 
         model Fixed "Fixed properties"
-          extends FCSys.Subregions.Species.BaseClasses.PartialSpecies(
+          extends Species(
             redeclare FCSys.Characteristics.'H+'.solid Data,
             redeclare parameter Q.Resistivity alpha_N=1e4*Data.beta(),
             redeclare parameter Q.Resistivity alpha_Phi=Data.beta(),
@@ -6173,11 +5904,10 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
             redeclare parameter Q.Resistivity beta_Phi=Data.m/(5.3e-6*U.Pa*U.s),
 
             redeclare parameter Q.Resistivity beta_S=U.m*U.K/(0.1661*U.W),
-            redeclare parameter Q.Permittivity epsilon=1e10*U.epsilon_0,
+            redeclare parameter Q.Permittivity epsilon=1e4*U.epsilon_0,
             partNumInitMeth=InitMethScalar.PotentialElectrochemical,
             Deltamu(fixed=true));
 
-          // **temp high epsilon
           // See the documentation for a table of values.
 
           annotation (
@@ -6194,7 +5924,6 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
           The default <code>alpha_N</code> is greater (higher resistance) for H<sub>2</sub>O
           and O<sub>2</sub> to slow the ORR.</li>
           </ul></p>
-
 
   <p>The default transport resistivities (<code>beta_Phi=Data.m/(5.3e-6*U.Pa*U.s)</code> and <code>beta_S=U.m*U.K/(0.1661*U.W)</code>) are of H gas
   (rather than H<sup>+</sup>) at 300 K from [<a href=\"modelica://FCSys.UsersGuide.References\">Schetz1996</a>, p. 139].
@@ -6269,7 +5998,7 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
         extends Modelica.Icons.Package;
         model Calibrated
           "Ideal or empirical correlations, w/ adjustment factors"
-          extends FCSys.Subregions.Species.BaseClasses.PartialSpeciesNeutral(
+          extends SpeciesNeutral(
             redeclare FCSys.Characteristics.N2.gas Data(b_v=[1], specVolPow={-1,
                   0}),
             redeclare Q.Resistivity alpha_N,
@@ -6335,7 +6064,7 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
         end Calibrated;
 
         model Correlated "Ideal (kinetic) or empirical correlations"
-          extends FCSys.Subregions.Species.BaseClasses.PartialSpeciesNeutral(
+          extends SpeciesNeutral(
             redeclare FCSys.Characteristics.N2.gas Data(b_v=[1], specVolPow={-1,
                   0}),
             redeclare Q.Resistivity alpha_N,
@@ -6382,7 +6111,7 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
         end Correlated;
 
         model Fixed "Fixed properties"
-          extends FCSys.Subregions.Species.BaseClasses.PartialSpeciesNeutral(
+          extends SpeciesNeutral(
             redeclare FCSys.Characteristics.N2.gas Data(
               b_v=[1],
               specVolPow={-1,0},
@@ -6456,7 +6185,7 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
         extends Modelica.Icons.Package;
         model Calibrated
           "Ideal or empirical correlations, w/ adjustment factors"
-          extends FCSys.Subregions.Species.BaseClasses.PartialSpeciesNeutral(
+          extends SpeciesNeutral(
             redeclare FCSys.Characteristics.O2.gas Data(b_v=[1], specVolPow={-1,
                   0}),
             redeclare Q.Resistivity alpha_N,
@@ -6522,7 +6251,7 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
         end Calibrated;
 
         model Correlated "Ideal (kinetic) or empirical correlations"
-          extends FCSys.Subregions.Species.BaseClasses.PartialSpeciesNeutral(
+          extends SpeciesNeutral(
             redeclare FCSys.Characteristics.O2.gas Data(b_v=[1], specVolPow={-1,
                   0}),
             redeclare Q.Resistivity alpha_N,
@@ -6569,7 +6298,7 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
         end Correlated;
 
         model Fixed "Fixed properties"
-          extends FCSys.Subregions.Species.BaseClasses.PartialSpeciesNeutral(
+          extends SpeciesNeutral(
             redeclare FCSys.Characteristics.O2.gas Data(b_v=[1], specVolPow={-1,
                   0}),
             redeclare parameter Q.Resistivity alpha_N=1e10*Data.beta(),
@@ -6638,671 +6367,666 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
       end gas;
     end O2;
 
-    package BaseClasses "Base classes (not for direct use)"
+    model SpeciesInertStagnant "Inert and stagnant species model"
+      extends Species(
+        Data(final p_min=0),
+        redeclare final constant Q.Resistivity alpha_N=Modelica.Constants.inf,
+        redeclare final constant Q.Resistivity beta_N=Data.beta(),
+        redeclare final constant Q.Resistivity beta_Phi=Data.beta(),
+        negativeX(
+          matEntOpt=MaterialEntropyOpt.ClosedDiabatic,
+          final viscousY=false,
+          final viscousZ=false),
+        positiveX(
+          matEntOpt=MaterialEntropyOpt.ClosedDiabatic,
+          final viscousY=false,
+          final viscousZ=false),
+        negativeY(final viscousZ=false,final viscousX=false),
+        positiveY(final viscousZ=false,final viscousX=false),
+        negativeZ(final viscousX=false,final viscousY=false),
+        positiveZ(final viscousX=false,final viscousY=false),
+        final termDepleted=false,
+        final upstreamX=false,
+        final upstreamY=false,
+        final upstreamZ=false,
+        final setPartNum=true,
+        final setXVel=true,
+        final setYVel=true,
+        final setZVel=true,
+        partNumInitMeth=InitMethScalar.Volume,
+        final xInitMeth=InitMethLinear.Velocity,
+        final yInitMeth=InitMethLinear.Velocity,
+        final zInitMeth=InitMethLinear.Velocity,
+        final phi_IC=zeros(3),
+        final derphi_IC=zeros(3),
+        final I_IC=zeros(3),
+        final derI_IC=zeros(3));
 
-      extends Modelica.Icons.BasesPackage;
+      // Note:  beta_N and beta_Phi don't matter since material and linear
+      // momentum isn't transported.
 
-      partial model PartialSpeciesInertStagnant
-        "Partial inert and stagnant species model"
-        extends FCSys.Subregions.Species.BaseClasses.PartialSpecies(
-          Data(final p_min=0),
-          redeclare final constant Q.Resistivity alpha_N=Modelica.Constants.inf,
-
-          redeclare final constant Q.Resistivity beta_N=Data.beta(),
-          redeclare final constant Q.Resistivity beta_Phi=Data.beta(),
-          negativeX(
-            matEntOpt=MaterialEntropyOptions.ClosedDiabatic,
-            final viscousY=false,
-            final viscousZ=false),
-          positiveX(
-            matEntOpt=MaterialEntropyOptions.ClosedDiabatic,
-            final viscousY=false,
-            final viscousZ=false),
-          negativeY(final viscousZ=false, final viscousX=false),
-          positiveY(final viscousZ=false, final viscousX=false),
-          negativeZ(final viscousX=false, final viscousY=false),
-          positiveZ(final viscousX=false, final viscousY=false),
-          final termDepleted=false,
-          final upstreamX=false,
-          final upstreamY=false,
-          final upstreamZ=false,
-          final setPartNum=true,
-          final setXVel=true,
-          final setYVel=true,
-          final setZVel=true,
-          partNumInitMeth=InitMethScalar.Volume,
-          final xInitMeth=InitMethLinear.Velocity,
-          final yInitMeth=InitMethLinear.Velocity,
-          final zInitMeth=InitMethLinear.Velocity,
-          final phi_IC=zeros(3),
-          final derphi_IC=zeros(3),
-          final I_IC=zeros(3),
-          final derI_IC=zeros(3));
-
-        // Note:  beta_N and beta_Phi do not matter since material and linear
-        // momentum is not transported.
-
-        annotation (Documentation(info="<html><p>Assumptions:<ol>
+      annotation (Documentation(info="<html><p>Assumptions:<ol>
   <li>Zero velocity</li>
   <li>No material exchange or transport</li</ol>
   </p>
 
   <p>For more information, see the <a href=\"modelica://FCSys.Subregions.BaseClasses.PartialSpecies\">PartialSpecies</a> model.</p></html>"));
-      end PartialSpeciesInertStagnant;
+    end SpeciesInertStagnant;
 
-      model PartialSpeciesNeutral "Partial electrically neutral species model"
-        import FCSys;
-        extends FCSys.Subregions.Species.BaseClasses.PartialSpecies(final
-            Deltamu_IC=0, redeclare final parameter Q.Permittivity epsilon=0);
-        // Note:  These variables do not apply since the species is electrically
-        // neutral.
+    model SpeciesNeutral "Partial electrically neutral species model"
+      import FCSys;
+      extends Species(final Deltamu_IC=0, redeclare final parameter
+          Q.Permittivity epsilon=0);
+      // Note:  These variables don't apply since the species is electrically
+      // neutral.
 
-      initial equation
-        assert(Data.z == 0,
-          "The PartialSpeciesNeutral model is being used with a species that is not electrically neutral.");
+    initial equation
+      assert(Data.z == 0,
+        "The PartialSpeciesNeutral model is being used with a species that is not electrically neutral.");
+    end SpeciesNeutral;
 
-      end PartialSpeciesNeutral;
+    model Species
+      "Model for single-species exchange, transport, and storage of material, linear momentum, and entropy"
+      //extends FCSys.BaseClasses.Icons.Names.Middle;
 
-      partial model PartialSpecies
-        "Partial model for single-species exchange, transport, and storage of material, linear momentum, and entropy"
-        //extends FCSys.BaseClasses.Icons.Names.Middle;
+      // Geometric parameters
+      outer parameter Q.Length L[3](each final min=Modelica.Constants.small)
+        "Length" annotation (HideResult=true,missingInnerMessage=
+            "This model should be used within the Subregion model.");
+      outer parameter Q.Area A[3] "Cross-sectional area" annotation (HideResult
+          =true, missingInnerMessage=
+            "This model should be used within the Subregion model.");
+      parameter Q.NumberAbsolute k[3](
+        each min=Modelica.Constants.small,
+        each final nominal=1) = {1,1,1}
+        "<html>Anisotropic factor for transport (<b>k</b>)</html>"
+        annotation (HideResult=true, Dialog(group="Geometry"));
+      parameter Q.Length Lstar(
+        min=0,
+        nominal=10*U.m,
+        start=1e3*product(L)^(1/3))
+        "<html>Characteristic length for exchange (<i>L</i><sup>&#9733;</sup>)</html>"
+        annotation (Dialog(group="Geometry"));
 
-        // Geometric parameters
-        outer parameter Q.Length L[3](each final min=Modelica.Constants.small)
-          "Length" annotation (HideResult=true,missingInnerMessage=
-              "This model should be used within the Subregion model.");
-        outer parameter Q.Area A[3] "Cross-sectional area" annotation (
-            HideResult=true, missingInnerMessage=
-              "This model should be used within the Subregion model.");
-        parameter Q.NumberAbsolute k[3](
-          each min=Modelica.Constants.small,
-          each final nominal=1) = {1,1,1}
-          "<html>Anisotropic factor for transport (<b>k</b>)</html>"
-          annotation (HideResult=true, Dialog(group="Geometry"));
-        parameter Q.Length Lstar(
+      // Material properties
+      replaceable FCSys.Characteristics.BaseClasses.Characteristic Data
+        "Characteristic data of the species" annotation (
+        Dialog(group="Material properties"),
+        __Dymola_choicesAllMatching=true,
+        Placement(transformation(extent={{-60,40},{-40,60}}),
+            iconTransformation(extent={{-10,90},{10,110}})));
+
+      // General assumptions
+      parameter Boolean termDepleted=false
+        "Terminate when material is depleted" annotation (
+        Evaluate=true,
+        Dialog(tab="Assumptions", compact=true),
+        choices(__Dymola_checkBox=true));
+      parameter Boolean inclLin[3]={true,false,false}
+        "true, if each component of linear momentum is included"
+        annotation (Evaluate=true,Dialog(tab="Assumptions"));
+      final parameter Integer n_lin=countTrue(inclLin)
+        "Number of components of linear momentum"
+        annotation (Evaluate=true, HideResult=true);
+
+      // Assumptions about upstream discretization
+      parameter Boolean upstreamX=true "X" annotation (
+        Evaluate=true,
+        HideResult=true,
+        Dialog(
+          tab="Assumptions",
+          group="Axes with upstream discretization",
+          compact=true),
+        choices(__Dymola_checkBox=true));
+      parameter Boolean upstreamY=true "Y" annotation (
+        Evaluate=true,
+        HideResult=true,
+        Dialog(
+          tab="Assumptions",
+          group="Axes with upstream discretization",
+          compact=true),
+        choices(__Dymola_checkBox=true));
+      parameter Boolean upstreamZ=true "Z" annotation (
+        Evaluate=true,
+        HideResult=true,
+        Dialog(
+          tab="Assumptions",
+          group="Axes with upstream discretization",
+          compact=true),
+        choices(__Dymola_checkBox=true));
+
+      // Assumptions about dynamics
+      parameter Boolean setPartNum=false "Particle number" annotation (
+        Evaluate=true,
+        Dialog(
+          tab="Assumptions",
+          group="Prescribed states (via initialization parameters)",
+          compact=true),
+        choices(__Dymola_checkBox=true));
+      parameter Boolean setXVel=false "X-axis component of velocity"
+        annotation (
+        Evaluate=true,
+        Dialog(
+          tab="Assumptions",
+          group="Prescribed states (via initialization parameters)",
+          enable=inclLin[1],
+          compact=true),
+        choices(__Dymola_checkBox=true));
+      parameter Boolean setYVel=false "Y-axis component of velocity"
+        annotation (
+        Evaluate=true,
+        Dialog(
+          tab="Assumptions",
+          group="Prescribed states (via initialization parameters)",
+          enable=inclLin[2],
+          compact=true),
+        choices(__Dymola_checkBox=true));
+      parameter Boolean setZVel=false "Z-axis component of velocity"
+        annotation (
+        Evaluate=true,
+        Dialog(
+          tab="Assumptions",
+          group="Prescribed states (via initialization parameters)",
+          enable=inclLin[3],
+          compact=true),
+        choices(__Dymola_checkBox=true));
+      parameter Boolean setTemp=false "Temperature" annotation (
+        Evaluate=true,
+        Dialog(
+          tab="Assumptions",
+          group="Prescribed states (via initialization parameters)",
+          compact=true),
+        choices(__Dymola_checkBox=true));
+
+      // Initialization parameters for scalar properties
+      parameter FCSys.Subregions.BaseClasses.InitMethScalar partNumInitMeth=
+          InitMethScalar.Pressure "Method of initializing the particle number"
+        annotation (Evaluate=true, Dialog(tab="Initialization", group=
+              "Scalar properties"));
+      parameter FCSys.Subregions.BaseClasses.InitMethScalar tempInitMeth=
+          InitMethScalar.Temperature "Method of initializing the temperature"
+        annotation (Evaluate=true, Dialog(tab="Initialization", group=
+              "Scalar properties"));
+      parameter Q.ParticleNumber N_IC(start=V_IC/v_IC)
+        "<html>Initial particle number (<i>N</i><sub>IC</sub>)</html>"
+        annotation (Dialog(tab="Initialization",group="Scalar properties"));
+      // Note:  This parameter is left enabled even if it'sn't used to
+      // explicitly initialize any states, since it's used as a guess value.
+      // Similar notes apply to some other initial conditions below.
+      parameter Q.Current derN_IC=0
+        "<html>Initial rate of particle number ((&part;<i>N</i>/&part;<i>t</i>)<sub>IC</sub>)</html>"
+        annotation (Dialog(
+          tab="Initialization",
+          group="Scalar properties",
+          enable=partNumInitMeth == 3 or tempInitMeth == 3));
+      // Note:  Dymola 7.4 doesn't recognize enumerations in the dialog enable
+      // option, e.g.,
+      //     enable=partNumInitMeth == InitMethScalar.ParticleNumberRate.
+      // Therefore, the values of the enumerations are specified numerically for
+      // this initial condition and some others below.
+      parameter Q.Volume V_IC(start=product(L))
+        "<html>Initial volume (<i>V</i><sub>IC</sub>)</html>"
+        annotation (Dialog(tab="Initialization",group="Scalar properties"));
+      parameter Q.VolumeRate derV_IC=0
+        "<html>Initial rate of volume ((&part;<i>V</i>/&part;<i>t</i>)<sub>IC</sub>)</html>"
+        annotation (Dialog(
+          tab="Initialization",
+          group="Scalar properties",
+          enable=partNumInitMeth == 5 or tempInitMeth == 5));
+      parameter Q.VolumeSpecific v_IC(min=Modelica.Constants.small, start=
+            Data.v_pT(p_IC, T_IC))
+        "<html>Initial specific volume (<i>v</i><sub>IC</sub>)</html>"
+        annotation (Dialog(tab="Initialization",group="Scalar properties"));
+      parameter Q.VolumeSpecificRate derv_IC=0
+        "<html>Initial rate of specific volume ((&part;<i>v</i>/&part;<i>t</i>)<sub>IC</sub>)</html>"
+        annotation (Dialog(
+          tab="Initialization",
+          group="Scalar properties",
+          enable=partNumInitMeth == 7 or tempInitMeth == 7));
+      parameter Q.PressureAbsolute p_IC(start=defaults.p)
+        "<html>Initial pressure (<i>p</i><sub>IC</sub>)</html>"
+        annotation (Dialog(tab="Initialization",group="Scalar properties"));
+      parameter Q.PressureRate derp_IC=0
+        "<html>Initial rate of pressure ((&part;<i>p</i>/&part;<i>t</i>)<sub>IC</sub>)</html>"
+        annotation (Dialog(
+          tab="Initialization",
+          group="Scalar properties",
+          enable=partNumInitMeth == 9 or tempInitMeth == 9));
+      parameter Q.PotentialAbsolute T_IC(
+        nominal=298.15*U.K,
+        displayUnit="K",
+        start=defaults.T)
+        "<html>Initial temperature (<i>T</i><sub>IC</sub>)</html>"
+        annotation (Dialog(tab="Initialization",group="Scalar properties"));
+      parameter Q.PotentialRate derT_IC(displayUnit="K/s") = 0
+        "<html>Initial rate of temperature (&part;<i>T</i>/&part;<i>t</i>)<sub>IC</sub>)</html>"
+        annotation (Dialog(
+          tab="Initialization",
+          group="Scalar properties",
+          enable=partNumInitMeth == 11 or tempInitMeth == 11));
+      parameter Q.NumberAbsolute s_IC(min=Modelica.Constants.small, start=
+            Data.s_pT(p_IC, T_IC))
+        "<html>Initial specific entropy (<i>s</i><sub>IC</sub>)</html>"
+        annotation (Dialog(tab="Initialization", group="Scalar properties"));
+      parameter Q.NumberRate ders_IC=0
+        "<html>Initial rate of specific entropy ((&part;<i>s</i>/&part;<i>t</i>)<sub>IC</sub>)</html>"
+        annotation (Dialog(
+          tab="Initialization",
+          group="Scalar properties",
+          enable=partNumInitMeth == 13 or tempInitMeth == 13));
+      parameter Q.Potential h_IC(start=Data.h0_T(T_IC))
+        "<html>Initial specific enthalpy (<i>h</i><sub>IC</sub>)</html>"
+        annotation (Dialog(tab="Initialization", group="Scalar properties"));
+      parameter Q.PotentialRate derh_IC=0
+        "<html>Initial rate of specific enthalpy ((&part;<i>h</i>/&part;<i>t</i>)<sub>IC</sub>)</html>"
+        annotation (Dialog(
+          tab="Initialization",
+          group="Scalar properties",
+          enable=partNumInitMeth == 15 or tempInitMeth == 15));
+      parameter Q.Potential mu_IC(start=Data.g_pT(p_IC, T_IC))
+        "<html>Initial electrochemical potential (&mu;<sub>IC</sub>)</html>"
+        annotation (Dialog(tab="Initialization", group="Scalar properties"));
+      parameter Q.PotentialRate dermu_IC=0
+        "<html>Initial rate of electrochemical potential ((&part;&mu;/&part;<i>t</i>)<sub>IC</sub>)</html>"
+        annotation (Dialog(
+          tab="Initialization",
+          group="Scalar properties",
+          enable=partNumInitMeth == 17 or tempInitMeth == 17));
+      parameter Q.Current Ndot_IC=0
+        "<html>Initial reaction rate (<i>N&#775;</i><sub>IC</sub>)</html>"
+        annotation (Dialog(
+          tab="Initialization",
+          group="Scalar properties",
+          enable=partNumInitMeth == 18 or tempInitMeth == 18));
+
+      // Electrochemical initialization parameter
+      parameter Q.Potential Deltamu_IC=0
+        "<html>Initial electrochemical potential of reaction relative to bulk ((&Delta;&mu;)<sub>IC</sub>)</html>"
+        annotation (Dialog(
+          tab="Initialization",
+          group="Electrical",
+          enable=Data.z <> 0));
+
+      // Initialization parameters for linear momentum
+      parameter FCSys.Subregions.BaseClasses.InitMethLinear xInitMeth=
+          InitMethLinear.Velocity "Method of initializing the x-axis component"
+        annotation (Dialog(
+          tab="Initialization",
+          group="Linear momentum",
+          enable=inclLin[1]));
+      parameter FCSys.Subregions.BaseClasses.InitMethLinear yInitMeth=
+          InitMethLinear.Velocity "Method of initializing the y-axis component"
+        annotation (Dialog(
+          tab="Initialization",
+          group="Linear momentum",
+          enable=inclLin[2]));
+      parameter FCSys.Subregions.BaseClasses.InitMethLinear zInitMeth=
+          InitMethLinear.Velocity "Method of initializing the z-axis component"
+        annotation (Dialog(
+          tab="Initialization",
+          group="Linear momentum",
+          enable=inclLin[3]));
+      // Note:  Dymola 7.4 doesn't provide pull-down lists for arrays of
+      // enumerations; therefore, a parameter is used for each axis.
+      parameter Q.Velocity phi_IC[3]={0,0,0}
+        "<html>Initial velocity (<b>&phi;</b><sub>IC</sub>)</html>"
+        annotation (Dialog(tab="Initialization",group="Linear momentum"));
+      parameter Q.Acceleration derphi_IC[3]={0,0,0}
+        "<html>Initial acceleration ((&part;<b>&phi;</b>/&part;<i>t</i>)<sub>IC</sub>)</html>"
+        annotation (Dialog(
+          tab="Initialization",
+          group="Linear momentum",
+          enable=xInitMeth == 3 or yInitMeth == 3 or zInitMeth == 3));
+      parameter Q.Current I_IC[3]={0,0,0}
+        "<html>Initial current (<i><b>I</b></i><sub>IC</sub>)</html>"
+        annotation (Dialog(tab="Initialization",group="Linear momentum"));
+      parameter Q.CurrentRate derI_IC[3]={0,0,0}
+        "<html>Initial rate of current ((&part;<i><b>I</b></i>/&part;<i>t</i>)<sub>IC</sub>)</html>"
+        annotation (Dialog(
+          tab="Initialization",
+          group="Linear momentum",
+          enable=xInitMeth == 5 or yInitMeth == 5 or zInitMeth == 5));
+
+      // Preferred states
+      Q.ParticleNumber N(
+        nominal=1*U.mol,
+        min=Modelica.Constants.small,
+        final start=N_IC,
+        final fixed=false,
+        stateSelect=StateSelect.prefer) "Particle number";
+      // Note:  The start value for this variable (and others below) isn't
+      // fixed because the related initial condition is applied in the initial
+      // equation section.
+      Q.Velocity phi[n_lin](
+        each nominal=1*U.cm/U.s,
+        final start=phi_IC[cartAxes],
+        each final fixed=false,
+        each stateSelect=StateSelect.prefer) "Velocity";
+      Q.PotentialAbsolute T(
+        nominal=298.15*U.K,
+        final start=T_IC,
+        final fixed=false,
+        stateSelect=StateSelect.prefer,
+        displayUnit="K") "Temperature";
+
+      // Aliases (for common terms)
+      Q.VolumeSpecific v(
+        nominal=Data.v_pT(1*U.atm, 298.15*U.K),
+        final start=v_IC,
+        final fixed=false) "Specific volume";
+      Q.Potential h(
+        nominal=1*U.V,
+        final start=h_IC,
+        final fixed=false) "Specific enthalpy";
+      Q.NumberAbsolute s(
+        nominal=10,
+        final start=s_IC,
+        final fixed=false) "Specific entropy";
+      Q.Potential mu(
+        nominal=1*U.V,
+        final start=mu_IC,
+        final fixed=false) "Electrochemical potential";
+      Q.Current I[n_lin](
+        each nominal=100*U.A,
+        final start=I_IC[cartAxes],
+        each final fixed=false) "Current";
+      Q.Potential ke(final start=if n_lin == 0 then 0 else Data.m*phi_IC[
+            cartAxes]*phi_IC[cartAxes]/2) "Specific macroscopic kinetic energy";
+      Q.Potential Deltamu(final start=Deltamu_IC)
+        "Electrochemical potential of exchange relative to bulk";
+      // Note:  The initial condition isn't fixed because the state
+      // only appears if the species is charged and it's involved in a
+      // reaction.
+
+      // Material properties
+      input Q.Resistivity alpha_N(nominal=10*U.cm/U.A, start=Data.beta(T_IC))
+        "<html>Reaction resistivity (&alpha;<sub><i>N</i></sub>)</html>"
+        annotation (Dialog(group="Material properties"));
+      input Q.Resistivity alpha_Phi(nominal=10*U.cm/U.A, start=Data.beta(T_IC))
+        "<html>Exchange resistivity for linear momentum (&alpha;<sub>&Phi;</sub>)</html>"
+        annotation (Dialog(group="Material properties"));
+      input Q.Resistivity alpha_S(nominal=10*U.cm/U.A, start=Data.beta(T_IC))
+        "<html>Thermal exchange resistivity (&alpha;<sub><i>S</i></sub>)</html>"
+        annotation (Dialog(group="Material properties"));
+      input Q.Resistivity beta_N(nominal=10*U.cm/U.A, start=Data.beta(T_IC))
+        "<html>Material transport resistivity (&beta;<sub><i>N</i></sub>)</html>"
+        annotation (Dialog(group="Material properties"));
+      input Q.Resistivity beta_Phi(nominal=10*U.cm/U.A, start=Data.beta(T_IC))
+        "<html>Transport resistivity for linear momentum (&beta;<sub>&Phi;</sub>)</html>"
+        annotation (Dialog(group="Material properties"));
+      input Q.Resistivity beta_S(nominal=10*U.cm/U.A, start=Data.beta(T_IC))
+        "<html>Thermal transport resistivity (&beta;<sub><i>S</i></sub>)</html>"
+        annotation (Dialog(group="Material properties"));
+      input Q.Permittivity epsilon(nominal=1e6*U.epsilon_0, start=1e6*U.epsilon_0)
+        "<html>Permittivity (if charged; &epsilon;)</html>"
+        annotation (Dialog(group="Material properties", enable=Data.z <> 0));
+      // Note:  The properties are defined as inputs so that they can be
+      // redeclared as parameters or acausal time-varying variables.
+
+      // Nonessential variables (for analysis)
+      // General
+      output Q.Mass M=Data.m*N if defaults.analysis "Mass";
+      output Q.Volume V=inert.V if defaults.analysis "Volume";
+      output Q.PressureAbsolute p=inert.p if defaults.analysis "Pressure";
+
+      output Q.Capacitance C=Lstar*epsilon if defaults.analysis and (
+        Modelica.Utilities.Strings.find(Data.formula, "+") <> 0 or
+        Modelica.Utilities.Strings.find(Data.formula, "-") <> 0)
+        "Double layer capacitance (N/A if neutral species)";
+
+      // Note:  The string find functions are used instead of
+      // Data.z <> 0 due to the following error in Dymola 7.4:
+      //     "Current version of Dymola can only handle conditional
+      //      components with fixed condition."
+      // even though Data.z is calculated directly from constants.
+      // Peclet numbers
+      output Q.Number Pe_N[n_lin]=I*beta_N ./ Lstar_trans[cartAxes] if defaults.analysis
+        "Material Peclet numbers";
+      output Q.Number Pe_Phi[n_lin]=I*beta_Phi ./ Lstar_trans[cartAxes] if
+        defaults.analysis "Peclet numbers for linear momentum";
+      output Q.Number Pe_S[n_lin]=I*beta_S ./ Lstar_trans[cartAxes] if defaults.analysis
+        "Thermal Peclet numbers";
+      // Advection
+      output Q.PressureAbsolute q[n_lin]=Data.m*phi .* I ./ A[cartAxes] if
+        defaults.analysis "Bulk dynamic pressure";
+      output Q.Force mphiI[n_lin, 2]={(if inclLin[cartWrap(cartAxes[axis] +
+          orientation)] then Data.m*phi[linAxes[cartWrap(cartAxes[axis] +
+          orientation)]]*I[axis] else 0) for orientation in 1:2, axis in 1:
+          n_lin} if n_lin > 0 and defaults.analysis
+        "Bulk rate of advection of 1st and 2nd transverse linear momentum";
+      output Q.Force sI[n_lin]=s*I if defaults.analysis
+        "Bulk rate of advection of entropy";
+      // Linear momentum balance
+      output Q.Force Mderphi[n_lin]=M*der(phi)/U.s if defaults.analysis
+        "Rate of storage of linear momentum at constant mass";
+      output Q.Force mPhidot_exch_adv[n_lin]=chemical.mPhidot - Data.m*phi*
+          chemical.Ndot if defaults.analysis
+        "Acceleration force due to chemical exchange";
+      output Q.Force mPhidot_exch_diff[n_lin]=inert.mPhidot
+        "Force due to friction with other species";
+      output Q.Force mPhidot_parallel[n_lin]={sum(if [negativeX.matEntOpt ==
+          MaterialEntropyOpt.OpenDiabatic, positiveX.matEntOpt ==
+          MaterialEntropyOpt.OpenDiabatic; negativeY.matEntOpt ==
+          MaterialEntropyOpt.OpenDiabatic, positiveY.matEntOpt ==
+          MaterialEntropyOpt.OpenDiabatic; negativeZ.matEntOpt ==
+          MaterialEntropyOpt.OpenDiabatic, positiveZ.matEntOpt ==
+          MaterialEntropyOpt.OpenDiabatic][cartAxes[axis], side] then (3 -
+          2*side)*(mu_face[cartAxes[axis], side] - mu + Data.Deltah0_f)*N/L[
+          cartAxes[axis]] else 0 for side in 1:2) for axis in 1:n_lin} - Data.m
+          *sum(Ndot_face)*phi if defaults.analysis
+        "Acceleration force through normal faces";
+      output Q.Force mPhidot_perpendicular[n_lin]={sum(Sigma(mPhidot_face[
+          cartWrap(cartAxes[axis] - orientation), :, orientation]) - Data.m*phi[
+          axis]*Sigma(Ndot_face[cartWrap(cartAxes[axis] - orientation), :])
+          for orientation in 1:2) for axis in 1:n_lin} if defaults.analysis
+        "Acceleration force through transverse faces";
+      // Energy balance
+      output Q.Power derE=(N*(Data.c0_T(T)*der(T) + der(ke)) + inert.V*der(
+          Data.p_vT(inert.V/N, T)))/U.s if defaults.analysis
+        "Rate of energy storage at constant particle number";
+      output Q.Power Edot_exch_N=(chemical.mu - h - ke)*chemical.Ndot +
+          semiLinear(
+              chemical.Ndot,
+              chemical.mphi*chemical.mphi/Data.m,
+              Data.m*phi*phi) + chemical.TSdot if defaults.analysis
+        "Rate of energy intake due to chemical exchange";
+      output Q.Power Edot_exch_Phi=inert.phi*inert.mPhidot if defaults.analysis
+        "Rate of energy intake due to diffusion of linear momentum from other species";
+      output Q.Power Qdot_exch=inert.T*inert.Sdot if defaults.analysis
+        "Rate of thermal conduction from other species";
+      output Q.Power Edot_trans_N=sum((mu_face - fill(
+              h + ke - Data.Deltah0_f,
+              3,
+              2)) .* Ndot_face) if defaults.analysis
+        "Rate of energy intake due to material transport";
+      output Q.Power Edot_trans_Phi=sum(phi_face .* mPhidot_face) if defaults.analysis
+        "Rate of energy intake due to shear force";
+      output Q.Power Qdot_trans=sum(T_face .* Sdot_face) if defaults.analysis
+        "Rate of thermal convection from other subregions";
+      Connectors.ChemicalOutput chemical(
+        final n_lin=n_lin,
+        final formula=Data.formula,
+        mu(start=mu_IC),
+        mphi(final start=Data.m*phi_IC[cartAxes]),
+        Ndot(final start=Ndot_IC,final fixed=false))
+        "Connector to exchange material with advection of linear momentum"
+        annotation (Placement(transformation(extent={{-30,10},{-10,30}}),
+            iconTransformation(extent={{-80,60},{-60,80}})));
+      FCSys.Connectors.InertDalton inert(
+        final n_lin=n_lin,
+        V(
           min=0,
-          nominal=10*U.m,
-          start=1e3*product(L)^(1/3))
-          "<html>Characteristic length for exchange (<i>L</i><sup>&#9733;</sup>)</html>"
-          annotation (Dialog(group="Geometry"));
+          final start=V_IC,
+          final fixed=false),
+        p(final start=p_IC,final fixed=false),
+        phi(start=phi_IC[cartAxes]),
+        T(start=T_IC))
+        "Connector to add pressure and exchange linear momentum and entropy by diffusion"
+        annotation (Placement(transformation(extent={{10,-30},{30,-10}}),
+            iconTransformation(extent={{60,-80},{80,-60}})));
+      replaceable FCSys.Connectors.FaceX negativeX(
+        matEntOpt=MaterialEntropyOpt.OpenDiabatic,
+        viscousY=inclLin[2],
+        viscousZ=inclLin[3],
+        material(final mu(start=mu_IC) = mu_face[1, 1],final Ndot(start=I_IC[1])
+             = Ndot_face[1, 1]),
+        momentumY(final phi(start=phi_IC[2]) = phi_face[1, 1, 1],final mPhidot=
+              mPhidot_face[1, 1, 1]),
+        momentumZ(final phi(start=phi_IC[3]) = phi_face[1, 1, 2],final mPhidot=
+              mPhidot_face[1, 1, 2]),
+        entropy(final T(start=T_IC) = T_face[1, 1],final Sdot=Sdot_face[1, 1]))
+        "Negative face along the x axis" annotation (Dialog(
+          tab="Assumptions",
+          group="Characteristics of the faces (click to edit)",
+          __Dymola_label="negativeX",
+          __Dymola_descriptionLabel=true),Placement(transformation(extent={{-50,
+                -10},{-30,10}}), iconTransformation(extent={{-110,-10},{-90,10}})));
+      replaceable FCSys.Connectors.FaceX positiveX(
+        matEntOpt=negativeX.matEntOpt,
+        viscousY=inclLin[2],
+        viscousZ=inclLin[3],
+        material(final mu(start=mu_IC) = mu_face[1, 2],final Ndot(start=-I_IC[1])
+             = Ndot_face[1, 2]),
+        momentumY(final phi(start=phi_IC[2]) = phi_face[1, 2, 1],final mPhidot=
+              mPhidot_face[1, 2, 1]),
+        momentumZ(final phi(start=phi_IC[3]) = phi_face[1, 2, 2],final mPhidot=
+              mPhidot_face[1, 2, 2]),
+        entropy(final T(start=T_IC) = T_face[1, 2],final Sdot=Sdot_face[1, 2]))
+        "Positive face along the x axis" annotation (Dialog(
+          tab="Assumptions",
+          group="Characteristics of the faces (click to edit)",
+          __Dymola_label="positiveX",
+          __Dymola_descriptionLabel=true),Placement(transformation(extent={{30,
+                -10},{50,10}}), iconTransformation(extent={{90,-10},{110,10}})));
 
-        // Material properties
-        replaceable FCSys.Characteristics.BaseClasses.Characteristic Data
-          "Characteristic data of the species" annotation (
-          Dialog(group="Material properties"),
-          __Dymola_choicesAllMatching=true,
-          Placement(transformation(extent={{-60,40},{-40,60}}),
-              iconTransformation(extent={{-10,90},{10,110}})));
+      replaceable FCSys.Connectors.FaceY negativeY(
+        viscousZ=inclLin[3],
+        viscousX=inclLin[1],
+        material(final mu(start=mu_IC) = mu_face[2, 1],final Ndot(start=I_IC[2])
+             = Ndot_face[2, 1]),
+        momentumZ(final phi(start=phi_IC[3]) = phi_face[2, 1, 1],final mPhidot=
+              mPhidot_face[2, 1, 1]),
+        momentumX(final phi(start=phi_IC[1]) = phi_face[2, 1, 2],final mPhidot=
+              mPhidot_face[2, 1, 2]),
+        entropy(final T(start=T_IC) = T_face[2, 1],final Sdot=Sdot_face[2, 1]))
+        "Negative face along the y axis" annotation (Dialog(
+          tab="Assumptions",
+          group="Characteristics of the faces (click to edit)",
+          __Dymola_label="negativeY",
+          __Dymola_descriptionLabel=true),Placement(transformation(extent={{-10,
+                -50},{10,-30}}), iconTransformation(extent={{-10,-110},{10,-90}})));
+      replaceable FCSys.Connectors.FaceY positiveY(
+        matEntOpt=negativeY.matEntOpt,
+        viscousZ=inclLin[3],
+        viscousX=inclLin[1],
+        material(final mu(start=mu_IC) = mu_face[2, 2],final Ndot(start=-I_IC[2])
+             = Ndot_face[2, 2]),
+        momentumZ(final phi(start=phi_IC[3]) = phi_face[2, 2, 1],final mPhidot=
+              mPhidot_face[2, 2, 1]),
+        momentumX(final phi(start=phi_IC[1]) = phi_face[2, 2, 2],final mPhidot=
+              mPhidot_face[2, 2, 2]),
+        entropy(final T(start=T_IC) = T_face[2, 2],final Sdot=Sdot_face[2, 2]))
+        "Positive face along the y axis" annotation (Dialog(
+          tab="Assumptions",
+          group="Characteristics of the faces (click to edit)",
+          __Dymola_label="positiveY",
+          __Dymola_descriptionLabel=true),Placement(transformation(extent={{-10,
+                30},{10,50}}), iconTransformation(extent={{-10,90},{10,110}})));
 
-        // General assumptions
-        parameter Boolean termDepleted=false
-          "Terminate when material is depleted" annotation (
-          Evaluate=true,
-          Dialog(tab="Assumptions", compact=true),
-          choices(__Dymola_checkBox=true));
-        parameter Boolean inclLin[3]={true,false,false}
-          "true, if each component of linear momentum is included"
-          annotation (Evaluate=true,Dialog(tab="Assumptions"));
-        final parameter Integer n_lin=countTrue(inclLin)
-          "Number of components of linear momentum"
-          annotation (Evaluate=true, HideResult=true);
+      replaceable FCSys.Connectors.FaceZ negativeZ(
+        viscousX=inclLin[1],
+        viscousY=inclLin[2],
+        material(final mu(start=mu_IC) = mu_face[3, 1],final Ndot(start=I_IC[3])
+             = Ndot_face[3, 1]),
+        momentumX(final phi(start=phi_IC[1]) = phi_face[3, 1, 1],final mPhidot=
+              mPhidot_face[3, 1, 1]),
+        momentumY(final phi(start=phi_IC[2]) = phi_face[3, 1, 2],final mPhidot=
+              mPhidot_face[3, 1, 2]),
+        entropy(final T(start=T_IC) = T_face[3, 1],final Sdot=Sdot_face[3, 1]))
+        "Negative face along the z axis" annotation (Dialog(
+          tab="Assumptions",
+          group="Characteristics of the faces (click to edit)",
+          __Dymola_label="negativeZ",
+          __Dymola_descriptionLabel=true),Placement(transformation(extent={{10,
+                10},{30,30}}), iconTransformation(extent={{60,60},{80,80}})));
+      replaceable FCSys.Connectors.FaceZ positiveZ(
+        matEntOpt=negativeZ.matEntOpt,
+        viscousX=inclLin[1],
+        viscousY=inclLin[2],
+        material(final mu(start=mu_IC) = mu_face[3, 2],final Ndot(start=-I_IC[3])
+             = Ndot_face[3, 2]),
+        momentumX(final phi(start=phi_IC[1]) = phi_face[3, 2, 1],final mPhidot=
+              mPhidot_face[3, 2, 1]),
+        momentumY(final phi(start=phi_IC[2]) = phi_face[3, 2, 2],final mPhidot=
+              mPhidot_face[3, 2, 2]),
+        entropy(final T(start=T_IC) = T_face[3, 2],final Sdot=Sdot_face[3, 2]))
+        "Positive face along the z axis" annotation (Dialog(
+          tab="Assumptions",
+          group="Characteristics of the faces (click to edit)",
+          __Dymola_label="positiveZ",
+          __Dymola_descriptionLabel=true),Placement(transformation(extent={{-30,
+                -30},{-10,-10}}), iconTransformation(extent={{-80,-80},{-60,-60}})));
+      // Note:  These connectors are replaceable so that their parameters can be
+      // edited directly in the parameter dialog.
 
-        // Assumptions about upstream discretization
-        parameter Boolean upstreamX=true "X" annotation (
-          Evaluate=true,
-          HideResult=true,
-          Dialog(
-            tab="Assumptions",
-            group="Axes with upstream discretization",
-            compact=true),
-          choices(__Dymola_checkBox=true));
-        parameter Boolean upstreamY=true "Y" annotation (
-          Evaluate=true,
-          HideResult=true,
-          Dialog(
-            tab="Assumptions",
-            group="Axes with upstream discretization",
-            compact=true),
-          choices(__Dymola_checkBox=true));
-        parameter Boolean upstreamZ=true "Z" annotation (
-          Evaluate=true,
-          HideResult=true,
-          Dialog(
-            tab="Assumptions",
-            group="Axes with upstream discretization",
-            compact=true),
-          choices(__Dymola_checkBox=true));
+      // Geometric parameters
+    protected
+      final parameter Integer cartAxes[n_lin]=index(inclLin)
+        "Cartesian-axis indices of the axes of linear momentum";
+      final parameter Integer linAxes[3]=enumerate(inclLin)
+        "Linear momentum indices of the Cartesian axes";
+      final parameter Boolean upstream[3]={upstreamX,upstreamY,upstreamZ}
+        "true, if each Cartesian axis uses upstream discretization";
+      final parameter Q.Length Lstar_trans[3]=k .* A ./ L
+        "Effective cross-sectional area per length";
 
-        // Assumptions about dynamics
-        parameter Boolean setPartNum=false "Particle number" annotation (
-          Evaluate=true,
-          Dialog(
-            tab="Assumptions",
-            group="Prescribed states (via initialization parameters)",
-            compact=true),
-          choices(__Dymola_checkBox=true));
-        parameter Boolean setXVel=false "X-axis component of velocity"
-          annotation (
-          Evaluate=true,
-          Dialog(
-            tab="Assumptions",
-            group="Prescribed states (via initialization parameters)",
-            enable=inclLin[1],
-            compact=true),
-          choices(__Dymola_checkBox=true));
-        parameter Boolean setYVel=false "Y-axis component of velocity"
-          annotation (
-          Evaluate=true,
-          Dialog(
-            tab="Assumptions",
-            group="Prescribed states (via initialization parameters)",
-            enable=inclLin[2],
-            compact=true),
-          choices(__Dymola_checkBox=true));
-        parameter Boolean setZVel=false "Z-axis component of velocity"
-          annotation (
-          Evaluate=true,
-          Dialog(
-            tab="Assumptions",
-            group="Prescribed states (via initialization parameters)",
-            enable=inclLin[3],
-            compact=true),
-          choices(__Dymola_checkBox=true));
-        parameter Boolean setTemp=false "Temperature" annotation (
-          Evaluate=true,
-          Dialog(
-            tab="Assumptions",
-            group="Prescribed states (via initialization parameters)",
-            compact=true),
-          choices(__Dymola_checkBox=true));
+      Boolean depleted "true, if nearly no material remains";
 
-        // Initialization parameters for scalar properties
-        parameter InitMethScalar partNumInitMeth=InitMethScalar.Pressure
-          "Method of initializing the particle number" annotation (Evaluate=
-              true, Dialog(tab="Initialization", group="Scalar properties"));
-        parameter InitMethScalar tempInitMeth=InitMethScalar.Temperature
-          "Method of initializing the temperature" annotation (Evaluate=true,
-            Dialog(tab="Initialization", group="Scalar properties"));
-        parameter Q.ParticleNumber N_IC(start=V_IC/v_IC)
-          "<html>Initial particle number (<i>N</i><sub>IC</sub>)</html>"
-          annotation (Dialog(tab="Initialization",group="Scalar properties"));
-        // Note:  This parameter is left enabled even if it is not used to
-        // explicitly initialize any states, since it is used as a guess value.
-        // Similar notes apply to some other initial conditions below.
-        parameter Q.Current derN_IC=0
-          "<html>Initial rate of particle number ((&part;<i>N</i>/&part;<i>t</i>)<sub>IC</sub>)</html>"
-          annotation (Dialog(
-            tab="Initialization",
-            group="Scalar properties",
-            enable=partNumInitMeth == 3 or tempInitMeth == 3));
-        // Note:  Dymola 7.4 does not recognize enumerations in the dialog enable
-        // option, e.g.,
-        //     enable=partNumInitMeth == InitMethScalar.ParticleNumberRate.
-        // Therefore, the values of the enumerations are specified numerically for
-        // this initial condition and some others below.
-        parameter Q.Volume V_IC(start=product(L))
-          "<html>Initial volume (<i>V</i><sub>IC</sub>)</html>"
-          annotation (Dialog(tab="Initialization",group="Scalar properties"));
-        parameter Q.VolumeRate derV_IC=0
-          "<html>Initial rate of volume ((&part;<i>V</i>/&part;<i>t</i>)<sub>IC</sub>)</html>"
-          annotation (Dialog(
-            tab="Initialization",
-            group="Scalar properties",
-            enable=partNumInitMeth == 5 or tempInitMeth == 5));
-        parameter Q.VolumeSpecific v_IC(min=Modelica.Constants.small, start=
-              Data.v_pT(p_IC, T_IC))
-          "<html>Initial specific volume (<i>v</i><sub>IC</sub>)</html>"
-          annotation (Dialog(tab="Initialization",group="Scalar properties"));
-        parameter Q.VolumeSpecificRate derv_IC=0
-          "<html>Initial rate of specific volume ((&part;<i>v</i>/&part;<i>t</i>)<sub>IC</sub>)</html>"
-          annotation (Dialog(
-            tab="Initialization",
-            group="Scalar properties",
-            enable=partNumInitMeth == 7 or tempInitMeth == 7));
-        parameter Q.PressureAbsolute p_IC(start=defaults.p)
-          "<html>Initial pressure (<i>p</i><sub>IC</sub>)</html>"
-          annotation (Dialog(tab="Initialization",group="Scalar properties"));
-        parameter Q.PressureRate derp_IC=0
-          "<html>Initial rate of pressure ((&part;<i>p</i>/&part;<i>t</i>)<sub>IC</sub>)</html>"
-          annotation (Dialog(
-            tab="Initialization",
-            group="Scalar properties",
-            enable=partNumInitMeth == 9 or tempInitMeth == 9));
-        parameter Q.PotentialAbsolute T_IC(
-          nominal=298.15*U.K,
-          displayUnit="K",
-          start=defaults.T)
-          "<html>Initial temperature (<i>T</i><sub>IC</sub>)</html>"
-          annotation (Dialog(tab="Initialization",group="Scalar properties"));
-        parameter Q.PotentialRate derT_IC(displayUnit="K/s") = 0
-          "<html>Initial rate of temperature (&part;<i>T</i>/&part;<i>t</i>)<sub>IC</sub>)</html>"
-          annotation (Dialog(
-            tab="Initialization",
-            group="Scalar properties",
-            enable=partNumInitMeth == 11 or tempInitMeth == 11));
-        parameter Q.NumberAbsolute s_IC(min=Modelica.Constants.small, start=
-              Data.s_pT(p_IC, T_IC))
-          "<html>Initial specific entropy (<i>s</i><sub>IC</sub>)</html>"
-          annotation (Dialog(tab="Initialization", group="Scalar properties"));
-        parameter Q.NumberRate ders_IC=0
-          "<html>Initial rate of specific entropy ((&part;<i>s</i>/&part;<i>t</i>)<sub>IC</sub>)</html>"
-          annotation (Dialog(
-            tab="Initialization",
-            group="Scalar properties",
-            enable=partNumInitMeth == 13 or tempInitMeth == 13));
-        parameter Q.Potential h_IC(start=Data.h0_T(T_IC))
-          "<html>Initial specific enthalpy (<i>h</i><sub>IC</sub>)</html>"
-          annotation (Dialog(tab="Initialization", group="Scalar properties"));
-        parameter Q.PotentialRate derh_IC=0
-          "<html>Initial rate of specific enthalpy ((&part;<i>h</i>/&part;<i>t</i>)<sub>IC</sub>)</html>"
-          annotation (Dialog(
-            tab="Initialization",
-            group="Scalar properties",
-            enable=partNumInitMeth == 15 or tempInitMeth == 15));
-        parameter Q.Potential mu_IC(start=Data.g_pT(p_IC, T_IC))
-          "<html>Initial electrochemical potential (&mu;<sub>IC</sub>)</html>"
-          annotation (Dialog(tab="Initialization", group="Scalar properties"));
-        parameter Q.PotentialRate dermu_IC=0
-          "<html>Initial rate of electrochemical potential ((&part;&mu;/&part;<i>t</i>)<sub>IC</sub>)</html>"
-          annotation (Dialog(
-            tab="Initialization",
-            group="Scalar properties",
-            enable=partNumInitMeth == 17 or tempInitMeth == 17));
-        parameter Q.Current Ndot_IC=0
-          "<html>Initial reaction rate (<i>N&#775;</i><sub>IC</sub>)</html>"
-          annotation (Dialog(
-            tab="Initialization",
-            group="Scalar properties",
-            enable=partNumInitMeth == 18 or tempInitMeth == 18));
+      // Efforts and flows of the conditional faces
+      Q.Potential mu_face[3, 2](each start=mu_IC)
+        "Electrochemical potentials at the faces";
+      Q.Current Ndot_face[3, 2](start=outerProduct(I_IC, {1,-1}))
+        "Currents into the faces";
+      Q.Velocity phi_face[3, 2, 2](start={fill({phi_IC[cartWrap(axis +
+            orientation)] for orientation in 1:2}, 2) for axis in 1:3})
+        "Transverse velocities at the faces";
+      Q.Force mPhidot_face[3, 2, 2] "Transverse forces on the faces";
+      Q.Potential T_face[3, 2](each start=T_IC,each displayUnit="K")
+        "Temperatures at the faces";
+      Q.Current Sdot_face[3, 2] "Entropy flow rates into the faces";
 
-        // Electrochemical initialization parameter
-        parameter Q.Potential Deltamu_IC=0
-          "<html>Initial electrochemical potential of reaction relative to bulk ((&Delta;&mu;)<sub>IC</sub>)</html>"
-          annotation (Dialog(
-            tab="Initialization",
-            group="Electrical",
-            enable=Data.z <> 0));
-
-        // Initialization parameters for linear momentum
-        parameter InitMethLinear xInitMeth=InitMethLinear.Velocity
-          "Method of initializing the x-axis component" annotation (Dialog(
-            tab="Initialization",
-            group="Linear momentum",
-            enable=inclLin[1]));
-        parameter InitMethLinear yInitMeth=InitMethLinear.Velocity
-          "Method of initializing the y-axis component" annotation (Dialog(
-            tab="Initialization",
-            group="Linear momentum",
-            enable=inclLin[2]));
-        parameter InitMethLinear zInitMeth=InitMethLinear.Velocity
-          "Method of initializing the z-axis component" annotation (Dialog(
-            tab="Initialization",
-            group="Linear momentum",
-            enable=inclLin[3]));
-        // Note:  Dymola 7.4 does not provide pull-down lists for arrays of
-        // enumerations; therefore, a parameter is used for each axis.
-        parameter Q.Velocity phi_IC[3]={0,0,0}
-          "<html>Initial velocity (<b>&phi;</b><sub>IC</sub>)</html>"
-          annotation (Dialog(tab="Initialization",group="Linear momentum"));
-        parameter Q.Acceleration derphi_IC[3]={0,0,0}
-          "<html>Initial acceleration ((&part;<b>&phi;</b>/&part;<i>t</i>)<sub>IC</sub>)</html>"
-          annotation (Dialog(
-            tab="Initialization",
-            group="Linear momentum",
-            enable=xInitMeth == 3 or yInitMeth == 3 or zInitMeth == 3));
-        parameter Q.Current I_IC[3]={0,0,0}
-          "<html>Initial current (<i><b>I</b></i><sub>IC</sub>)</html>"
-          annotation (Dialog(tab="Initialization",group="Linear momentum"));
-        parameter Q.CurrentRate derI_IC[3]={0,0,0}
-          "<html>Initial rate of current ((&part;<i><b>I</b></i>/&part;<i>t</i>)<sub>IC</sub>)</html>"
-          annotation (Dialog(
-            tab="Initialization",
-            group="Linear momentum",
-            enable=xInitMeth == 5 or yInitMeth == 5 or zInitMeth == 5));
-
-        // Preferred states
-        Q.ParticleNumber N(
-          nominal=1*U.mol,
-          min=Modelica.Constants.small,
-          final start=N_IC,
-          final fixed=false,
-          stateSelect=StateSelect.prefer) "Particle number";
-        // Note:  The start value for this variable (and others below) is not
-        // fixed because the related initial condition is applied in the initial
-        // equation section.
-        Q.Velocity phi[n_lin](
-          each nominal=1*U.cm/U.s,
-          final start=phi_IC[cartAxes],
-          each final fixed=false,
-          each stateSelect=StateSelect.prefer) "Velocity";
-        Q.PotentialAbsolute T(
-          nominal=298.15*U.K,
-          final start=T_IC,
-          final fixed=false,
-          stateSelect=StateSelect.prefer,
-          displayUnit="K") "Temperature";
-
-        // Aliases (for common terms)
-        Q.VolumeSpecific v(
-          nominal=Data.v_pT(1*U.atm, 298.15*U.K),
-          final start=v_IC,
-          final fixed=false) "Specific volume";
-        Q.Potential h(
-          nominal=1*U.V,
-          final start=h_IC,
-          final fixed=false) "Specific enthalpy";
-        Q.NumberAbsolute s(
-          nominal=10,
-          final start=s_IC,
-          final fixed=false) "Specific entropy";
-        Q.Potential mu(
-          nominal=1*U.V,
-          final start=mu_IC,
-          final fixed=false) "Electrochemical potential";
-        Q.Current I[n_lin](
-          each nominal=100*U.A,
-          final start=I_IC[cartAxes],
-          each final fixed=false) "Current";
-        Q.VelocityMassSpecific mphi_chem[n_lin](start=Data.m*phi_IC[cartAxes])
-          "Specific mass times velocity of chemical exchange";
-        Q.Potential ke(final start=if n_lin == 0 then 0 else Data.m*phi_IC[
-              cartAxes]*phi_IC[cartAxes]/2)
-          "Specific macroscopic kinetic energy";
-        Q.Potential Deltamu(final start=Deltamu_IC)
-          "Electrochemical potential of exchange relative to bulk";
-        // Note:  The initial condition is not fixed because the state
-        // only appears if the species is charged and it is involved in a
-        // reaction.
-
-        // Material properties
-        input Q.Resistivity alpha_N(nominal=10*U.cm/U.A, start=Data.beta(T_IC))
-          "<html>Reaction resistivity (&alpha;<sub><i>N</i></sub>)</html>"
-          annotation (Dialog(group="Material properties"));
-        input Q.Resistivity alpha_Phi(nominal=10*U.cm/U.A, start=Data.beta(T_IC))
-          "<html>Exchange resistivity for linear momentum (&alpha;<sub>&Phi;</sub>)</html>"
-          annotation (Dialog(group="Material properties"));
-        input Q.Resistivity alpha_S(nominal=10*U.cm/U.A, start=Data.beta(T_IC))
-          "<html>Thermal exchange resistivity (&alpha;<sub><i>S</i></sub>)</html>"
-          annotation (Dialog(group="Material properties"));
-        input Q.Resistivity beta_N(nominal=10*U.cm/U.A, start=Data.beta(T_IC))
-          "<html>Material transport resistivity (&beta;<sub><i>N</i></sub>)</html>"
-          annotation (Dialog(group="Material properties"));
-        input Q.Resistivity beta_Phi(nominal=10*U.cm/U.A, start=Data.beta(T_IC))
-          "<html>Transport resistivity for linear momentum (&beta;<sub>&Phi;</sub>)</html>"
-          annotation (Dialog(group="Material properties"));
-        input Q.Resistivity beta_S(nominal=10*U.cm/U.A, start=Data.beta(T_IC))
-          "<html>Thermal transport resistivity (&beta;<sub><i>S</i></sub>)</html>"
-          annotation (Dialog(group="Material properties"));
-        input Q.Permittivity epsilon(nominal=1e6*U.epsilon_0, start=1e6*U.epsilon_0)
-          "<html>Permittivity (if charged; &epsilon;)</html>"
-          annotation (Dialog(group="Material properties", enable=Data.z <> 0));
-        // Note:  The properties are defined as inputs so that they can be
-        // redeclared as parameters or acausal time-varying variables.
-
-        // Nonessential variables (for analysis)
-        // General
-        output Q.Mass M=Data.m*N if defaults.analysis "Mass";
-        output Q.Volume V=inert.V if defaults.analysis "Volume";
-        output Q.PressureAbsolute p=inert.p if defaults.analysis "Pressure";
-
-        output Q.Capacitance C=Lstar*epsilon if defaults.analysis and (
-          Modelica.Utilities.Strings.find(Data.formula, "+") <> 0 or
-          Modelica.Utilities.Strings.find(Data.formula, "-") <> 0)
-          "Double layer capacitance (N/A if neutral species)";
-
-        // Note:  The string find functions are used instead of
-        // Data.z <> 0 due to the following error in Dymola 7.4:
-        //     "Current version of Dymola can only handle conditional
-        //      components with fixed condition."
-        // even though Data.z is calculated directly from constants.
-        // Peclet numbers
-        output Q.Number Pe_N[n_lin]=I*beta_N ./ Lstar_trans[cartAxes] if
-          defaults.analysis "Material Peclet numbers";
-        output Q.Number Pe_Phi[n_lin]=I*beta_Phi ./ Lstar_trans[cartAxes] if
-          defaults.analysis "Peclet numbers for linear momentum";
-        output Q.Number Pe_S[n_lin]=I*beta_S ./ Lstar_trans[cartAxes] if
-          defaults.analysis "Thermal Peclet numbers";
-        // Advection
-        output Q.PressureAbsolute q[n_lin]=Data.m*phi .* I ./ A[cartAxes] if
-          defaults.analysis "Bulk dynamic pressure";
-        output Q.Force mphiI[n_lin, 2]={(if inclLin[cartWrap(cartAxes[axis] +
-            orientation)] then Data.m*phi[linAxes[cartWrap(cartAxes[axis] +
-            orientation)]]*I[axis] else 0) for orientation in 1:2, axis in 1:
-            n_lin} if n_lin > 0 and defaults.analysis
-          "Bulk rate of advection of 1st and 2nd transverse linear momentum";
-        output Q.Force sI[n_lin]=s*I if defaults.analysis
-          "Bulk rate of advection of entropy";
-        // Linear momentum balance
-        output Q.Force Mderphi[n_lin]=M*der(phi)/U.s if defaults.analysis
-          "Rate of storage of linear momentum at constant mass";
-        output Q.Force mPhidot_exch_adv[n_lin]=(mphi_chem - Data.m*phi)*
-            chemical.Ndot if defaults.analysis
-          "Acceleration force due to chemical exchange";
-        output Q.Force mPhidot_exch_diff[n_lin]=inert.mPhidot
-          "Force due to friction with other species";
-        output Q.Force mPhidot_parallel[n_lin]={sum(if [negativeX.matEntOpt ==
-            MaterialEntropyOptions.OpenDiabatic, positiveX.matEntOpt ==
-            MaterialEntropyOptions.OpenDiabatic; negativeY.matEntOpt ==
-            MaterialEntropyOptions.OpenDiabatic, positiveY.matEntOpt ==
-            MaterialEntropyOptions.OpenDiabatic; negativeZ.matEntOpt ==
-            MaterialEntropyOptions.OpenDiabatic, positiveZ.matEntOpt ==
-            MaterialEntropyOptions.OpenDiabatic][cartAxes[axis], side] then (3
-             - 2*side)*(mu_face[cartAxes[axis], side] - mu + Data.Deltah0_f)*N/
-            L[cartAxes[axis]] else 0 for side in 1:2) for axis in 1:n_lin} -
-            Data.m*sum(Ndot_face)*phi if defaults.analysis
-          "Acceleration force through normal faces";
-        output Q.Force mPhidot_perpendicular[n_lin]={sum(Sigma(mPhidot_face[
-            cartWrap(cartAxes[axis] - orientation), :, orientation]) - Data.m*
-            phi[axis]*Sigma(Ndot_face[cartWrap(cartAxes[axis] - orientation), :])
-            for orientation in 1:2) for axis in 1:n_lin} if defaults.analysis
-          "Acceleration force through transverse faces";
-        // Energy balance
-        output Q.Power derE=(N*(Data.c0_T(T)*der(T) + der(ke)) + inert.V*der(
-            Data.p_vT(inert.V/N, T)))/U.s if defaults.analysis
-          "Rate of energy storage at constant particle number";
-        output Q.Power Edot_exch_N=(chemical.mu + mphi_chem*mphi_chem/Data.m +
-            actualStream(chemical.sT) - h - ke)*chemical.Ndot if defaults.analysis
-          "Rate of energy intake due to chemical exchange";
-        output Q.Power Edot_exch_Phi=inert.phi*inert.mPhidot if defaults.analysis
-          "Rate of energy intake due to diffusion of linear momentum from other species";
-        output Q.Power Qdot_exch=inert.T*inert.Sdot if defaults.analysis
-          "Rate of thermal conduction from other species";
-        output Q.Power Edot_trans_N=sum((mu_face - fill(
-                  h + ke - Data.Deltah0_f,
-                  3,
-                  2)) .* Ndot_face) if defaults.analysis
-          "Rate of energy intake due to material transport";
-        output Q.Power Edot_trans_Phi=sum(phi_face .* mPhidot_face) if defaults.analysis
-          "Rate of energy intake due to shear force";
-        output Q.Power Qdot_trans=sum(T_face .* Sdot_face) if defaults.analysis
-          "Rate of thermal convection from other subregions";
-        Connectors.ChemicalOutput chemical(
-          final n_lin=n_lin,
-          final formula=Data.formula,
-          final m=Data.m,
-          mu(start=mu_IC),
-          mphi(final start=Data.m*phi_IC[cartAxes]),
-          Ndot(final start=Ndot_IC,final fixed=false))
-          "Connector to exchange material with advection of linear momentum"
-          annotation (Placement(transformation(extent={{-30,10},{-10,30}}),
-              iconTransformation(extent={{-80,60},{-60,80}})));
-        FCSys.Connectors.InertDalton inert(
-          final n_lin=n_lin,
-          V(
-            min=0,
-            final start=V_IC,
-            final fixed=false),
-          p(final start=p_IC,final fixed=false),
-          phi(start=phi_IC[cartAxes]),
-          T(start=T_IC))
-          "Connector to add pressure and exchange linear momentum and entropy by diffusion"
-          annotation (Placement(transformation(extent={{10,-30},{30,-10}}),
-              iconTransformation(extent={{60,-80},{80,-60}})));
-        replaceable FCSys.Connectors.FaceX negativeX(
-          matEntOpt=MaterialEntropyOptions.OpenDiabatic,
-          viscousY=inclLin[2],
-          viscousZ=inclLin[3],
-          material(final mu(start=mu_IC) = mu_face[1, 1],final Ndot(start=I_IC[
-                  1]) = Ndot_face[1, 1]),
-          momentumY(final phi(start=phi_IC[2]) = phi_face[1, 1, 1],final
-              mPhidot=mPhidot_face[1, 1, 1]),
-          momentumZ(final phi(start=phi_IC[3]) = phi_face[1, 1, 2],final
-              mPhidot=mPhidot_face[1, 1, 2]),
-          entropy(final T(start=T_IC) = T_face[1, 1],final Sdot=Sdot_face[1, 1]))
-          "Negative face along the x axis" annotation (Dialog(
-            tab="Assumptions",
-            group="Characteristics of the faces (click to edit)",
-            __Dymola_label="negativeX",
-            __Dymola_descriptionLabel=true),Placement(transformation(extent={{-50,
-                  -10},{-30,10}}), iconTransformation(extent={{-110,-10},{-90,
-                  10}})));
-        replaceable FCSys.Connectors.FaceX positiveX(
-          matEntOpt=negativeX.matEntOpt,
-          viscousY=inclLin[2],
-          viscousZ=inclLin[3],
-          material(final mu(start=mu_IC) = mu_face[1, 2],final Ndot(start=-I_IC[
-                  1]) = Ndot_face[1, 2]),
-          momentumY(final phi(start=phi_IC[2]) = phi_face[1, 2, 1],final
-              mPhidot=mPhidot_face[1, 2, 1]),
-          momentumZ(final phi(start=phi_IC[3]) = phi_face[1, 2, 2],final
-              mPhidot=mPhidot_face[1, 2, 2]),
-          entropy(final T(start=T_IC) = T_face[1, 2],final Sdot=Sdot_face[1, 2]))
-          "Positive face along the x axis" annotation (Dialog(
-            tab="Assumptions",
-            group="Characteristics of the faces (click to edit)",
-            __Dymola_label="positiveX",
-            __Dymola_descriptionLabel=true),Placement(transformation(extent={{
-                  30,-10},{50,10}}), iconTransformation(extent={{90,-10},{110,
-                  10}})));
-
-        replaceable FCSys.Connectors.FaceY negativeY(
-          viscousZ=inclLin[3],
-          viscousX=inclLin[1],
-          material(final mu(start=mu_IC) = mu_face[2, 1],final Ndot(start=I_IC[
-                  2]) = Ndot_face[2, 1]),
-          momentumZ(final phi(start=phi_IC[3]) = phi_face[2, 1, 1],final
-              mPhidot=mPhidot_face[2, 1, 1]),
-          momentumX(final phi(start=phi_IC[1]) = phi_face[2, 1, 2],final
-              mPhidot=mPhidot_face[2, 1, 2]),
-          entropy(final T(start=T_IC) = T_face[2, 1],final Sdot=Sdot_face[2, 1]))
-          "Negative face along the y axis" annotation (Dialog(
-            tab="Assumptions",
-            group="Characteristics of the faces (click to edit)",
-            __Dymola_label="negativeY",
-            __Dymola_descriptionLabel=true),Placement(transformation(extent={{-10,
-                  -50},{10,-30}}), iconTransformation(extent={{-10,-110},{10,-90}})));
-        replaceable FCSys.Connectors.FaceY positiveY(
-          matEntOpt=negativeY.matEntOpt,
-          viscousZ=inclLin[3],
-          viscousX=inclLin[1],
-          material(final mu(start=mu_IC) = mu_face[2, 2],final Ndot(start=-I_IC[
-                  2]) = Ndot_face[2, 2]),
-          momentumZ(final phi(start=phi_IC[3]) = phi_face[2, 2, 1],final
-              mPhidot=mPhidot_face[2, 2, 1]),
-          momentumX(final phi(start=phi_IC[1]) = phi_face[2, 2, 2],final
-              mPhidot=mPhidot_face[2, 2, 2]),
-          entropy(final T(start=T_IC) = T_face[2, 2],final Sdot=Sdot_face[2, 2]))
-          "Positive face along the y axis" annotation (Dialog(
-            tab="Assumptions",
-            group="Characteristics of the faces (click to edit)",
-            __Dymola_label="positiveY",
-            __Dymola_descriptionLabel=true),Placement(transformation(extent={{-10,
-                  30},{10,50}}), iconTransformation(extent={{-10,90},{10,110}})));
-
-        replaceable FCSys.Connectors.FaceZ negativeZ(
-          viscousX=inclLin[1],
-          viscousY=inclLin[2],
-          material(final mu(start=mu_IC) = mu_face[3, 1],final Ndot(start=I_IC[
-                  3]) = Ndot_face[3, 1]),
-          momentumX(final phi(start=phi_IC[1]) = phi_face[3, 1, 1],final
-              mPhidot=mPhidot_face[3, 1, 1]),
-          momentumY(final phi(start=phi_IC[2]) = phi_face[3, 1, 2],final
-              mPhidot=mPhidot_face[3, 1, 2]),
-          entropy(final T(start=T_IC) = T_face[3, 1],final Sdot=Sdot_face[3, 1]))
-          "Negative face along the z axis" annotation (Dialog(
-            tab="Assumptions",
-            group="Characteristics of the faces (click to edit)",
-            __Dymola_label="negativeZ",
-            __Dymola_descriptionLabel=true),Placement(transformation(extent={{
-                  10,10},{30,30}}), iconTransformation(extent={{60,60},{80,80}})));
-        replaceable FCSys.Connectors.FaceZ positiveZ(
-          matEntOpt=negativeZ.matEntOpt,
-          viscousX=inclLin[1],
-          viscousY=inclLin[2],
-          material(final mu(start=mu_IC) = mu_face[3, 2],final Ndot(start=-I_IC[
-                  3]) = Ndot_face[3, 2]),
-          momentumX(final phi(start=phi_IC[1]) = phi_face[3, 2, 1],final
-              mPhidot=mPhidot_face[3, 2, 1]),
-          momentumY(final phi(start=phi_IC[2]) = phi_face[3, 2, 2],final
-              mPhidot=mPhidot_face[3, 2, 2]),
-          entropy(final T(start=T_IC) = T_face[3, 2],final Sdot=Sdot_face[3, 2]))
-          "Positive face along the z axis" annotation (Dialog(
-            tab="Assumptions",
-            group="Characteristics of the faces (click to edit)",
-            __Dymola_label="positiveZ",
-            __Dymola_descriptionLabel=true),Placement(transformation(extent={{-30,
-                  -30},{-10,-10}}), iconTransformation(extent={{-80,-80},{-60,-60}})));
-        // Note:  These connectors are replaceable so that their parameters can be
-        // edited directly in the parameter dialog.
-
-        // Geometric parameters
-      protected
-        final parameter Integer cartAxes[n_lin]=index(inclLin)
-          "Cartesian-axis indices of the axes of linear momentum";
-        final parameter Integer linAxes[3]=enumerate(inclLin)
-          "Linear momentum indices of the Cartesian axes";
-        final parameter Boolean upstream[3]={upstreamX,upstreamY,upstreamZ}
-          "true, if each Cartesian axis uses upstream discretization";
-        final parameter Q.Length Lstar_trans[3]=k .* A ./ L
-          "Effective cross-sectional area per length";
-
-        Boolean depleted "true, if nearly no material remains";
-
-        // Efforts and flows of the conditional faces
-        Q.Potential mu_face[3, 2](each start=mu_IC)
-          "Electrochemical potentials at the faces";
-        Q.Current Ndot_face[3, 2](start=outerProduct(I_IC, {1,-1}))
-          "Currents into the faces";
-        Q.Velocity phi_face[3, 2, 2](start={fill({phi_IC[cartWrap(axis +
-              orientation)] for orientation in 1:2}, 2) for axis in 1:3})
-          "Transverse velocities at the faces";
-        Q.Force mPhidot_face[3, 2, 2] "Transverse forces on the faces";
-        Q.Potential T_face[3, 2](each start=T_IC,each displayUnit="K")
-          "Temperatures at the faces";
-        Q.Current Sdot_face[3, 2] "Entropy flow rates into the faces";
-
-        outer FCSys.BCs.Defaults defaults "Default settings" annotation (
-            missingInnerMessage="Your model is using an outer \"defaults\" record, but an inner \"defaults\" record is not defined.
+      outer FCSys.BCs.Defaults defaults "Default settings" annotation (
+          missingInnerMessage="Your model is using an outer \"defaults\" record, but an inner \"defaults\" record is not defined.
 For simulation, specify global default settings by dragging FCSys.BCs.Defaults into your model.
 The default global default settings will be used for the current simulation.",
-            Placement(transformation(extent={{40,40},{60,60}}),
-              iconTransformation(extent={{-10,90},{10,110}})));
-        // Note:  In Deymola 7.4, it is necessary to add the missing inner message
-        // here to give a warning message, even though it is included in the Defaults
-        // model too.
-      initial equation
-        // Check that the initialization methods are valid.
-        assert(partNumInitMeth <> tempInitMeth or partNumInitMeth ==
-          InitMethScalar.None,
-          "The initialization methods for particle number and temperature cannot be the same (unless None).");
-        if not Data.isCompressible then
-          assert(partNumInitMeth <> InitMethScalar.Pressure and partNumInitMeth
-             <> InitMethScalar.PressureRate or setPartNum, "The material is incompressible,
+          Placement(transformation(extent={{40,40},{60,60}}),
+            iconTransformation(extent={{-10,90},{10,110}})));
+      // Note:  In Deymola 7.4, it's necessary to add the missing inner message
+      // here to give a warning message, even though it's included in the Defaults
+      // model too.
+    initial equation
+      // Check that the initialization methods are valid.
+      assert(partNumInitMeth <> tempInitMeth or partNumInitMeth ==
+        InitMethScalar.None,
+        "The initialization methods for particle number and temperature cannot be the same (unless None).");
+      if not Data.isCompressible then
+        assert(partNumInitMeth <> InitMethScalar.Pressure and partNumInitMeth
+           <> InitMethScalar.PressureRate or setPartNum, "The material is incompressible,
       yet the initialization method for particle number involves pressure.");
-          assert(tempInitMeth <> InitMethScalar.Pressure and tempInitMeth <>
-            InitMethScalar.PressureRate or setTemp, "The material is incompressible,
+        assert(tempInitMeth <> InitMethScalar.Pressure and tempInitMeth <>
+          InitMethScalar.PressureRate or setTemp, "The material is incompressible,
       yet the initialization method for temperature involves pressure.");
-          assert(Data.hasThermalExpansion or (partNumInitMeth <> InitMethScalar.VolumeSpecific
-             and partNumInitMeth <> InitMethScalar.VolumeSpecificRate or
-            setPartNum), "The material has constant specific volume,
+        assert(Data.hasThermalExpansion or (partNumInitMeth <> InitMethScalar.VolumeSpecific
+           and partNumInitMeth <> InitMethScalar.VolumeSpecificRate or
+          setPartNum), "The material has constant specific volume,
       yet the initialization method for particle number involves specific volume.");
-          assert(Data.hasThermalExpansion or (tempInitMeth <> InitMethScalar.VolumeSpecific
-             and tempInitMeth <> InitMethScalar.VolumeSpecificRate or
-            setPartNum), "The material has constant specific volume,
+        assert(Data.hasThermalExpansion or (tempInitMeth <> InitMethScalar.VolumeSpecific
+           and tempInitMeth <> InitMethScalar.VolumeSpecificRate or setPartNum),
+          "The material has constant specific volume,
       yet the initialization method for temperature involves specific volume.");
-        end if;
+      end if;
 
-        /* This is commented out because it may be annoying.
+      /* This is commented out because it may be annoying.
   // Warn when index reduction may be necessary.
   if abs(alpha_N) < Modelica.Constants.small then
     Modelica.Utilities.Streams.print("Warning: The material resistivity to exchange is zero.
@@ -7333,455 +7057,458 @@ The default global default settings will be used for the current simulation.",
   end if;
   // Note:  According to the Modelica 3.0 specification (and later), these
   // checks should be possible using the assert() command with
-  // level=AssertionLevel.warning.  However, this is not supported in
+  // level=AssertionLevel.warning.  However, this isn't supported in
   // Dymola 7.4.
   */
 
-        // Material
-        if setPartNum then
-          // Ensure that a condition is selected, since the state is prescribed.
-          assert(partNumInitMeth <> InitMethScalar.None, "The state for particle number is prescribed,
+      // Material
+      if setPartNum then
+        // Ensure that a condition is selected, since the state is prescribed.
+        assert(partNumInitMeth <> InitMethScalar.None, "The state for particle number is prescribed,
     yet its condition is not defined.\nChoose a condition besides None.");
-        else
-          // Initialize only if there is a time-varying state.
-          if partNumInitMeth == InitMethScalar.ParticleNumber then
-            N = N_IC;
-          elseif partNumInitMeth == InitMethScalar.ParticleNumberRate then
-            der(N)/U.s = derN_IC;
-          elseif partNumInitMeth == InitMethScalar.Volume then
-            inert.V = V_IC;
-          elseif partNumInitMeth == InitMethScalar.VolumeRate then
-            der(inert.V)/U.s = derV_IC;
-          elseif partNumInitMeth == InitMethScalar.VolumeSpecific then
-            v = v_IC;
-          elseif partNumInitMeth == InitMethScalar.VolumeSpecificRate then
-            der(v)/U.s = derv_IC;
-          elseif partNumInitMeth == InitMethScalar.Pressure then
-            inert.p = p_IC;
-          elseif partNumInitMeth == InitMethScalar.PressureRate then
-            der(inert.p)/U.s = derp_IC;
-          elseif partNumInitMeth == InitMethScalar.Temperature then
-            T = T_IC;
-          elseif partNumInitMeth == InitMethScalar.TemperatureRate then
-            der(T)/U.s = derT_IC;
-          elseif partNumInitMeth == InitMethScalar.SpecificEntropy then
-            s = s_IC;
-          elseif partNumInitMeth == InitMethScalar.SpecificEntropyRate then
-            der(s)/U.s = ders_IC;
-          elseif partNumInitMeth == InitMethScalar.SpecificEnthalpy then
-            h = h_IC;
-          elseif partNumInitMeth == InitMethScalar.SpecificEnthalpyRate then
-            der(h)/U.s = derh_IC;
-          elseif partNumInitMeth == InitMethScalar.PotentialElectrochemical
-               then
-            mu = mu_IC;
-          elseif partNumInitMeth == InitMethScalar.PotentialElectrochemicalRate
-               then
-            der(mu) = dermu_IC;
-          elseif partNumInitMeth == InitMethScalar.ReactionRate then
-            chemical.Ndot = Ndot_IC;
-            // Else, partNumInitMeth == InitMethScalar.None; then, there are no
-            // initial equations.
-          end if;
+      else
+        // Initialize only if there is a time-varying state.
+        if partNumInitMeth == InitMethScalar.ParticleNumber then
+          N = N_IC;
+        elseif partNumInitMeth == InitMethScalar.ParticleNumberRate then
+          der(N)/U.s = derN_IC;
+        elseif partNumInitMeth == InitMethScalar.Volume then
+          inert.V = V_IC;
+        elseif partNumInitMeth == InitMethScalar.VolumeRate then
+          der(inert.V)/U.s = derV_IC;
+        elseif partNumInitMeth == InitMethScalar.VolumeSpecific then
+          v = v_IC;
+        elseif partNumInitMeth == InitMethScalar.VolumeSpecificRate then
+          der(v)/U.s = derv_IC;
+        elseif partNumInitMeth == InitMethScalar.Pressure then
+          inert.p = p_IC;
+        elseif partNumInitMeth == InitMethScalar.PressureRate then
+          der(inert.p)/U.s = derp_IC;
+        elseif partNumInitMeth == InitMethScalar.Temperature then
+          T = T_IC;
+        elseif partNumInitMeth == InitMethScalar.TemperatureRate then
+          der(T)/U.s = derT_IC;
+        elseif partNumInitMeth == InitMethScalar.SpecificEntropy then
+          s = s_IC;
+        elseif partNumInitMeth == InitMethScalar.SpecificEntropyRate then
+          der(s)/U.s = ders_IC;
+        elseif partNumInitMeth == InitMethScalar.SpecificEnthalpy then
+          h = h_IC;
+        elseif partNumInitMeth == InitMethScalar.SpecificEnthalpyRate then
+          der(h)/U.s = derh_IC;
+        elseif partNumInitMeth == InitMethScalar.PotentialElectrochemical then
+          mu = mu_IC;
+        elseif partNumInitMeth == InitMethScalar.PotentialElectrochemicalRate
+             then
+          der(mu) = dermu_IC;
+        elseif partNumInitMeth == InitMethScalar.ReactionRate then
+          chemical.Ndot = Ndot_IC;
+          // Else, partNumInitMeth == InitMethScalar.None; then, there are no
+          // initial equations.
         end if;
+      end if;
 
-        // Temperature
-        if setTemp then
-          // Ensure that a condition is selected, since the state is prescribed.
-          assert(tempInitMeth <> InitMethScalar.None, "The state for temperature is prescribed,
+      // Temperature
+      if setTemp then
+        // Ensure that a condition is selected, since the state is prescribed.
+        assert(tempInitMeth <> InitMethScalar.None, "The state for temperature is prescribed,
     yet its condition is not defined.\nChoose a condition besides None.");
-        else
-          // Initialize only if there is a time-varying state.
-          if tempInitMeth == InitMethScalar.ParticleNumber then
-            N = N_IC;
-          elseif tempInitMeth == InitMethScalar.ParticleNumberRate then
-            der(N)/U.s = derN_IC;
-          elseif tempInitMeth == InitMethScalar.Volume then
-            inert.V = V_IC;
-          elseif tempInitMeth == InitMethScalar.VolumeRate then
-            der(inert.V)/U.s = derV_IC;
-          elseif tempInitMeth == InitMethScalar.VolumeSpecific then
-            v = v_IC;
-          elseif tempInitMeth == InitMethScalar.VolumeSpecificRate then
-            der(v)/U.s = derv_IC;
-          elseif tempInitMeth == InitMethScalar.Pressure then
-            inert.p = p_IC;
-          elseif tempInitMeth == InitMethScalar.PressureRate then
-            der(inert.p)/U.s = derp_IC;
-          elseif tempInitMeth == InitMethScalar.Temperature then
-            T = T_IC;
-          elseif tempInitMeth == InitMethScalar.TemperatureRate then
-            der(T)/U.s = derT_IC;
-          elseif tempInitMeth == InitMethScalar.SpecificEntropy then
-            s = s_IC;
-          elseif tempInitMeth == InitMethScalar.SpecificEntropyRate then
-            der(s)/U.s = ders_IC;
-          elseif tempInitMeth == InitMethScalar.SpecificEnthalpy then
-            h = h_IC;
-          elseif tempInitMeth == InitMethScalar.SpecificEnthalpyRate then
-            der(h)/U.s = derh_IC;
-          elseif tempInitMeth == InitMethScalar.PotentialElectrochemical then
-            mu = mu_IC;
-          elseif tempInitMeth == InitMethScalar.PotentialElectrochemicalRate
-               then
-            der(mu) = dermu_IC;
-          elseif tempInitMeth == InitMethScalar.ReactionRate then
-            chemical.Ndot = Ndot_IC;
-            // Else, tempInitMeth == InitMethScalar.None; then, there are no
-            // initial equations.
-          end if;
+      else
+        // Initialize only if there is a time-varying state.
+        if tempInitMeth == InitMethScalar.ParticleNumber then
+          N = N_IC;
+        elseif tempInitMeth == InitMethScalar.ParticleNumberRate then
+          der(N)/U.s = derN_IC;
+        elseif tempInitMeth == InitMethScalar.Volume then
+          inert.V = V_IC;
+        elseif tempInitMeth == InitMethScalar.VolumeRate then
+          der(inert.V)/U.s = derV_IC;
+        elseif tempInitMeth == InitMethScalar.VolumeSpecific then
+          v = v_IC;
+        elseif tempInitMeth == InitMethScalar.VolumeSpecificRate then
+          der(v)/U.s = derv_IC;
+        elseif tempInitMeth == InitMethScalar.Pressure then
+          inert.p = p_IC;
+        elseif tempInitMeth == InitMethScalar.PressureRate then
+          der(inert.p)/U.s = derp_IC;
+        elseif tempInitMeth == InitMethScalar.Temperature then
+          T = T_IC;
+        elseif tempInitMeth == InitMethScalar.TemperatureRate then
+          der(T)/U.s = derT_IC;
+        elseif tempInitMeth == InitMethScalar.SpecificEntropy then
+          s = s_IC;
+        elseif tempInitMeth == InitMethScalar.SpecificEntropyRate then
+          der(s)/U.s = ders_IC;
+        elseif tempInitMeth == InitMethScalar.SpecificEnthalpy then
+          h = h_IC;
+        elseif tempInitMeth == InitMethScalar.SpecificEnthalpyRate then
+          der(h)/U.s = derh_IC;
+        elseif tempInitMeth == InitMethScalar.PotentialElectrochemical then
+          mu = mu_IC;
+        elseif tempInitMeth == InitMethScalar.PotentialElectrochemicalRate then
+          der(mu) = dermu_IC;
+        elseif tempInitMeth == InitMethScalar.ReactionRate then
+          chemical.Ndot = Ndot_IC;
+          // Else, tempInitMeth == InitMethScalar.None; then, there are no
+          // initial equations.
         end if;
+      end if;
 
-        // Linear momentum
-        for axis in 1:n_lin loop
-          if cartAxes[axis] == 1 then
-            // X axis
-            if setXVel then
-              // Ensure that a condition is selected, since the state is
-              // prescribed.
-              assert(xInitMeth <> InitMethLinear.None, "The state for the x-axis component of linear momentum is prescribed,
+      // Linear momentum
+      for axis in 1:n_lin loop
+        if cartAxes[axis] == 1 then
+          // X axis
+          if setXVel then
+            // Ensure that a condition is selected, since the state is
+            // prescribed.
+            assert(xInitMeth <> InitMethLinear.None, "The state for the x-axis component of linear momentum is prescribed,
         yet its condition is not defined.\nChoose any condition besides None.");
-            else
-              // Initialize only if there is a time-varying state.
-              if xInitMeth == InitMethLinear.Velocity then
-                phi[axis] = phi_IC[1];
-              elseif xInitMeth == InitMethLinear.Acceleration then
-                der(phi[axis])/U.s = derphi_IC[1];
-              elseif xInitMeth == InitMethLinear.Current then
-                I[axis] = I_IC[1];
-              elseif xInitMeth == InitMethLinear.CurrentRate then
-                der(I[axis])/U.s = derI_IC[1];
-                // Else, xInitMeth == InitMethLinear.None; then, there are no initial
-                // equations.
-              end if;
-            end if;
-          elseif cartAxes[axis] == 2 then
-            // Y axis
-            if setYVel then
-              // Ensure that a condition is selected, since the state is
-              // prescribed.
-              assert(yInitMeth <> InitMethLinear.None, "The state for the y-axis component of linear momentum is prescribed,
-        yet its condition is not defined.\nChoose any condition besides None.");
-            else
-              // Initialize only if there is a time-varying state.
-              if yInitMeth == InitMethLinear.Velocity then
-                phi[axis] = phi_IC[2];
-              elseif yInitMeth == InitMethLinear.Acceleration then
-                der(phi[axis])/U.s = derphi_IC[2];
-              elseif yInitMeth == InitMethLinear.Current then
-                I[axis] = I_IC[2];
-              elseif yInitMeth == InitMethLinear.CurrentRate then
-                der(I[axis])/U.s = derI_IC[2];
-                // Else, yInitMeth == InitMethLinear.None; then, there are no initial
-                // equations.
-              end if;
-            end if;
-          elseif cartAxes[axis] == 3 then
-            // Z axis
-            if setZVel then
-              // Ensure that a condition is selected, since the state is
-              // prescribed.
-              assert(zInitMeth <> InitMethLinear.None, "The state for the z-axis component of linear momentum is prescribed,
-        yet its condition is not defined.\nChoose any condition besides None.");
-            else
-              // Initialize only if there is a time-varying state.
-              if zInitMeth == InitMethLinear.Velocity then
-                phi[axis] = phi_IC[3];
-              elseif zInitMeth == InitMethLinear.Acceleration then
-                der(phi[axis])/U.s = derphi_IC[3];
-              elseif zInitMeth == InitMethLinear.Current then
-                I[axis] = I_IC[3];
-              elseif zInitMeth == InitMethLinear.CurrentRate then
-                der(I[axis])/U.s = derI_IC[3];
-                // Else, zInitMeth == InitMethLinear.None; then, there are no initial
-                // equations.
-              end if;
-            end if;
-          end if;
-        end for;
-
-      equation
-        // Empirical thermodynamic correlations
-        if Data.isCompressible then
-          inert.p = Data.p_vT(v, T);
-        else
-          v = Data.v_pT(inert.p, T);
-        end if;
-        h = Data.h0_T(T, ReferenceEnthalpy.EnthalpyOfFormationAt25degC);
-        s = Data.s_pT(inert.p, T);
-
-        // Aliases (for clarity and simplification)
-        v*N = inert.V;
-        s*T = chemical.sT "Outflow property";
-        N*phi = I .* L[cartAxes];
-        //  mu = h - chemical.sT;
-        mu = h - s*T;
-        Deltamu = chemical.mu - mu;
-        Data.m*phi = chemical.mphi "Outflow property";
-        mphi_chem = actualStream(chemical.mphi);
-        2*ke = if n_lin == 0 then 0 else Data.m*phi*phi;
-
-        // Protection against depletion
-        depleted = (Data.p_min > 0 and inert.p <= Data.p_min) or N < 1*U.q;
-        if termDepleted then
-          when depleted then
-            terminate("The " + Data.formula + "  species (" + Data.phase +
-              " phase) is depleted (N = " + String(N/U.C) + " C and p = " +
-              String(inert.p/U.kPa) + " kPa).");
-          end when;
-        end if;
-
-        // Exchange
-        /* *
-*  alpha_N*T*(chemical.Ndot/(2*Lstar) - (if Data.z == 0 then 0 else epsilon*der(
-    Deltamu)/U.s)) = if termDepleted or not depleted then Deltamu else 0
-    "Material";
-
-    **Is depletion protection necessary?  If not, remove it in Characteristic record.  If
-    so, re-add this code, eliminate below.
-*/
-        alpha_N*T*(chemical.Ndot/(2*Lstar) - (if Data.z == 0 then 0 else
-          epsilon*der(Deltamu)/U.s)) = Deltamu "Material";
-        alpha_Phi*inert.mPhidot = 2*Lstar*Data.m*(inert.phi - phi)
-          "Diffusion of linear momentum";
-        alpha_S*inert.Sdot = 2*Lstar*(inert.T/T - 1) "Thermal diffusion";
-
-        // Transport
-        for axis in 1:3 loop
-          for side in 1:2 loop
-            // Material
-            if [negativeX.matEntOpt == MaterialEntropyOptions.OpenDiabatic,
-                positiveX.matEntOpt == MaterialEntropyOptions.OpenDiabatic;
-                negativeY.matEntOpt == MaterialEntropyOptions.OpenDiabatic,
-                positiveY.matEntOpt == MaterialEntropyOptions.OpenDiabatic;
-                negativeZ.matEntOpt == MaterialEntropyOptions.OpenDiabatic,
-                positiveZ.matEntOpt == MaterialEntropyOptions.OpenDiabatic][
-                axis, side] then
-              T*beta_N*(Ndot_face[axis, side] + (2*side - 3)*(if inclLin[axis]
-                 then I[linAxes[axis]] else 0)) = Lstar_trans[axis]*(mu_face[
-                axis, side] - mu + Data.Deltah0_f)*(if upstream[axis] and
-                inclLin[axis] then (exp((3 - 2*side)*I[linAxes[axis]]*beta_N/(2
-                *Lstar_trans[axis])) + 1) else 2) "Advection and diffusion";
-            else
-              mu_face[axis, side] = 0;
-              Ndot_face[axis, side] = 0;
-            end if;
-
-            // Linear momentum
-            for orientation in 1:2 loop
-              if {{{negativeX.viscousY,negativeX.viscousZ},{positiveX.viscousY,
-                  positiveX.viscousZ}},{{negativeY.viscousZ,negativeY.viscousX},
-                  {positiveY.viscousZ,positiveY.viscousX}},{{negativeZ.viscousX,
-                  negativeZ.viscousY},{positiveZ.viscousX,positiveZ.viscousY}}}
-                  [axis, side, orientation] then
-                beta_Phi*(mPhidot_face[axis, side, orientation]/Data.m + (if
-                  inclLin[axis] then (2*side - 3)*I[linAxes[axis]] else 0)*(if
-                  inclLin[cartWrap(axis + orientation)] then phi[linAxes[
-                  cartWrap(axis + orientation)]] else 0)) = Lstar_trans[axis]*(
-                  phi_face[axis, side, orientation] - (if inclLin[cartWrap(axis
-                   + orientation)] then phi[linAxes[cartWrap(axis + orientation)]]
-                   else 0))*(if upstream[axis] and inclLin[axis] then (exp((3
-                   - 2*side)*I[linAxes[axis]]*beta_Phi/(2*Lstar_trans[axis]))
-                   + 1) else 2) "Diffusion";
-              else
-                phi_face[axis, side, orientation] = 0;
-                mPhidot_face[axis, side, orientation] = 0;
-              end if;
-            end for;
-
-            // Entropy
-            if [negativeX.matEntOpt == MaterialEntropyOptions.OpenDiabatic or
-                negativeX.matEntOpt == MaterialEntropyOptions.ClosedDiabatic,
-                positiveX.matEntOpt == MaterialEntropyOptions.OpenDiabatic or
-                positiveX.matEntOpt == MaterialEntropyOptions.ClosedDiabatic;
-                negativeY.matEntOpt == MaterialEntropyOptions.OpenDiabatic or
-                negativeY.matEntOpt == MaterialEntropyOptions.ClosedDiabatic,
-                positiveY.matEntOpt == MaterialEntropyOptions.OpenDiabatic or
-                positiveY.matEntOpt == MaterialEntropyOptions.ClosedDiabatic;
-                negativeZ.matEntOpt == MaterialEntropyOptions.OpenDiabatic or
-                negativeZ.matEntOpt == MaterialEntropyOptions.ClosedDiabatic,
-                positiveZ.matEntOpt == MaterialEntropyOptions.OpenDiabatic or
-                positiveZ.matEntOpt == MaterialEntropyOptions.ClosedDiabatic][
-                axis, side] then
-              beta_S*(Sdot_face[axis, side] + (2*side - 3)*s*(if inclLin[axis]
-                 then I[linAxes[axis]] else 0)) = 2*Lstar_trans[axis]*(T_face[
-                axis, side]/T - 1)*(if upstream[axis] and inclLin[axis] then (
-                exp((3 - 2*side)*I[linAxes[axis]]*beta_S/(2*Lstar_trans[axis]))
-                 + 1) else 2) "Diffusion";
-              // Note:  Advection is included in material transport.
-            else
-              T_face[axis, side] = 0;
-              Sdot_face[axis, side] = 0;
-            end if;
-          end for;
-        end for;
-
-        // Material dynamics
-        if setPartNum then
-          // Apply the IC for all time (material not conserved).
-          if partNumInitMeth == InitMethScalar.ParticleNumber then
-            N = N_IC;
-          elseif partNumInitMeth == InitMethScalar.ParticleNumberRate then
-            der(N)/U.s = derN_IC;
-          elseif partNumInitMeth == InitMethScalar.Volume then
-            inert.V = V_IC;
-          elseif partNumInitMeth == InitMethScalar.VolumeRate then
-            der(inert.V)/U.s = derV_IC;
-          elseif partNumInitMeth == InitMethScalar.VolumeSpecific then
-            v = v_IC;
-          elseif partNumInitMeth == InitMethScalar.VolumeSpecificRate then
-            der(v)/U.s = derv_IC;
-          elseif partNumInitMeth == InitMethScalar.Pressure then
-            inert.p = p_IC;
-          elseif partNumInitMeth == InitMethScalar.PressureRate then
-            der(inert.p)/U.s = derp_IC;
-          elseif partNumInitMeth == InitMethScalar.Temperature then
-            T = T_IC;
-          elseif partNumInitMeth == InitMethScalar.TemperatureRate then
-            der(T)/U.s = derT_IC;
-          elseif partNumInitMeth == InitMethScalar.SpecificEntropy then
-            s = s_IC;
-          elseif partNumInitMeth == InitMethScalar.SpecificEntropyRate then
-            der(s)/U.s = ders_IC;
-          elseif partNumInitMeth == InitMethScalar.SpecificEnthalpy then
-            h = h_IC;
-          elseif partNumInitMeth == InitMethScalar.SpecificEnthalpyRate then
-            der(h)/U.s = derh_IC;
-          elseif partNumInitMeth == InitMethScalar.PotentialElectrochemical
-               then
-            mu = mu_IC;
-          elseif partNumInitMeth == InitMethScalar.PotentialElectrochemicalRate
-               then
-            der(mu) = dermu_IC;
           else
-            //if partNumInitMeth == InitMethScalar.ReactionRate then
-            chemical.Ndot = Ndot_IC;
-            // Note:  partNumInitMeth == InitMethScalar.None cannot occur due to
-            // an assertion.
-          end if;
-        else
-          der(N)/U.s = chemical.Ndot + sum(Ndot_face) "Material conservation";
-        end if;
-
-        // Dynamics of linear momentum
-        for axis in 1:n_lin loop
-          if cartAxes[axis] == 1 and setXVel then
-            // Apply the IC for all time (x-axis component not conserved).
+            // Initialize only if there is a time-varying state.
             if xInitMeth == InitMethLinear.Velocity then
               phi[axis] = phi_IC[1];
             elseif xInitMeth == InitMethLinear.Acceleration then
               der(phi[axis])/U.s = derphi_IC[1];
             elseif xInitMeth == InitMethLinear.Current then
               I[axis] = I_IC[1];
-            else
-              //if xInitMeth == InitMethLinear.CurrentRate then
+            elseif xInitMeth == InitMethLinear.CurrentRate then
               der(I[axis])/U.s = derI_IC[1];
-              // Note:  xInitMeth == InitMethLinear.None cannot occur due to an
-              // assertion.
+              // Else, xInitMeth == InitMethLinear.None; then, there are no initial
+              // equations.
             end if;
-          elseif cartAxes[axis] == 2 and setYVel then
-            // Apply the IC for all time (y-axis component not conserved).
+          end if;
+        elseif cartAxes[axis] == 2 then
+          // Y axis
+          if setYVel then
+            // Ensure that a condition is selected, since the state is
+            // prescribed.
+            assert(yInitMeth <> InitMethLinear.None, "The state for the y-axis component of linear momentum is prescribed,
+        yet its condition is not defined.\nChoose any condition besides None.");
+          else
+            // Initialize only if there is a time-varying state.
             if yInitMeth == InitMethLinear.Velocity then
               phi[axis] = phi_IC[2];
             elseif yInitMeth == InitMethLinear.Acceleration then
               der(phi[axis])/U.s = derphi_IC[2];
             elseif yInitMeth == InitMethLinear.Current then
               I[axis] = I_IC[2];
-            else
-              //if yInitMeth == InitMethLinear.CurrentRate then
+            elseif yInitMeth == InitMethLinear.CurrentRate then
               der(I[axis])/U.s = derI_IC[2];
-              // Note:  yInitMeth == InitMethLinear.None cannot occur due to an
-              // assertion.
+              // Else, yInitMeth == InitMethLinear.None; then, there are no initial
+              // equations.
             end if;
-          elseif cartAxes[axis] == 3 and setZVel then
-            // Apply the IC for all time (z-axis component not conserved).
+          end if;
+        elseif cartAxes[axis] == 3 then
+          // Z axis
+          if setZVel then
+            // Ensure that a condition is selected, since the state is
+            // prescribed.
+            assert(zInitMeth <> InitMethLinear.None, "The state for the z-axis component of linear momentum is prescribed,
+        yet its condition is not defined.\nChoose any condition besides None.");
+          else
+            // Initialize only if there is a time-varying state.
             if zInitMeth == InitMethLinear.Velocity then
               phi[axis] = phi_IC[3];
             elseif zInitMeth == InitMethLinear.Acceleration then
               der(phi[axis])/U.s = derphi_IC[3];
             elseif zInitMeth == InitMethLinear.Current then
               I[axis] = I_IC[3];
-            else
-              //if zInitMeth == InitMethLinear.CurrentRate then
+            elseif zInitMeth == InitMethLinear.CurrentRate then
               der(I[axis])/U.s = derI_IC[3];
-              // Note:  zInitMeth == InitMethLinear.None cannot occur due to an
-              // assertion.
+              // Else, zInitMeth == InitMethLinear.None; then, there are no initial
+              // equations.
             end if;
+          end if;
+        end if;
+      end for;
+
+    equation
+      // Empirical thermodynamic correlations
+      if Data.isCompressible then
+        inert.p = Data.p_vT(v, T);
+      else
+        v = Data.v_pT(inert.p, T);
+      end if;
+      h = Data.h0_T(T, ReferenceEnthalpy.EnthalpyOfFormationAt25degC);
+      s = Data.s_pT(inert.p, T);
+
+      // Aliases (for clarity and simplification)
+      v*N = inert.V;
+      N*phi = I .* L[cartAxes];
+      //  mu = h - chemical.Ts;
+      mu = h - T*s;
+      Deltamu = chemical.mu - mu;
+      2*ke = if n_lin == 0 then 0 else Data.m*phi*phi;
+
+      // Protection against depletion
+      depleted = (Data.p_min > 0 and inert.p <= Data.p_min) or N < 1*U.q;
+      if termDepleted then
+        when depleted then
+          terminate("The " + Data.formula + "  species (" + Data.phase +
+            " phase) is depleted (N = " + String(N/U.C) + " C and p = " +
+            String(inert.p/U.kPa) + " kPa).");
+        end when;
+      end if;
+
+      // Exchange
+      /*
+    alpha_N*T*(chemical.Ndot/(2*Lstar) - (if Data.z == 0 then 0 else epsilon*der(
+    Deltamu)/U.s)) = if termDepleted or not depleted then Deltamu else 0
+    "Material";
+
+    **Is depletion protection necessary?  If not, remove it in Characteristic record.  If
+    so, re-add this code, eliminate below.
+  */
+      alpha_N*T*(chemical.Ndot/(2*Lstar) - (if Data.z == 0 then 0 else epsilon*
+        der(Deltamu)/U.s)) = Deltamu "Material";
+      chemical.mPhidot = semiLinear(
+            chemical.Ndot,
+            chemical.mphi,
+            Data.m*phi) "Advection of linear momentum";
+      alpha_Phi*inert.mPhidot = 2*Lstar*Data.m*(inert.phi - phi)
+        "Diffusion of linear momentum";
+      chemical.TSdot = semiLinear(
+            chemical.Ndot,
+            chemical.Ts,
+            T*s) "Thermal advection";
+      alpha_S*inert.Sdot = 2*Lstar*(inert.T/T - 1) "Thermal diffusion";
+
+      // Transport
+      for axis in 1:3 loop
+        for side in 1:2 loop
+          // Material
+          if [negativeX.matEntOpt == MaterialEntropyOpt.OpenDiabatic,
+              positiveX.matEntOpt == MaterialEntropyOpt.OpenDiabatic;
+              negativeY.matEntOpt == MaterialEntropyOpt.OpenDiabatic,
+              positiveY.matEntOpt == MaterialEntropyOpt.OpenDiabatic;
+              negativeZ.matEntOpt == MaterialEntropyOpt.OpenDiabatic,
+              positiveZ.matEntOpt == MaterialEntropyOpt.OpenDiabatic][axis,
+              side] then
+            T*beta_N*(Ndot_face[axis, side] + (2*side - 3)*(if inclLin[axis]
+               then I[linAxes[axis]] else 0)) = Lstar_trans[axis]*(mu_face[axis,
+              side] - mu + Data.Deltah0_f)*(if upstream[axis] and inclLin[axis]
+               then (exp((3 - 2*side)*I[linAxes[axis]]*beta_N/(2*Lstar_trans[
+              axis])) + 1) else 2) "Advection and diffusion";
           else
-            der(Data.m*N*phi[axis])/U.s = mphi_chem[axis]*chemical.Ndot + inert.mPhidot[
-              axis] + sum(if {{negativeX.matEntOpt == MaterialEntropyOptions.OpenDiabatic,
-              positiveX.matEntOpt == MaterialEntropyOptions.OpenDiabatic},{
-              negativeY.matEntOpt == MaterialEntropyOptions.OpenDiabatic,
-              positiveY.matEntOpt == MaterialEntropyOptions.OpenDiabatic},{
-              negativeZ.matEntOpt == MaterialEntropyOptions.OpenDiabatic,
-              positiveZ.matEntOpt == MaterialEntropyOptions.OpenDiabatic}}[
-              cartAxes[axis], side] then (3 - 2*side)*(mu_face[cartAxes[axis],
-              side] - mu + Data.Deltah0_f)*N/L[cartAxes[axis]] else 0 for side
-               in 1:2) + sum(Sigma(mPhidot_face[cartWrap(cartAxes[axis] -
-              orientation), :, orientation]) for orientation in 1:2)
-              "Conservation of linear momentum";
+            mu_face[axis, side] = 0;
+            Ndot_face[axis, side] = 0;
+          end if;
+
+          // Linear momentum
+          for orientation in 1:2 loop
+            if {{{negativeX.viscousY,negativeX.viscousZ},{positiveX.viscousY,
+                positiveX.viscousZ}},{{negativeY.viscousZ,negativeY.viscousX},{
+                positiveY.viscousZ,positiveY.viscousX}},{{negativeZ.viscousX,
+                negativeZ.viscousY},{positiveZ.viscousX,positiveZ.viscousY}}}[
+                axis, side, orientation] then
+              beta_Phi*(mPhidot_face[axis, side, orientation]/Data.m + (if
+                inclLin[axis] then (2*side - 3)*I[linAxes[axis]] else 0)*(if
+                inclLin[cartWrap(axis + orientation)] then phi[linAxes[cartWrap(
+                axis + orientation)]] else 0)) = Lstar_trans[axis]*(phi_face[
+                axis, side, orientation] - (if inclLin[cartWrap(axis +
+                orientation)] then phi[linAxes[cartWrap(axis + orientation)]]
+                 else 0))*(if upstream[axis] and inclLin[axis] then (exp((3 - 2
+                *side)*I[linAxes[axis]]*beta_Phi/(2*Lstar_trans[axis])) + 1)
+                 else 2) "Diffusion";
+            else
+              phi_face[axis, side, orientation] = 0;
+              mPhidot_face[axis, side, orientation] = 0;
+            end if;
+          end for;
+
+          // Entropy
+          if [negativeX.matEntOpt == MaterialEntropyOpt.OpenDiabatic or
+              negativeX.matEntOpt == MaterialEntropyOpt.ClosedDiabatic,
+              positiveX.matEntOpt == MaterialEntropyOpt.OpenDiabatic or
+              positiveX.matEntOpt == MaterialEntropyOpt.ClosedDiabatic;
+              negativeY.matEntOpt == MaterialEntropyOpt.OpenDiabatic or
+              negativeY.matEntOpt == MaterialEntropyOpt.ClosedDiabatic,
+              positiveY.matEntOpt == MaterialEntropyOpt.OpenDiabatic or
+              positiveY.matEntOpt == MaterialEntropyOpt.ClosedDiabatic;
+              negativeZ.matEntOpt == MaterialEntropyOpt.OpenDiabatic or
+              negativeZ.matEntOpt == MaterialEntropyOpt.ClosedDiabatic,
+              positiveZ.matEntOpt == MaterialEntropyOpt.OpenDiabatic or
+              positiveZ.matEntOpt == MaterialEntropyOpt.ClosedDiabatic][
+              axis, side] then
+            beta_S*(Sdot_face[axis, side] + (2*side - 3)*s*(if inclLin[axis]
+               then I[linAxes[axis]] else 0)) = 2*Lstar_trans[axis]*(T_face[
+              axis, side]/T - 1)*(if upstream[axis] and inclLin[axis] then (exp(
+              (3 - 2*side)*I[linAxes[axis]]*beta_S/(2*Lstar_trans[axis])) + 1)
+               else 2) "Diffusion";
+            // Note:  Advection is included in material transport.
+          else
+            T_face[axis, side] = 0;
+            Sdot_face[axis, side] = 0;
           end if;
         end for;
+      end for;
 
-        // Thermal dynamics
-        if setTemp then
-          // Apply the IC for all time (energy not conserved).
-          if tempInitMeth == InitMethScalar.ParticleNumber then
-            N = N_IC;
-          elseif tempInitMeth == InitMethScalar.ParticleNumberRate then
-            der(N)/U.s = derN_IC;
-          elseif tempInitMeth == InitMethScalar.Volume then
-            inert.V = V_IC;
-          elseif tempInitMeth == InitMethScalar.VolumeRate then
-            der(inert.V)/U.s = derV_IC;
-          elseif tempInitMeth == InitMethScalar.VolumeSpecific then
-            v = v_IC;
-          elseif tempInitMeth == InitMethScalar.VolumeSpecificRate then
-            der(v)/U.s = derv_IC;
-          elseif tempInitMeth == InitMethScalar.Pressure then
-            inert.p = p_IC;
-          elseif tempInitMeth == InitMethScalar.PressureRate then
-            der(inert.p)/U.s = derp_IC;
-          elseif tempInitMeth == InitMethScalar.Temperature then
-            T = T_IC;
-          elseif tempInitMeth == InitMethScalar.TemperatureRate then
-            der(T)/U.s = derT_IC;
-          elseif tempInitMeth == InitMethScalar.SpecificEntropy then
-            s = s_IC;
-          elseif tempInitMeth == InitMethScalar.SpecificEntropyRate then
-            der(s)/U.s = ders_IC;
-          elseif tempInitMeth == InitMethScalar.SpecificEnthalpy then
-            h = h_IC;
-          elseif tempInitMeth == InitMethScalar.SpecificEnthalpyRate then
-            der(h)/U.s = derh_IC;
-          elseif tempInitMeth == InitMethScalar.PotentialElectrochemical then
-            mu = mu_IC;
-          elseif tempInitMeth == InitMethScalar.PotentialElectrochemicalRate
-               then
-            der(mu) = dermu_IC;
+      // Material dynamics
+      if setPartNum then
+        // Apply the IC for all time (material not conserved).
+        if partNumInitMeth == InitMethScalar.ParticleNumber then
+          N = N_IC;
+        elseif partNumInitMeth == InitMethScalar.ParticleNumberRate then
+          der(N)/U.s = derN_IC;
+        elseif partNumInitMeth == InitMethScalar.Volume then
+          inert.V = V_IC;
+        elseif partNumInitMeth == InitMethScalar.VolumeRate then
+          der(inert.V)/U.s = derV_IC;
+        elseif partNumInitMeth == InitMethScalar.VolumeSpecific then
+          v = v_IC;
+        elseif partNumInitMeth == InitMethScalar.VolumeSpecificRate then
+          der(v)/U.s = derv_IC;
+        elseif partNumInitMeth == InitMethScalar.Pressure then
+          inert.p = p_IC;
+        elseif partNumInitMeth == InitMethScalar.PressureRate then
+          der(inert.p)/U.s = derp_IC;
+        elseif partNumInitMeth == InitMethScalar.Temperature then
+          T = T_IC;
+        elseif partNumInitMeth == InitMethScalar.TemperatureRate then
+          der(T)/U.s = derT_IC;
+        elseif partNumInitMeth == InitMethScalar.SpecificEntropy then
+          s = s_IC;
+        elseif partNumInitMeth == InitMethScalar.SpecificEntropyRate then
+          der(s)/U.s = ders_IC;
+        elseif partNumInitMeth == InitMethScalar.SpecificEnthalpy then
+          h = h_IC;
+        elseif partNumInitMeth == InitMethScalar.SpecificEnthalpyRate then
+          der(h)/U.s = derh_IC;
+        elseif partNumInitMeth == InitMethScalar.PotentialElectrochemical then
+          mu = mu_IC;
+        elseif partNumInitMeth == InitMethScalar.PotentialElectrochemicalRate
+             then
+          der(mu) = dermu_IC;
+        else
+          //if partNumInitMeth == InitMethScalar.ReactionRate then
+          chemical.Ndot = Ndot_IC;
+          // Note:  partNumInitMeth == InitMethScalar.None cannot occur due to
+          // an assertion.
+        end if;
+      else
+        der(N)/U.s = chemical.Ndot + sum(Ndot_face) "Material conservation";
+      end if;
+
+      // Dynamics of linear momentum
+      for axis in 1:n_lin loop
+        if cartAxes[axis] == 1 and setXVel then
+          // Apply the IC for all time (x-axis component not conserved).
+          if xInitMeth == InitMethLinear.Velocity then
+            phi[axis] = phi_IC[1];
+          elseif xInitMeth == InitMethLinear.Acceleration then
+            der(phi[axis])/U.s = derphi_IC[1];
+          elseif xInitMeth == InitMethLinear.Current then
+            I[axis] = I_IC[1];
           else
-            //if tempInitMeth == InitMethScalar.ReactionRate then
-            chemical.Ndot = Ndot_IC;
-            // Note:  tempInitMeth == InitMethScalar.None cannot occur due to an
+            //if xInitMeth == InitMethLinear.CurrentRate then
+            der(I[axis])/U.s = derI_IC[1];
+            // Note:  xInitMeth == InitMethLinear.None cannot occur due to an
+            // assertion.
+          end if;
+        elseif cartAxes[axis] == 2 and setYVel then
+          // Apply the IC for all time (y-axis component not conserved).
+          if yInitMeth == InitMethLinear.Velocity then
+            phi[axis] = phi_IC[2];
+          elseif yInitMeth == InitMethLinear.Acceleration then
+            der(phi[axis])/U.s = derphi_IC[2];
+          elseif yInitMeth == InitMethLinear.Current then
+            I[axis] = I_IC[2];
+          else
+            //if yInitMeth == InitMethLinear.CurrentRate then
+            der(I[axis])/U.s = derI_IC[2];
+            // Note:  yInitMeth == InitMethLinear.None cannot occur due to an
+            // assertion.
+          end if;
+        elseif cartAxes[axis] == 3 and setZVel then
+          // Apply the IC for all time (z-axis component not conserved).
+          if zInitMeth == InitMethLinear.Velocity then
+            phi[axis] = phi_IC[3];
+          elseif zInitMeth == InitMethLinear.Acceleration then
+            der(phi[axis])/U.s = derphi_IC[3];
+          elseif zInitMeth == InitMethLinear.Current then
+            I[axis] = I_IC[3];
+          else
+            //if zInitMeth == InitMethLinear.CurrentRate then
+            der(I[axis])/U.s = derI_IC[3];
+            // Note:  zInitMeth == InitMethLinear.None cannot occur due to an
             // assertion.
           end if;
         else
-          (N*(Data.c0_T(T)*der(T) + der(ke)) + inert.V*der(Data.p_vT(inert.V/N,
-            T)))/U.s = (chemical.mu + mphi_chem*mphi_chem/Data.m + actualStream(
-            chemical.sT) - h - ke)*chemical.Ndot + inert.phi*inert.mPhidot +
-            inert.T*inert.Sdot + sum((mu_face - fill(
-                  h + ke - Data.Deltah0_f,
-                  3,
-                  2)) .* Ndot_face) + sum(phi_face .* mPhidot_face) + sum(
-            T_face .* Sdot_face) "Conservation of energy";
-          // Note:  Although it is mathematically equivalent,
-          // der(Data.p_vT(inert.V/N, T)) is used instead of der(Data.p_vT(v, T))
-          // or der(inert.p) or der(inert.p) so that the term can be expanded to
-          // eliminate the need for dynamic state selection.
+          der(Data.m*N*phi[axis])/U.s = chemical.mPhidot[axis] + inert.mPhidot[
+            axis] + sum(if {{negativeX.matEntOpt == MaterialEntropyOpt.OpenDiabatic,
+            positiveX.matEntOpt == MaterialEntropyOpt.OpenDiabatic},{
+            negativeY.matEntOpt == MaterialEntropyOpt.OpenDiabatic,
+            positiveY.matEntOpt == MaterialEntropyOpt.OpenDiabatic},{
+            negativeZ.matEntOpt == MaterialEntropyOpt.OpenDiabatic,
+            positiveZ.matEntOpt == MaterialEntropyOpt.OpenDiabatic}}[
+            cartAxes[axis], side] then (3 - 2*side)*(mu_face[cartAxes[axis],
+            side] - mu + Data.Deltah0_f)*N/L[cartAxes[axis]] else 0 for side
+             in 1:2) + sum(Sigma(mPhidot_face[cartWrap(cartAxes[axis] -
+            orientation), :, orientation]) for orientation in 1:2)
+            "Conservation of linear momentum";
         end if;
-        annotation (
-          defaultComponentPrefixes="replaceable",
-          Documentation(info="<html>
+      end for;
+
+      // Thermal dynamics
+      if setTemp then
+        // Apply the IC for all time (energy not conserved).
+        if tempInitMeth == InitMethScalar.ParticleNumber then
+          N = N_IC;
+        elseif tempInitMeth == InitMethScalar.ParticleNumberRate then
+          der(N)/U.s = derN_IC;
+        elseif tempInitMeth == InitMethScalar.Volume then
+          inert.V = V_IC;
+        elseif tempInitMeth == InitMethScalar.VolumeRate then
+          der(inert.V)/U.s = derV_IC;
+        elseif tempInitMeth == InitMethScalar.VolumeSpecific then
+          v = v_IC;
+        elseif tempInitMeth == InitMethScalar.VolumeSpecificRate then
+          der(v)/U.s = derv_IC;
+        elseif tempInitMeth == InitMethScalar.Pressure then
+          inert.p = p_IC;
+        elseif tempInitMeth == InitMethScalar.PressureRate then
+          der(inert.p)/U.s = derp_IC;
+        elseif tempInitMeth == InitMethScalar.Temperature then
+          T = T_IC;
+        elseif tempInitMeth == InitMethScalar.TemperatureRate then
+          der(T)/U.s = derT_IC;
+        elseif tempInitMeth == InitMethScalar.SpecificEntropy then
+          s = s_IC;
+        elseif tempInitMeth == InitMethScalar.SpecificEntropyRate then
+          der(s)/U.s = ders_IC;
+        elseif tempInitMeth == InitMethScalar.SpecificEnthalpy then
+          h = h_IC;
+        elseif tempInitMeth == InitMethScalar.SpecificEnthalpyRate then
+          der(h)/U.s = derh_IC;
+        elseif tempInitMeth == InitMethScalar.PotentialElectrochemical then
+          mu = mu_IC;
+        elseif tempInitMeth == InitMethScalar.PotentialElectrochemicalRate then
+          der(mu) = dermu_IC;
+        else
+          //if tempInitMeth == InitMethScalar.ReactionRate then
+          chemical.Ndot = Ndot_IC;
+          // Note:  tempInitMeth == InitMethScalar.None cannot occur due to an
+          // assertion.
+        end if;
+      else
+        (N*(Data.c0_T(T)*der(T) + der(ke)) + inert.V*der(Data.p_vT(inert.V/N, T)))
+          /U.s = (chemical.mu - h - ke)*chemical.Ndot + semiLinear(
+              chemical.Ndot,
+              chemical.mphi*chemical.mphi/Data.m,
+              Data.m*phi*phi) + chemical.TSdot + inert.phi*inert.mPhidot +
+          inert.T*inert.Sdot + sum((mu_face - fill(
+              h + ke - Data.Deltah0_f,
+              3,
+              2)) .* Ndot_face) + sum(phi_face .* mPhidot_face) + sum(T_face
+           .* Sdot_face) "Conservation of energy";
+        // Note:  Although it's mathematically equivalent,
+        // der(Data.p_vT(inert.V/N, T)) is used instead of der(Data.p_vT(v, T))
+        // or der(inert.p) or der(inert.p) so that the term can be expanded to
+        // eliminate the need for dynamic state selection.
+      end if;
+      annotation (
+        defaultComponentPrefixes="replaceable",
+        Documentation(info="<html>
     <p>This model is based on the following fixed assumptions.  Other assumptions are optional via the parameters.
     <ol>
        <li>All faces are rectangular.
@@ -7852,7 +7579,7 @@ The default global default settings will be used for the current simulation.",
     </table>
 
     <p>The following variables reflect the actual properties of the
-    species: <code>chemical.mphi</code> (specific mass times velocity), <code>chemical.sT</code> (specific entropy times temperature),
+    species: <code>chemical.mphi</code> (specific mass times velocity), <code>chemical.Ts</code> (specific entropy times temperature),
      <code>inert.V</code> (volume), and <code>inert.p</code> (pressure).  However, due to exchange losses
     <code>chemical.mu</code> (electrochemical potential), <code>inert.phi</code> (velocity), <code>inert.T</code> (temperature)
     are generally not the bulk properties of the species.</p>
@@ -7905,7 +7632,7 @@ The default global default settings will be used for the current simulation.",
     is related to it via the characteristics (in <code>Data</code>) and the initial pressure and temperature.
     In order to apply other values for any of these initial conditions,
     it may be necessary to do so before translating the model.</li>
-    <li>If the species has charged (i.e., is ionic) and permittivity (<code>epsilon</code>) is 
+    <li>If the species has charged (i.e., is ionic) and permittivity (<code>epsilon</code>) is
     zero, then it should be set as <code>final</code> to eliminate
     the associated state.  Otherwise, errors may occur.</li>
     </p>
@@ -7945,51 +7672,20 @@ The default global default settings will be used for the current simulation.",
     Cartesian space
     (or, equivalently, the axis preceding it).</p>
     </html>"),
-          Diagram(coordinateSystem(
-              preserveAspectRatio=true,
-              extent={{-100,-100},{100,100}},
-              initialScale=0.1), graphics),
-          Icon(graphics={Ellipse(
-                extent={{-100,100},{100,-100}},
-                lineColor={127,127,127},
-                pattern=LinePattern.Dash,
-                fillColor={225,225,225},
-                fillPattern=FillPattern.Solid), Text(
-                extent={{-100,-20},{100,20}},
-                textString="%name",
-                lineColor={0,0,0})}));
-      end PartialSpecies;
-
-      type InitMethScalar = enumeration(
-          None "Do not explicitly initialize.",
-          ParticleNumber "Initialize the particle number.",
-          ParticleNumberRate "Initialize the rate of ditto.",
-          Volume "Initialize the volume.",
-          VolumeRate "Initialize the rate of ditto.",
-          VolumeSpecific "Initialize the specific volume.",
-          VolumeSpecificRate "Initialize the rate of ditto.",
-          Pressure "Initialize the pressure.",
-          PressureRate "Initialize the rate of ditto.",
-          Temperature "Initialize the temperature.",
-          TemperatureRate "Initialize the rate of ditto.",
-          SpecificEntropy "Initialize the specific entropy.",
-          SpecificEntropyRate "Initialize the rate of ditto.",
-          SpecificEnthalpy "Initialize the specific enthalpy.",
-          SpecificEnthalpyRate "Initialize the rate of ditto.",
-          PotentialElectrochemical "Initialize the electrochemical potential.",
-
-          PotentialElectrochemicalRate "Initialize the rate of ditto.",
-          ReactionRate "Initialize the reaction rate.")
-        "Methods of initializing scalar properties (particle number and temperature)";
-
-      type InitMethLinear = enumeration(
-          None "Do not explicitly initialize.",
-          Velocity "Initialize the velocity.",
-          Acceleration "Initialize the acceleration.",
-          Current "Initialize the current.",
-          CurrentRate "Initialize the rate of ditto.")
-        "Methods of initializing linear momentum";
-    end BaseClasses;
+        Diagram(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}},
+            initialScale=0.1), graphics),
+        Icon(graphics={Ellipse(
+              extent={{-100,100},{100,-100}},
+              lineColor={127,127,127},
+              pattern=LinePattern.Dash,
+              fillColor={225,225,225},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-100,-20},{100,20}},
+              textString="%name",
+              lineColor={0,0,0})}));
+    end Species;
   end Species;
 
   model PhaseBoundary
@@ -8094,86 +7790,56 @@ The default global default settings will be used for the current simulation.",
             lineColor={0,0,0})}));
   end PhaseBoundary;
 
-  model Reaction "Model for a chemical or electrochemical reaction"
+  model Reaction "Model for a chemical reaction"
     //extends FCSys.BaseClasses.Icons.Names.Top2;
 
     parameter Integer n_lin=1
       "<html>Number of components of linear momentum (<i>n</i><sub>lin</sub>)</html>"
       annotation (Evaluate=true,HideResult=true);
-    parameter Integer n_spec(min=2) = 3 "Number of species"
+    parameter Integer n_spec(min=2) = 0 "Number of species"
       annotation (Dialog(connectorSizing=true));
-    // Note:  Even though the minimum is 2, the default must be 0 to use
-    // connectorSizing.  The default will a singularity error when this model
-    // is checked alone, but that error can be ignored.
-    //Integer nu[n_spec]={-4,-4,-1,2};
-    Integer nu[n_spec]=Chemistry.stoich({chemical1.formula,chemical2.formula,
-        chemical3.formula}) "Stoichiometric coefficients";
-    Q.MassSpecific m[n_spec]={chemical1.m,chemical2.m,chemical3.m}
-      "Specific masses";
-    Q.MassSpecific m_max=max(m) "Maximum specific mass";
-    Boolean isProd[n_spec]={nu[i] > 0 for i in 1:n_spec}
-      "true, if each species is a product";
-    // Note:  The reactant vs. product designation is arbitrary, yet the
-    // grouping is necessary.
-    // Note:  As of Modelica 3.2 and Dymola 7.4, these variables may not be
-    // parameters or constants even though they are not time-varying.  The
-    // strings that represent the chemical formulas and the Real variables
-    // that represent the specific masses may not be passed through the
-    // connector with parameter or constant prefixes.  However, the translator
-    // should recognize that these equations are static.
-
+    // Note:  The minimum is 2 for a meaningful reaction, but the default must
+    // be 0 to use connectorSizing.
+    final Integer nu[n_spec]=Chemistry.stoich(chemical.formula)
+      "Stoichiometric coefficients";
+    //  Q.MassSpecific m[n_spec]=chemical.m "Specific masses";
+    // Note:  As of Modelica 3.2 and Dymola 7.4, this cannot be a parameter or
+    // constant even though it'sn't time-varying.  The strings that
+    // represent the chemical formulas cannnot be passed through the
+    // connectors with parameter or constant prefixes.  However, the
+    // translator should recognize that these equations are static.
+    Q.VelocityMassSpecific mphi[n_lin] "Specific mass times velocity";
+    Q.Potential Ts "Temperature times specific entropy";
     Q.Current Xidot(nominal=1*U.A) "Reaction rate";
-    Connectors.ChemicalInput chemical1(each final n_lin=n_lin)
-      "Chemical connector with advection of linear momentum"
+    Connectors.ChemicalInput chemical[n_spec](each final n_lin=n_lin)
+      "Chemical connector"
       annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
 
-    Connectors.ChemicalInput chemical2(each final n_lin=n_lin)
-      "Chemical connector with advection of linear momentum"
-      annotation (Placement(transformation(extent={{10,-10},{30,10}})));
-    Connectors.ChemicalInput chemical3(each final n_lin=n_lin)
-      "Chemical connector with advection of linear momentum"
-      annotation (Placement(transformation(extent={{30,-10},{50,10}})));
   equation
     // Chemical equilibrium
-    nu*{chemical1.mu,chemical2.mu,chemical3.mu} = 0;
+    nu*chemical.mu = 0;
 
-    // Material conservation (without storage)
-    nu*Xidot = {chemical1.Ndot,chemical2.Ndot,chemical3.Ndot};
-
-    // Ideal mixing/conservation of linear momentum and energy (without storage)
-    /*
-  for i in 1:n_spec loop
-    m_max*chemical[i].mphi = m[i]*sum(if isProd[i] <> isProd[j] then inStream(
-      chemical[j].mphi) else zeros(n_lin) for j in 1:n_spec);
-    m_max*chemical[i].sT_outflow = m[i]*sum(if isProd[i] <> isProd[j] then inStream(
-      chemical[j].sT_outflow) else 0 for j in 1:n_spec);
-  end for;
-*/
-    m[3]*chemical1.mphi = m[1]*inStream(chemical3.mphi);
-    m[3]*chemical1.sT_outflow = m[1]*inStream(chemical3.sT_outflow);
-
-    m[3]*chemical2.mphi = m[2]*inStream(chemical3.mphi);
-    m[3]*chemical2.sT_outflow = m[2]*inStream(chemical3.sT_outflow);
-
-    chemical3.mphi = inStream(chemical1.mphi) + inStream(chemical2.mphi);
-    chemical3.sT_outflow = inStream(chemical1.sT_outflow) + inStream(chemical2.sT_outflow);
-
-    0 = chemical2.mphi*nu2/m2 + inStream(chemical3.mphi)*nu3/m3;
-
-    //  chemical.mphi = zeros(n_spec, n_lin);
-    /*
-  for ax in 1:n_lin loop
+    // Ideal mixing/upstream discretization
     for i in 1:n_spec loop
-      chemical[i].mphi[ax] = 0;
+      chemical[i].mPhidot = semiLinear(
+          chemical[i].Ndot,
+          chemical[i].mphi,
+          mphi);
     end for;
-  end for;
-  chemical.sT_outflow = zeros(n_spec);
-  */
+    chemical.TSdot = semiLinear(
+        chemical.Ndot,
+        chemical.Ts,
+        Ts);
 
-    // This model is marked as structurally incomplete because it must
-    // have no species by default (for automatic connector sizing), yet
-    // least one species is mathematically required (and two species
-    // for a meaningful reaction).
+    // Conservation (without storage)
+    nu*Xidot = chemical.Ndot "Material";
+    sum(chemical[i].mPhidot for i in 1:n_spec) = zeros(n_lin) "Linear momentum";
+    sum(chemical.TSdot) = 0 "Energy";
+
+    // Note:  This model is marked as structurally incomplete.  It must have
+    // no species by default (for automatic connector sizing), but at least
+    // one species is mathematically required (and two for a meaningful
+    // reaction).
     annotation (
       structurallyIncomplete=true,
       Documentation(info="<html>
@@ -8216,7 +7882,7 @@ The default global default settings will be used for the current simulation.",
             lineColor={127,127,127},
             pattern=LinePattern.Dash),
           Text(
-            extent={{-100,-14},{100,-38}},
+            extent={{-100,-16},{100,-40}},
             lineColor={127,127,127},
             textString="%n_spec")}),
       Diagram(graphics));
@@ -8349,45 +8015,45 @@ The default global default settings will be used for the current simulation.",
 
       FCSys.Connectors.FaceBus negativeX if inclXFaces
         "Negative face along the x axis" annotation (Placement(transformation(
-              extent={{-50,-10},{-30,10}}),iconTransformation(extent={{-110,-10},
+              extent={{-50,-10},{-30,10}}), iconTransformation(extent={{-110,-10},
                 {-90,10}})));
       FCSys.Connectors.FaceBus positiveX if inclXFaces
         "Positive face along the x axis" annotation (Placement(transformation(
-              extent={{30,-10},{50,10}}),iconTransformation(extent={{90,-10},{
+              extent={{30,-10},{50,10}}), iconTransformation(extent={{90,-10},{
                 110,10}})));
       FCSys.Connectors.FaceBus negativeY if inclYFaces
         "Negative face along the y axis" annotation (Placement(transformation(
-              extent={{-10,-50},{10,-30}}),iconTransformation(extent={{-10,-110},
+              extent={{-10,-50},{10,-30}}), iconTransformation(extent={{-10,-110},
                 {10,-90}})));
       FCSys.Connectors.FaceBus positiveY if inclYFaces
         "Positive face along the y axis" annotation (Placement(transformation(
-              extent={{-10,30},{10,50}}),iconTransformation(extent={{-10,90},{
+              extent={{-10,30},{10,50}}), iconTransformation(extent={{-10,90},{
                 10,110}})));
       FCSys.Connectors.FaceBus negativeZ if inclZFaces
         "Negative face along the z axis" annotation (Placement(transformation(
-              extent={{10,10},{30,30}}),iconTransformation(extent={{40,40},{60,
+              extent={{10,10},{30,30}}), iconTransformation(extent={{40,40},{60,
                 60}})));
       FCSys.Connectors.FaceBus positiveZ if inclZFaces
         "Positive face along the z axis" annotation (Placement(transformation(
-              extent={{-30,-30},{-10,-10}}),iconTransformation(extent={{-60,-60},
+              extent={{-30,-30},{-10,-10}}), iconTransformation(extent={{-60,-60},
                 {-40,-40}})));
 
     protected
       final parameter Integer n_lin=countTrue({inclXMom,inclYMom,inclZMom})
         "Number of components of linear momentum" annotation (Evaluate=true);
 
-      FCSys.Subregions.Volume volume(final n_lin=n_lin,final V=V)
+      FCSys.Subregions.Volume volume(final n_lin=n_lin, final V=V)
         "Model to establish space for species"
-        annotation (Placement(transformation(extent={{-18,-18},{18,18}})));
+        annotation (Placement(transformation(extent={{-16,-16},{16,16}})));
       annotation (
         Documentation(info="<html><p>Notes:
 <ul><li>This model must be be extended so that models can be added for
   relevant species, phases, and reactions.</li>
   <li>Material will be transported between two subregions only if both of the connected faces are marked
-  as open (<code>matEntOpt==MaterialEntropyOptions.OpenDiabatic</code>)
+  as open (<code>matEntOpt==MaterialEntropyOpt.OpenDiabatic</code>)
   within the instances of the matched <a href=\"modelica://FCSys.Subregions.Species\">Species</a> models.
-  If either or both of the faces are closed (<code>matEntOpt==MaterialEntropyOptions.ClosedAdiabatic</code> or
-  <code>matEntOpt==MaterialEntropyOptions.ClosedDiabatic</code>), then the interface will be closed.
+  If either or both of the faces are closed (<code>matEntOpt==MaterialEntropyOpt.ClosedAdiabatic</code> or
+  <code>matEntOpt==MaterialEntropyOpt.ClosedDiabatic</code>), then the interface will be closed.
   note applies to the viscous/inviscous and diabatic/adiabatic properties.</li>
   <li>The x-axis component of linear momentum is included by default.  At least one component must be included.</li></ul></p></html>"),
 
@@ -8480,21 +8146,33 @@ The default global default settings will be used for the current simulation.",
 
     end PartialSubregion;
 
-    model ReactAdapt "**"
-
-      parameter Integer nu=1 "**Stoich coeff";
-      Connectors.BaseClasses.PartialChemical chemical
-        annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-      Connectors.BaseClasses.PartialReaction reaction
-        annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
-    equation
-      reaction.munu = nu*chemical.mu;
-      chemical.Ndot = nu*reaction.Xidot annotation (Diagram(graphics));
-      inStream(reaction.mphi) = chemical.mphi;
-      inStream(chemical.mphi) = reaction.mphi;
-      inStream(reaction.sT) = chemical.sT;
-      inStream(chemical.sT) = reaction.sT;
-    end ReactAdapt;
+    type InitMethScalar = enumeration(
+        None "Do not explicitly initialize.",
+        ParticleNumber "Initialize the particle number.",
+        ParticleNumberRate "Initialize the rate of ditto.",
+        Volume "Initialize the volume.",
+        VolumeRate "Initialize the rate of ditto.",
+        VolumeSpecific "Initialize the specific volume.",
+        VolumeSpecificRate "Initialize the rate of ditto.",
+        Pressure "Initialize the pressure.",
+        PressureRate "Initialize the rate of ditto.",
+        Temperature "Initialize the temperature.",
+        TemperatureRate "Initialize the rate of ditto.",
+        SpecificEntropy "Initialize the specific entropy.",
+        SpecificEntropyRate "Initialize the rate of ditto.",
+        SpecificEnthalpy "Initialize the specific enthalpy.",
+        SpecificEnthalpyRate "Initialize the rate of ditto.",
+        PotentialElectrochemical "Initialize the electrochemical potential.",
+        PotentialElectrochemicalRate "Initialize the rate of ditto.",
+        ReactionRate "Initialize the reaction rate.")
+      "Methods of initializing scalar properties (particle number and temperature)";
+    type InitMethLinear = enumeration(
+        None "Do not explicitly initialize.",
+        Velocity "Initialize the velocity.",
+        Acceleration "Initialize the acceleration.",
+        Current "Initialize the current.",
+        CurrentRate "Initialize the rate of ditto.")
+      "Methods of initializing linear momentum";
   end BaseClasses;
 
   annotation (Documentation(info="<html>
@@ -8510,123 +8188,4 @@ FCSys.UsersGuide.ModelicaLicense2</a> or visit <a href=\"http://www.modelica.org
 http://www.modelica.org/licenses/ModelicaLicense2</a>.</i>
 </p>
 </html>"));
-  model Reaction2 "Model for a chemical or electrochemical reaction"
-    //extends FCSys.BaseClasses.Icons.Names.Top2;
-
-    parameter Integer n_lin=1
-      "<html>Number of components of linear momentum (<i>n</i><sub>lin</sub>)</html>"
-      annotation (Evaluate=true,HideResult=true);
-    parameter Integer n_spec(min=2) = 0 "Number of species"
-      annotation (Dialog(connectorSizing=true));
-    // Note:  Even though the minimum is 2, the default must be 0 to use
-    // connectorSizing.  The default will a singularity error when this model
-    // is checked alone, but that error can be ignored.
-    //Integer nu[n_spec]={-4,-4,-1,2};
-    Integer nu[n_spec]=Chemistry.stoich(chemical.formula)
-      "Stoichiometric coefficients";
-    Q.MassSpecific m[n_spec]=chemical.m "Specific masses";
-    Q.MassSpecific m_max=max(m) "Maximum specific mass";
-    Boolean isProd[n_spec]={nu[i] > 0 for i in 1:n_spec}
-      "true, if each species is a product";
-    // Note:  The reactant vs. product designation is arbitrary, yet the
-    // grouping is necessary.
-    // Note:  As of Modelica 3.2 and Dymola 7.4, these variables may not be
-    // parameters or constants even though they are not time-varying.  The
-    // strings that represent the chemical formulas and the Real variables
-    // that represent the specific masses may not be passed through the
-    // connector with parameter or constant prefixes.  However, the translator
-    // should recognize that these equations are static.
-
-    Q.Current Xidot(nominal=1*U.A) "Reaction rate";
-    Connectors.ChemicalInput chemical[n_spec](each final n_lin=n_lin)
-      "Chemical connector with advection of linear momentum"
-      annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-
-  equation
-    // Chemical equilibrium
-    nu*chemical.mu = 0;
-
-    // Material conservation (without storage)
-    nu*Xidot = chemical.Ndot;
-
-    // Ideal mixing/conservation of linear momentum and energy (without storage)
-    /*
-  for i in 1:n_spec loop
-    m_max*chemical[i].mphi = m[i]*sum(if isProd[i] <> isProd[j] then inStream(
-      chemical[j].mphi) else zeros(n_lin) for j in 1:n_spec);
-    m_max*chemical[i].sT = m[i]*sum(if isProd[i] <> isProd[j] then inStream(
-      chemical[j].sT) else 0 for j in 1:n_spec);
-  end for;
-*/
-    /*
-  m[3]*chemical[1].mphi = m[1]*inStream(chemical[3].mphi);
-  m[3]*chemical[1].sT = m[1]*inStream(chemical[3].sT);
-
-  m[3]*chemical[2].mphi = m[2]*inStream(chemical[3].mphi);
-  m[3]*chemical[2].sT = m[2]*inStream(chemical[3].sT);
-
-  chemical[3].mphi = inStream(chemical[1].mphi) + inStream(chemical[2].mphi);
-  chemical[3].sT = inStream(chemical[1].sT) + inStream(chemical[2].sT);
-*/
-    //  chemical.mphi = zeros(n_spec, n_lin);
-    /*
-  for ax in 1:n_lin loop
-    for i in 1:n_spec loop
-      chemical[i].mphi[ax] = 0;
-    end for;
-  end for;
-  chemical.sT = zeros(n_spec);
-  */
-
-    // This model is marked as structurally incomplete because it must
-    // have no species by default (for automatic connector sizing), yet
-    // least one species is mathematically required (and two species
-    // for a meaningful reaction).
-    annotation (
-      structurallyIncomplete=true,
-      Documentation(info="<html>
-    <p>The size of the chemical connector is automatically increased each time a connection is made.
-    At least two species must be connected.
-    The stoichiometry is determined automatically from the chemical formulas
-    of the connected species.  No intermediate species are considered. Each reaction must be
-    completely and uniquely defined by the connected species.  Otherwise an error message is given.
-    If you suspect a bug in the library, please report it using the
-    <a href=\"modelica://FCSys.UsersGuide.Contact\">contact information</a>.</p>
-
-    <p>For material, this model is essentially the opposite of a standard single-species connection.
-    The stoichiometric sum of the efforts (&Sigma; &nu;<sub><i>i</i></sub> &mu;<sub><i>i</i></sub>)
-    is zero, which is analogous to Kirchhoff's Current Law.  The flow rates divided by the
-    stoichiometric coefficients (<i>N&#775;</i><sub><i>i</i></sub> /&nu;<sub><i>i</i></sub>)
-    are equal&mdash;analogous to Kirchhoff's Voltage Law.</p>
-
-    <p>Momentum and energy are advected using <code>stream</code> variables.  There is no diffusion;
-    it is included in the inert connections among species
-    (see the <a href=\"modelica://FCSys.Subregions.BaseClasses.PartialSpecies\">PartialSpecies</a> model).<p>
-
-    <p>Assumptions:<ul>
-    <li>No storage of material, linear momentum, or energy</li></ul>
-    </p>
-    </html>"),
-      Icon(graphics={
-          Rectangle(
-            extent={{-140,40},{140,80}},
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Solid,
-            pattern=LinePattern.None),
-          Text(
-            extent={{-140,40},{140,80}},
-            textString="%name",
-            lineColor={0,0,0}),
-          Ellipse(
-            extent={{-100,40},{100,-40}},
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Solid,
-            lineColor={127,127,127},
-            pattern=LinePattern.Dash),
-          Text(
-            extent={{-100,-14},{100,-38}},
-            lineColor={127,127,127},
-            textString="%n_spec")}),
-      Diagram(graphics));
-  end Reaction2;
 end Subregions;

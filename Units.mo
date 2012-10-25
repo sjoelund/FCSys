@@ -402,8 +402,8 @@ package Units "Constants and units of physical measure"
       final constant Q.Angle rad=1 "radian";
       // SI unit of rotation or planar angle
       // This relation is from [BIPM2006, Table 3].  The radian is currently
-      // not adjustable because BIPM does not explicitly use angle in the
-      // definitions of Hz, sr, etc. and NIST does not explicitly use angle
+      // not adjustable because BIPM doesn't explicitly use angle in the
+      // definitions of Hz, sr, etc. and NIST doesn't explicitly use angle
       // in the relations for R_inf, c_3_nu, etc [NIST2010].
       constant Q.Wavenumber R_inf=1
         "<html>Rydberg constant (R<sub>&infin;</sub>)</html>";
@@ -494,7 +494,7 @@ package Units "Constants and units of physical measure"
   constant Q.Length m=10973731.568539*rad/R_inf "meter";
   // SI unit of length
   // This is the "Rydberg constant" relation [NIST2010].  The unit radian
-  // is included to be explicit, although it is currently one by definition
+  // is included to be explicit, although it's currently one by definition
   // [BIPM2006].  The Rydberg constant may be determined by measuring the
   // spectra of hydrogen, deuterium, and antiprotonic helium
   // (http://en.wikipedia.org/wiki/Rydberg_constant).
@@ -512,7 +512,7 @@ package Units "Constants and units of physical measure"
   // SI unit of electrical conductance
   // This is the "von Klitzing constant" relation [NIST2010].  The unit
   // radian is included on the denominator for dimensional consistency, but
-  // it is one by the current defition [BIPM2006].  The von Klitzing
+  // it's one by the current defition [BIPM2006].  The von Klitzing
   // constant may be determined by measuring the quantum hall effect
   // (http://en.wikipedia.org/wiki/Quantum_Hall_effect).
   constant Q.ParticleNumber mol=96485.3365*Wb*S/k_F "mole";
@@ -588,8 +588,8 @@ package Units "Constants and units of physical measure"
   // This is defined for convenience (not listed by [BIPM2006]).
   final constant Q.Frequency Hz=cyc/s "hertz";
   // SI unit of frequency
-  // Note:  Numerically, this does not evaluate to Hz = 1/s as stated by
-  // BIPM (that relation is not dimensionally correct when considering
+  // Note:  Numerically, this doesn't evaluate to Hz = 1/s as stated by
+  // BIPM (that relation isn't dimensionally correct when considering
   // angle as a dimension), but allows the conversion of frequency into as
   // cycles per second (Hz) or radians per second (rad/s). Since BIPM
   // defines rad = 1 (also dimensionally incorrect) and given that
@@ -650,9 +650,9 @@ package Units "Constants and units of physical measure"
     "<html>magnetic flux quantum (&Phi;<sub>0</sub>)</html>";
   final constant Q.ParticleNumber q=G_0*Phi_0 "elementary charge";
   final constant Q.MomentumAngular h=2*q*Phi_0 "Planck constant";
-  // The Planck constant over 2*pi (hbar) is not included as a unique
+  // The Planck constant over 2*pi (hbar) isn't included as a unique
   // variable.  The unit of angle (rad or cyc) should be factored into the
-  // variable that represents frequency as a quantity.  Then, it is
+  // variable that represents frequency as a quantity.  Then, it's
   // unneccessary to use hbar, e.g.:
   //     hbar = h ~= 1.0545e-34*J/Hz ~= 6.6260e-34*J*s/cyc,
   // where Hz = rad/s.  Currently, rad = 1 (see U.Bases.Base).
@@ -702,11 +702,11 @@ package Units "Constants and units of physical measure"
   // See the notes for c_3_nu.  The derivation is similar to that of c_3_nu,
   // but here, the value is the solution to exp(x)*(5 - x) =  5.  The value
   // is from Mathematica (FCSys/resources/math-constants.cdf).  Note that the
-  // frequency displacement constant is not directly related to the
+  // frequency displacement constant isn't directly related to the
   // wavelength displacement constant:  "Because the spectrum resulting from
   // Planck's law of black body radiation takes a different shape in the
   // frequency domain from that of the wavelength domain, the frequency
-  // of the peak emission does not correspond to the peak wavelength using
+  // of the peak emission doesn't correspond to the peak wavelength using
   // the simple relation between frequency, wavelength, and the speed of
   // light"
   // (http://en.wikipedia.org/wiki/Wien's_displacement_law, accessed
@@ -805,7 +805,7 @@ package Units "Constants and units of physical measure"
 
     <p>The user should be aware of several aspects of the implementation.
     A script
-    (\"FCSys/resources/configuration/units.mos\") runs a model (<a href=\"modelica://FCSys.Units.Evaluate\">FCSys.Units.Evaluate</a>)
+    (\"FCSys/resources/configuration/units.mos\") runs a model (<a href=\"modelica://U.Evaluate\">U.Evaluate</a>)
     to determine the values of the units and defines the conversions to display values as numbers
     in units.  This script is set to run when <a href=\"modelica://FCSys\">FCSys</a> is loaded via
     \"FCSys/load.mos\" or from a link in the \"Commands\" menu of <a href=\"modelica://FCSys.Units\">FCSys.Units</a> (when viewed within

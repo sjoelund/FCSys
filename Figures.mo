@@ -1269,11 +1269,11 @@ package Figures "Layouts for documentation"
     extends FCSys.BaseClasses.Icons.Cell;
 
     annotation (Icon(graphics={Rectangle(
-            extent={{-100,100},{100,65}},
-            fillPattern=FillPattern.Solid,
-            fillColor={255,255,255},
-            pattern=LinePattern.None,
-            lineColor={0,0,0})}));
+              extent={{-100,100},{100,65}},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,255,255},
+              pattern=LinePattern.None,
+              lineColor={0,0,0})}));
   end Logo;
 
   partial model PhaseIcon
@@ -1285,7 +1285,7 @@ package Figures "Layouts for documentation"
 
   partial model SpeciesIcon
 
-    FCSys.Subregions.Species.BaseClasses.PartialSpecies Species
+    FCSys.Subregions.Species.Species Species
       annotation (Placement(transformation(extent={{-100,-100},{100,100}})));
     annotation (structurallyIncomplete=true);
   end SpeciesIcon;
@@ -1519,18 +1519,17 @@ package Figures "Layouts for documentation"
   connector VolumeOrPressure "Icon for additivity of volume or pressure"
 
     annotation (Diagram(graphics={Text(
-            extent={{-100,36},{100,76}},
-            textString="%name",
-            lineColor={0,0,0}), Ellipse(
-            extent={{-30,30},{30,-30}},
-            lineColor={0,0,0},
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Solid)}), Icon(graphics={Ellipse(
-            extent={{-100,100},{100,-100}},
-            lineColor={0,0,0},
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Solid)}));
-
+              extent={{-100,36},{100,76}},
+              textString="%name",
+              lineColor={0,0,0}),Ellipse(
+              extent={{-30,30},{30,-30}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}), Icon(graphics={Ellipse(
+              extent={{-100,100},{100,-100}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid)}));
   end VolumeOrPressure;
 
   model RouterPassThrough
