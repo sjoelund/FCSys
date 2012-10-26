@@ -1925,7 +1925,7 @@ the z axis extends across the width of the channel.</p>
 
       // TODO: Clean up (move to Species models if appropriate):
 
-      // Note:  In Dymola 7.4, the following cannot be used:
+      // Note:  In Dymola 7.4, the following can't be used:
       //     each final N_IC=lambda_IC*subregions[1, 1, 1].ionomer.C19HF37O5S.N_IC)
       // due to the following error:
       //     "The left hand side of the following equation is a scalar and the

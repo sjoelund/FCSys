@@ -739,7 +739,7 @@ package Units "Constants and units of physical measure"
 
   // -----------------------------------------------------------------------
   // Selected other non-SI units from [BIPM2006, Table 8]
-  // Note:  Logarithmic ratios have been excluded because they cannot be
+  // Note:  Logarithmic ratios have been excluded because they can't be
   // represented in Dymola's unit conversion GUI.
 
   final constant Q.Pressure bar=1e5*Pa "bar";

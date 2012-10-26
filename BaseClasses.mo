@@ -1149,7 +1149,7 @@ An unrelated species may be included.");
          and n > -size(a, 1) then a[1 - n] else 0) + (if n + size(a, 1) > 1
          then (if n > 1 then x^(n - 1) else 1)*positivePoly(x, a[1 + max(0, 1
          - n):size(a, 1)]) else 0) annotation (Inline=true);
-      // Here, Dymola 7.4 will not allow indexing via a[1 + max(0, 1 - n):end], so
+      // Here, Dymola 7.4 won't allow indexing via a[1 + max(0, 1 - n):end], so
       // a[1 + max(0, 1 - n):size(a, 1)] is necessary.
     end poly;
 

@@ -688,7 +688,7 @@ package Characteristics "Data and functions to correlate physical properties"
     /U.K) + "] K).");
   */
         // Note:  This is commented out so that the function can be inlined.
-        // Note:  In Dymola 7.4, T_lim_beta[end] cannot be used instead of
+        // Note:  In Dymola 7.4, T_lim_beta[end] can't be used instead of
         // T_lim_beta[size(T_lim_beta, 1)] due to:
         //     "Error, not all "end" could be expanded."
 
@@ -735,7 +735,7 @@ package Characteristics "Data and functions to correlate physical properties"
     /U.K) + "] K).");
   */
         // Note:  This is commented out so that the function can be inlined.
-        // Note:  In Dymola 7.4, T_lim_beta[end] cannot be used instead of
+        // Note:  In Dymola 7.4, T_lim_beta[end] can't be used instead of
         // T_lim_beta[size(T_lim_beta, 1)] due to:
         //     "Error, not all "end" could be expanded."
 
@@ -847,7 +847,7 @@ package Characteristics "Data and functions to correlate physical properties"
     /U.K) + ", " + String(T_lim_c0[size(T_lim_c0, 1)]/U.K) + "] K).");
   */
         // Note:  This is commented out so that the function can be inlined.
-        // Note:  In Dymola 7.4, T_lim_c0[end] cannot be used instead of
+        // Note:  In Dymola 7.4, T_lim_c0[end] can't be used instead of
         // T_lim_c0[size(T_lim_c0, 1)] due to:
         //    "Error, not all 'end' could be expanded."
 
@@ -896,7 +896,7 @@ package Characteristics "Data and functions to correlate physical properties"
     /U.K) + ", " + String(T_lim_c0[size(T_lim_c0, 1)]/U.K) + "] K).");
     */
         // Note:  This is commented out so that the function can be inlined.
-        // Note:  In Dymola 7.4, T_lim_c0[end] cannot be used instead of
+        // Note:  In Dymola 7.4, T_lim_c0[end] can't be used instead of
         // T_lim_c0[size(T_lim_c0, 1)] due to:
         //    "Error, not all 'end' could be expanded."
 
@@ -954,7 +954,7 @@ package Characteristics "Data and functions to correlate physical properties"
     /U.K) + ", " + String(T_lim_c0[size(T_lim_c0, 1)]/U.K) + "] K).");
     */
         // Note:  This is commented out so that the function can be inlined.
-        // Note:  In Dymola 7.4, T_lim_c0[end] cannot be used instead of
+        // Note:  In Dymola 7.4, T_lim_c0[end] can't be used instead of
         // T_lim_c0[size(T_lim_c0, 1)] due to:
         //    "Error, not all 'end' could be expanded."
 
@@ -983,7 +983,7 @@ package Characteristics "Data and functions to correlate physical properties"
         // assert(isCompressible,
         //  "The pressure is undefined since the material is incompressible.",
         //  AssertionLevel.warning);
-        // Note:  In Dymola 7.4, the assertion level cannot be set, although it
+        // Note:  In Dymola 7.4, the assertion level can't be set, although it
         // has been defined as an argument to assert() since Modelica 3.0.
 
         p := if isCompressible then poly(
@@ -1030,7 +1030,7 @@ package Characteristics "Data and functions to correlate physical properties"
     /U.K) + ", " + String(T_lim_c0[size(T_lim_c0, 1)]/U.K) + "] K).");
   */
         // Note:  This is commented out so that the function can be inlined.
-        // Note:  In Dymola 7.4, T_lim_c0[end] cannot be used instead of
+        // Note:  In Dymola 7.4, T_lim_c0[end] can't be used instead of
         // T_lim_c0[size(T_lim_c0, 1)] due to:
         //    "Error, not all 'end' could be expanded."
 

@@ -31,6 +31,8 @@ rpls = [# Remove extra spacing.
         (r'(// .*)do not', r"\1don't"),
         (r'(// .*)does not', r"\1doesn't"),
         (r'(// .*)is not', r"\1isn't"),
+        (r'(// .*)will not', r"\1won't"),
+        (r'(// .*)cannot', r"\1can't"),
         # but not others.
         (r"(// .*)it's", r'\1it is'),
        ]

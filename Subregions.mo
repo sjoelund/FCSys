@@ -7364,7 +7364,7 @@ The default global default settings will be used for the current simulation.",
         else
           //if partNumInitMeth == InitMethScalar.ReactionRate then
           chemical.Ndot = Ndot_IC;
-          // Note:  partNumInitMeth == InitMethScalar.None cannot occur due to
+          // Note:  partNumInitMeth == InitMethScalar.None can't occur due to
           // an assertion.
         end if;
       else
@@ -7384,7 +7384,7 @@ The default global default settings will be used for the current simulation.",
           else
             //if xInitMeth == InitMethLinear.CurrentRate then
             der(I[axis])/U.s = derI_IC[1];
-            // Note:  xInitMeth == InitMethLinear.None cannot occur due to an
+            // Note:  xInitMeth == InitMethLinear.None can't occur due to an
             // assertion.
           end if;
         elseif cartAxes[axis] == 2 and setYVel then
@@ -7398,7 +7398,7 @@ The default global default settings will be used for the current simulation.",
           else
             //if yInitMeth == InitMethLinear.CurrentRate then
             der(I[axis])/U.s = derI_IC[2];
-            // Note:  yInitMeth == InitMethLinear.None cannot occur due to an
+            // Note:  yInitMeth == InitMethLinear.None can't occur due to an
             // assertion.
           end if;
         elseif cartAxes[axis] == 3 and setZVel then
@@ -7412,7 +7412,7 @@ The default global default settings will be used for the current simulation.",
           else
             //if zInitMeth == InitMethLinear.CurrentRate then
             der(I[axis])/U.s = derI_IC[3];
-            // Note:  zInitMeth == InitMethLinear.None cannot occur due to an
+            // Note:  zInitMeth == InitMethLinear.None can't occur due to an
             // assertion.
           end if;
         else
@@ -7468,7 +7468,7 @@ The default global default settings will be used for the current simulation.",
         else
           //if tempInitMeth == InitMethScalar.ReactionRate then
           chemical.Ndot = Ndot_IC;
-          // Note:  tempInitMeth == InitMethScalar.None cannot occur due to an
+          // Note:  tempInitMeth == InitMethScalar.None can't occur due to an
           // assertion.
         end if;
       else
@@ -7784,7 +7784,7 @@ The default global default settings will be used for the current simulation.",
     final Integer nu[n_spec]=Chemistry.stoich(chemical.formula)
       "Stoichiometric coefficients";
     //  Q.MassSpecific m[n_spec]=chemical.m "Specific masses";
-    // Note:  As of Modelica 3.2 and Dymola 7.4, this cannot be a parameter or
+    // Note:  As of Modelica 3.2 and Dymola 7.4, this can't be a parameter or
     // constant even though it isn't time-varying.  The strings that
     // represent the chemical formulas cannnot be passed through the
     // connectors with parameter or constant prefixes.  However, the
