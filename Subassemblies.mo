@@ -31,9 +31,9 @@ package Subassemblies "Combinations of regions (e.g., cells)"
 
         extends FCSys.BCs.TestStands.TestProfile(anEnd(each graphite('incle-'=
                   true, 'e-'(redeclare Modelica.Blocks.Sources.Ramp
-                  materialSpec(height=1*U.A, duration=50)))), caEnd(each
+                  materialSpec(height=100*U.A, duration=50)))), caEnd(each
               graphite('incle-'=true, 'e-'(redeclare
-                  Modelica.Blocks.Sources.Ramp materialSpec(height=-1*U.A,
+                  Modelica.Blocks.Sources.Ramp materialSpec(height=-100*U.A,
                     duration=50)))));
         replaceable FCSys.Subassemblies.Cells.Cell cell annotation (
             __Dymola_choicesFromPackage=true, Placement(transformation(extent={
@@ -87,6 +87,7 @@ package Subassemblies "Combinations of regions (e.g., cells)"
           experiment(StopTime=600, Tolerance=1e-08),
           experimentSetupOutput,
           Icon(graphics));
+
       end CellProfile;
 
       model Polarization "Run a cell polarization"
@@ -468,9 +469,9 @@ package Subassemblies "Combinations of regions (e.g., cells)"
       // TODO: For GM cell, use dissimilar L_y and L_z for anode, cathode, and PEM.
 
       // Essential analysis variables (x-axis electrical voltage, power, and current)
-      output Q.Potential v=average(average(caFP.subregions[caFP.n_x, :, :].graphite.
-          'e-'.mu_face[1, 2] - anFP.subregions[1, :, :].graphite.'e-'.mu_face[1,
-          1])) "Average electrical potential (x axis)";
+      output Q.Potential v=average(average(anFP.subregions[1, :, :].graphite.
+          'e-'.mu_face[1, 1] - caFP.subregions[caFP.n_x, :, :].graphite.'e-'.mu_face[
+          1, 2])) "Average electrical potential (x axis)";
       output Q.Power Wdot=-sum(anFP.subregions[1, :, :].graphite.'e-'.mu_face[1,
           1] .* anFP.subregions[1, :, :].graphite.'e-'.Ndot_face[1, 1] + caFP.subregions[
           caFP.n_x, :, :].graphite.'e-'.mu_face[1, 2] .* caFP.subregions[caFP.n_x,
@@ -564,58 +565,54 @@ package Subassemblies "Combinations of regions (e.g., cells)"
             rotation=180,
             origin={-40,-100})));
 
-      replaceable FCSys.Regions.AnFPs.AnFP anFP(final L_y=L_y, final L_z=L_z)
-        "Anode flow plate" annotation (
-        __Dymola_choicesFromPackage=true,
-        Dialog(group="Layers"),
-        Placement(transformation(extent={{-70,-10},{-50,10}})));
-      replaceable FCSys.Regions.AnGDLs.AnGDL anGDL(final L_y=L_y,final L_z=L_z)
-        "Anode GDL" annotation (
-        __Dymola_choicesFromPackage=true,
-        Dialog(group="Layers"),
-        Placement(transformation(extent={{-50,-10},{-30,10}})));
+      replaceable FCSys.Regions.AnFPs.AnFP anFP(
+        final L_y=L_y,
+        final L_z=L_z,
+        subregions(each graphite('e-'(partNumInitMeth=InitMethScalar.None))))
+        "Anode flow plate" annotation (Dialog(group="Layers"), Placement(
+            transformation(extent={{-70,-10},{-50,10}})));
+
+      replaceable FCSys.Regions.AnGDLs.AnGDL anGDL(
+        final L_y=L_y,
+        final L_z=L_z,
+        subregions(each graphite('e-'(partNumInitMeth=InitMethScalar.None))))
+        "Anode gas diffusion layer" annotation (Dialog(group="Layers"),
+          Placement(transformation(extent={{-50,-10},{-30,10}})));
 
       replaceable FCSys.Regions.AnCLs.AnCL anCL(
         final L_y=L_y,
         final L_z=L_z,
         subregions(each ionomer('H+'(partNumInitMeth=InitMethScalar.None))))
-        "Anode catalyst layer" annotation (
-        __Dymola_choicesFromPackage=true,
-        Dialog(group="Layers"),
-        Placement(transformation(extent={{-30,-10},{-10,10}})));
+        "Anode catalyst layer" annotation (Dialog(group="Layers"), Placement(
+            transformation(extent={{-30,-10},{-10,10}})));
 
       replaceable FCSys.Regions.PEMs.PEM pEM(
         final L_y=L_y,
         final L_z=L_z,
         subregions(each ionomer('H+'(partNumInitMeth=InitMethScalar.None))))
-        "PEM" annotation (
-        __Dymola_choicesFromPackage=true,
-        Dialog(group="Layers"),
-        Placement(transformation(extent={{-10,-10},{10,10}})));
+        "Proton exchange membrane" annotation (Dialog(group="Layers"),
+          Placement(transformation(extent={{-10,-10},{10,10}})));
+
       replaceable FCSys.Regions.CaCLs.CaCL caCL(final L_y=L_y,final L_z=L_z)
-        "Cathode catalyst layer" annotation (
-        __Dymola_choicesFromPackage=true,
-        Dialog(group="Layers"),
-        Placement(transformation(extent={{10,-10},{30,10}})));
+        "Cathode catalyst layer" annotation (Dialog(group="Layers"), Placement(
+            transformation(extent={{10,-10},{30,10}})));
 
       replaceable FCSys.Regions.CaGDLs.CaGDL caGDL(final L_y=L_y,final L_z=L_z)
-        "Cathode GDL" annotation (
-        __Dymola_choicesFromPackage=true,
-        Dialog(group="Layers"),
-        Placement(transformation(extent={{30,-10},{50,10}})));
+        "Cathode gas diffusion layer" annotation (Dialog(group="Layers"),
+          Placement(transformation(extent={{30,-10},{50,10}})));
 
       replaceable FCSys.Regions.CaFPs.CaFP caFP(final L_y=L_y,final L_z=L_z)
-        "Cathode flow plate" annotation (
-        __Dymola_choicesFromPackage=true,
-        Dialog(group="Layers"),
-        Placement(transformation(extent={{50,-10},{70,10}})));
+        "Cathode flow plate" annotation (Dialog(group="Layers"), Placement(
+            transformation(extent={{50,-10},{70,10}})));
 
     protected
       outer FCSys.BCs.Defaults defaults "Environmental properties and settings";
     initial equation
+      anFP.subregions.graphite.'e-'.mu = anGDL.subregions.graphite.'e-'.mu;
+      anGDL.subregions.graphite.'e-'.mu = anCL.subregions.graphite.'e-'.mu;
       anCL.subregions.ionomer.'H+'.mu = pEM.subregions.ionomer.'H+'.mu;
       pEM.subregions.ionomer.'H+'.mu = caCL.subregions.ionomer.'H+'.mu;
-      // **allow for multiple subregions in each layer
+      // TODO: Allow for multiple subregions in each layer
     equation
       // Internal connections (between layers)
       connect(anFP.positiveX, anGDL.negativeX) annotation (Line(
@@ -694,39 +691,46 @@ of a PEMFC is given in the top-level documentation of <a href=\"modelica://FCSys
         Icon(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
-            initialScale=0.1), graphics={Line(
-                  points={{-40,-58},{-40,-100}},
-                  color={240,0,0},
-                  visible=inclY,
-                  smooth=Smooth.None,
-                  thickness=0.5),Line(
-                  points={{-8,-1},{28,-1}},
-                  color={0,0,240},
-                  visible=inclX,
-                  thickness=0.5,
-                  origin={39,-92},
-                  rotation=90),Line(
-                  points={{-40,100},{-40,60}},
-                  color={240,0,0},
-                  visible=inclY,
-                  smooth=Smooth.None,
-                  thickness=0.5),Line(
-                  points={{-66,0},{-100,0}},
-                  color={127,127,127},
-                  visible=inclX,
-                  thickness=0.5),Line(
-                  points={{-8,-1},{44,-1}},
-                  color={0,0,240},
-                  visible=inclX,
-                  thickness=0.5,
-                  origin={39,56},
-                  rotation=90),Line(
-                  points={{100,0},{56,0}},
-                  color={127,127,127},
-                  visible=inclX,
-                  thickness=0.5)}),
+            initialScale=0.1), graphics={
+            Line(
+              points={{-40,-58},{-40,-100}},
+              color={240,0,0},
+              visible=inclY,
+              smooth=Smooth.None,
+              thickness=0.5),
+            Line(
+              points={{-8,-1},{28,-1}},
+              color={0,0,240},
+              visible=inclX,
+              thickness=0.5,
+              origin={39,-92},
+              rotation=90),
+            Line(
+              points={{-40,100},{-40,60}},
+              color={240,0,0},
+              visible=inclY,
+              smooth=Smooth.None,
+              thickness=0.5),
+            Line(
+              points={{-66,0},{-100,0}},
+              color={127,127,127},
+              visible=inclX,
+              thickness=0.5),
+            Line(
+              points={{-8,-1},{44,-1}},
+              color={0,0,240},
+              visible=inclX,
+              thickness=0.5,
+              origin={39,56},
+              rotation=90),
+            Line(
+              points={{100,0},{56,0}},
+              color={127,127,127},
+              visible=inclX,
+              thickness=0.5)}),
         experimentSetupOutput,
         experiment(StopTime=120, Tolerance=1e-06));
+
     end Cell;
 
     model CalibratedCell
@@ -1558,37 +1562,43 @@ of a PEMFC is given in the top-level documentation of <a href=\"modelica://FCSys
         Icon(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
-            initialScale=0.1), graphics={Line(
-                  points={{-40,100},{-40,60}},
-                  color={255,128,0},
-                  visible=inclY,
-                  smooth=Smooth.None,
-                  thickness=0.5),Line(
-                  points={{-8,-1},{44,-1}},
-                  color={0,128,255},
-                  visible=inclX,
-                  thickness=0.5,
-                  origin={39,56},
-                  rotation=90),Line(
-                  points={{100,0},{56,0}},
-                  color={127,127,127},
-                  visible=inclX,
-                  thickness=0.5),Line(
-                  points={{-8,-1},{28,-1}},
-                  color={0,128,255},
-                  visible=inclX,
-                  thickness=0.5,
-                  origin={39,-92},
-                  rotation=90),Line(
-                  points={{-40,-58},{-40,-100}},
-                  color={255,128,0},
-                  visible=inclY,
-                  smooth=Smooth.None,
-                  thickness=0.5),Line(
-                  points={{-66,0},{-100,0}},
-                  color={127,127,127},
-                  visible=inclX,
-                  thickness=0.5)}),
+            initialScale=0.1), graphics={
+            Line(
+              points={{-40,100},{-40,60}},
+              color={255,128,0},
+              visible=inclY,
+              smooth=Smooth.None,
+              thickness=0.5),
+            Line(
+              points={{-8,-1},{44,-1}},
+              color={0,128,255},
+              visible=inclX,
+              thickness=0.5,
+              origin={39,56},
+              rotation=90),
+            Line(
+              points={{100,0},{56,0}},
+              color={127,127,127},
+              visible=inclX,
+              thickness=0.5),
+            Line(
+              points={{-8,-1},{28,-1}},
+              color={0,128,255},
+              visible=inclX,
+              thickness=0.5,
+              origin={39,-92},
+              rotation=90),
+            Line(
+              points={{-40,-58},{-40,-100}},
+              color={255,128,0},
+              visible=inclY,
+              smooth=Smooth.None,
+              thickness=0.5),
+            Line(
+              points={{-66,0},{-100,0}},
+              color={127,127,127},
+              visible=inclX,
+              thickness=0.5)}),
         experimentSetupOutput);
     end IntegratedCell;
 
