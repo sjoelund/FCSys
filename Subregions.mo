@@ -558,6 +558,7 @@ package Subregions
 
         experiment(StopTime=300, Algorithm="Dassl"),
         experimentSetupOutput);
+
     end ThermalConduction;
 
     model ThermalConductionConvection
@@ -595,6 +596,7 @@ package Subregions
 
         experiment(StopTime=200, Algorithm="Dassl"),
         experimentSetupOutput);
+
     end ThermalConductionConvection;
 
     model ReactionRamp
@@ -5332,6 +5334,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
     <p>For more information, see the <a href=\"modelica://FCSys.Subregions.BaseClasses.PartialSpecies\">PartialSpecies</a> model.</p></html>"),
 
             Diagram(graphics));
+
         end Fixed;
       end graphite;
     end 'e-';
@@ -5531,6 +5534,7 @@ and <code>beta_S=U.m*U.K/(183e-3*U.W)</code>) are based on data of H<sub>2</sub>
 <p>For more information, see the <a href=\"modelica://FCSys.Subregions.BaseClasses.PartialSpeciesAmagat\">PartialSpeciesAmagat</a> model.</p></html>"),
 
             Diagram(graphics));
+
         end Fixed;
       end gas;
     end H2;
@@ -8094,6 +8098,7 @@ The default global default settings will be used for the current simulation.",
                   points={{40,40},{16,16}},
                   color={127,127,127},
                   smooth=Smooth.None)}));
+
     end PartialSubregion;
 
     type InitMethScalar = enumeration(
