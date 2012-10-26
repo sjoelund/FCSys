@@ -199,13 +199,13 @@ from Blocks.Discrete.
 
         annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,
                   -100},{100,100}}), graphics={Rectangle(
-                extent={{-100,120},{100,160}},
-                fillColor={255,255,255},
-                fillPattern=FillPattern.Solid,
-                pattern=LinePattern.None), Text(
-                extent={{-100,120},{100,160}},
-                textString="%name",
-                lineColor={0,0,0})}));
+                      extent={{-100,120},{100,160}},
+                      fillColor={255,255,255},
+                      fillPattern=FillPattern.Solid,
+                      pattern=LinePattern.None),Text(
+                      extent={{-100,120},{100,160}},
+                      textString="%name",
+                      lineColor={0,0,0})}));
       end Top6;
 
       partial class Top5
@@ -238,13 +238,13 @@ from Blocks.Discrete.
 
         annotation (Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,
                   -100},{100,100}}), graphics={Rectangle(
-                extent={{-100,60},{100,100}},
-                fillColor={255,255,255},
-                fillPattern=FillPattern.Solid,
-                pattern=LinePattern.None), Text(
-                extent={{-100,60},{100,100}},
-                textString="%name",
-                lineColor={0,0,0})}));
+                      extent={{-100,60},{100,100}},
+                      fillColor={255,255,255},
+                      fillPattern=FillPattern.Solid,
+                      pattern=LinePattern.None),Text(
+                      extent={{-100,60},{100,100}},
+                      textString="%name",
+                      lineColor={0,0,0})}));
       end Top3;
 
       partial class Top2
@@ -568,15 +568,13 @@ This icon is designed for a <b>signal bus</b> connector.
     partial class Record
       extends FCSys.BaseClasses.Icons.Names.Top3;
 
-      annotation (Icon(graphics={
-            Rectangle(
-              extent={{-100,50},{100,-100}},
-              fillColor={255,255,127},
-              fillPattern=FillPattern.Solid,
-              lineColor={0,0,255}),
-            Line(points={{-100,-50},{100,-50}}, color={0,0,0}),
-            Line(points={{-100,0},{100,0}}, color={0,0,0}),
-            Line(points={{0,50},{0,-100}}, color={0,0,0})}));
+      annotation (Icon(graphics={Rectangle(
+                  extent={{-100,50},{100,-100}},
+                  fillColor={255,255,127},
+                  fillPattern=FillPattern.Solid,
+                  lineColor={0,0,255}),Line(points={{-100,-50},{100,-50}},
+              color={0,0,0}),Line(points={{-100,0},{100,0}}, color={0,0,0}),
+              Line(points={{0,50},{0,-100}}, color={0,0,0})}));
     end Record;
 
     partial class PackageUnderConstruction

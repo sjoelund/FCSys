@@ -23,6 +23,7 @@ package Subassemblies "Combinations of regions (e.g., cells)"
                 "resources/scripts/Dymola/Subassemblies.Cells.Examples.Cell.mos"),
 
           Icon(graphics));
+
       end Cell;
       extends Modelica.Icons.ExamplesPackage;
       model CellProfile
