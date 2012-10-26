@@ -194,7 +194,6 @@ package Regions "3D arrays of discrete, interconnected subregions"
           Tolerance=1e-06,
           Algorithm="Dassl"),
         experimentSetupOutput);
-
     end FPToFP;
 
     model GDLToGDL "Test one GDL to the other"
@@ -215,14 +214,15 @@ package Regions "3D arrays of discrete, interconnected subregions"
         final L_y=L_y,
         final L_z=L_z,
         subregions(each graphite('e-'(partNumInitMeth=InitMethScalar.None))))
-        annotation (Placement(transformation(extent={{-56,-12},{-36,8}})));
+        annotation (Placement(transformation(extent={{-50,-10},{-30,10}})));
 
       AnCLs.AnCL anCL(
         final L_y=L_y,
         final L_z=L_z,
-        subregions(each ionomer('H+'(partNumInitMeth=InitMethScalar.None))))
+        subregions(each graphite('e-'(Ndot_IC=0.1*U.A)),each ionomer('H+'(
+                partNumInitMeth=InitMethScalar.None))))
         annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
-
+      // **temp e- Ndot_IC
       PEMs.PEM pEM(
         final L_y=L_y,
         final L_z=L_z,
@@ -233,7 +233,7 @@ package Regions "3D arrays of discrete, interconnected subregions"
         annotation (Placement(transformation(extent={{10,-10},{30,10}})));
 
       CaGDLs.CaGDL caGDL(final L_y=L_y, final L_z=L_z)
-        annotation (Placement(transformation(extent={{38,-10},{58,10}})));
+        annotation (Placement(transformation(extent={{30,-10},{50,10}})));
 
       FCSys.BCs.Face.Subregion0Current bC1[n_y, n_z](each gas(
           inclH2O=true,
@@ -274,18 +274,18 @@ package Regions "3D arrays of discrete, interconnected subregions"
 
     equation
       connect(bC1.face, anGDL.negativeX) annotation (Line(
-          points={{-60,3.65701e-16},{-56,3.65701e-16},{-56,-2}},
+          points={{-60,3.65701e-16},{-50,6.10623e-16}},
           color={240,0,0},
           thickness=0.5,
           smooth=Smooth.None));
       connect(anGDL.positiveX, anCL.negativeX) annotation (Line(
-          points={{-36,-2},{-36,-3.36456e-22},{-32,0},{-30,6.10623e-16}},
+          points={{-30,6.10623e-16},{-30,6.10623e-16}},
           color={240,0,0},
           smooth=Smooth.None,
           thickness=0.5));
 
       connect(anCL.positiveX, pEM.negativeX) annotation (Line(
-          points={{-10,6.10623e-16},{-10,6.10623e-16},{-10,6.10623e-16}},
+          points={{-10,6.10623e-16},{-10,6.10623e-16}},
           color={240,0,0},
           smooth=Smooth.None,
           thickness=0.5));
@@ -297,13 +297,13 @@ package Regions "3D arrays of discrete, interconnected subregions"
           thickness=0.5));
 
       connect(caCL.positiveX, caGDL.negativeX) annotation (Line(
-          points={{30,6.10623e-16},{32,0},{32,6.10623e-16},{38,6.10623e-16}},
+          points={{30,6.10623e-16},{30,6.10623e-16}},
           color={0,0,240},
           smooth=Smooth.None,
           thickness=0.5));
 
       connect(caGDL.positiveX, bC2.face) annotation (Line(
-          points={{58,6.10623e-16},{58,1.23436e-15},{60,1.23436e-15}},
+          points={{50,6.10623e-16},{56,0},{60,1.23436e-15}},
           color={0,0,240},
           thickness=0.5,
           smooth=Smooth.None));
@@ -432,7 +432,6 @@ package Regions "3D arrays of discrete, interconnected subregions"
           Tolerance=1e-06,
           Algorithm="Dassl"),
         experimentSetupOutput);
-
     end CLToCL;
 
     model AnFP "Test the anode flow plate"

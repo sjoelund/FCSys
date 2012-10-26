@@ -88,8 +88,8 @@ package Subregions
           thickness=0.5,
           smooth=Smooth.None));
       connect(bC1.face, subregion.negativeX) annotation (Line(
-          points={{-16,3.65701e-16},{-17.5,3.65701e-16},{-17.5,1.11022e-15},{
-              -15,1.11022e-15},{-15,6.10623e-16},{-10,6.10623e-16}},
+          points={{-16,3.65701e-16},{-17.5,3.65701e-16},{-17.5,1.11022e-15},{-15,
+              1.11022e-15},{-15,6.10623e-16},{-10,6.10623e-16}},
           color={127,127,127},
           pattern=LinePattern.None,
           thickness=0.5,
@@ -853,25 +853,21 @@ package Subregions
 
       // Conservation of material
       der(N)/U.s = chemical.Ndot;
-      annotation (defaultComponentName="species", Icon(graphics={
-            Rectangle(
-              extent={{-100,40},{100,-40}},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid,
-              pattern=LinePattern.None),
-            Line(
-              points={{-100,-40},{100,-40}},
-              color={0,0,0},
-              smooth=Smooth.None,
-              pattern=LinePattern.Dash),
-            Line(
-              points={{-100,-40},{-100,40},{100,40},{100,-40}},
-              pattern=LinePattern.None,
-              smooth=Smooth.None),
-            Text(
-              extent={{-100,-20},{100,20}},
-              textString="%name",
-              lineColor={0,0,0})}));
+      annotation (defaultComponentName="species", Icon(graphics={Rectangle(
+                  extent={{-100,40},{100,-40}},
+                  fillColor={255,255,255},
+                  fillPattern=FillPattern.Solid,
+                  pattern=LinePattern.None),Line(
+                  points={{-100,-40},{100,-40}},
+                  color={0,0,0},
+                  smooth=Smooth.None,
+                  pattern=LinePattern.Dash),Line(
+                  points={{-100,-40},{-100,40},{100,40},{100,-40}},
+                  pattern=LinePattern.None,
+                  smooth=Smooth.None),Text(
+                  extent={{-100,-20},{100,20}},
+                  textString="%name",
+                  lineColor={0,0,0})}));
     end SimpleSpecies;
 
     model Cell "Test both half reactions of a cell"
@@ -1143,7 +1139,6 @@ package Subregions
         Commands(file(ensureSimulated=true) =
             "resources/scripts/Dymola/Subregions.Examples.SubregionH2.mos"));
     end Species;
-
 
   end Examples;
 
@@ -1436,7 +1431,6 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
 
       Icon(graphics),
       Diagram(graphics));
-
   end Subregion;
 
   model SubregionNoGraphite "Subregion with all phases except graphite"
@@ -3101,7 +3095,6 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
 
         Diagram(graphics),
         Icon(graphics));
-
     end Phase;
 
     model Gas "Phase to represent gas"
@@ -3790,7 +3783,6 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
  <a href=\"modelica://FCSys.Subregions.Phases.BaseClasses.NullPhase\">NullPhase</a> model.</p></html>"),
 
         Diagram(graphics));
-
     end Gas;
 
     model Graphite "Phase to represent graphite"
@@ -4679,7 +4671,6 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
  <a href=\"modelica://FCSys.Subregions.Phases.BaseClasses.NullPhase\">NullPhase</a> model.</p></html>"),
 
         Diagram(graphics));
-
     end Ionomer;
 
     model Liquid "Phase to represent liquid"
@@ -4866,7 +4857,6 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
 
         Diagram(graphics),
         Icon(graphics));
-
     end Liquid;
 
     package BaseClasses "Base classes (not for direct use)"
@@ -4950,60 +4940,51 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
 <p>Notes:<ul>
   <li>The x-axis component of linear momentum is included by default.  At least one component must be included.</li></ul></html>"),
 
-          Icon(graphics={
-              Ellipse(
-                extent={{-40,100},{40,20}},
-                lineColor={127,127,127},
-                startAngle=30,
-                endAngle=149,
-                pattern=LinePattern.Dash,
-                fillPattern=FillPattern.Solid,
-                fillColor={225,225,225}),
-              Ellipse(
-                extent={{20,-4},{100,-84}},
-                lineColor={127,127,127},
-                startAngle=270,
-                endAngle=390,
-                pattern=LinePattern.Dash,
-                fillPattern=FillPattern.Solid,
-                fillColor={225,225,225}),
-              Ellipse(
-                extent={{-100,-4},{-20,-84}},
-                lineColor={127,127,127},
-                startAngle=149,
-                endAngle=270,
-                pattern=LinePattern.Dash,
-                fillPattern=FillPattern.Solid,
-                fillColor={225,225,225}),
-              Polygon(
-                points={{60,-84},{-60,-84},{-94.5,-24},{-34.5,80},{34.5,80},{
-                    94.5,-24},{60,-84}},
-                pattern=LinePattern.None,
-                fillPattern=FillPattern.Sphere,
-                smooth=Smooth.None,
-                fillColor={225,225,225},
-                lineColor={0,0,0}),
-              Line(
-                points={{-60,-84},{60,-84}},
-                color={127,127,127},
-                pattern=LinePattern.Dash,
-                smooth=Smooth.None),
-              Line(
-                points={{34.5,80},{94.5,-24}},
-                color={127,127,127},
-                pattern=LinePattern.Dash,
-                smooth=Smooth.None),
-              Line(
-                points={{-34.5,80},{-94.5,-24}},
-                color={127,127,127},
-                pattern=LinePattern.Dash,
-                smooth=Smooth.None),
-              Text(
-                extent={{-100,-20},{100,20}},
-                textString="%name",
-                lineColor={0,0,0})}),
+          Icon(graphics={Ellipse(
+                      extent={{-40,100},{40,20}},
+                      lineColor={127,127,127},
+                      startAngle=30,
+                      endAngle=149,
+                      pattern=LinePattern.Dash,
+                      fillPattern=FillPattern.Solid,
+                      fillColor={225,225,225}),Ellipse(
+                      extent={{20,-4},{100,-84}},
+                      lineColor={127,127,127},
+                      startAngle=270,
+                      endAngle=390,
+                      pattern=LinePattern.Dash,
+                      fillPattern=FillPattern.Solid,
+                      fillColor={225,225,225}),Ellipse(
+                      extent={{-100,-4},{-20,-84}},
+                      lineColor={127,127,127},
+                      startAngle=149,
+                      endAngle=270,
+                      pattern=LinePattern.Dash,
+                      fillPattern=FillPattern.Solid,
+                      fillColor={225,225,225}),Polygon(
+                      points={{60,-84},{-60,-84},{-94.5,-24},{-34.5,80},{34.5,
+                  80},{94.5,-24},{60,-84}},
+                      pattern=LinePattern.None,
+                      fillPattern=FillPattern.Sphere,
+                      smooth=Smooth.None,
+                      fillColor={225,225,225},
+                      lineColor={0,0,0}),Line(
+                      points={{-60,-84},{60,-84}},
+                      color={127,127,127},
+                      pattern=LinePattern.Dash,
+                      smooth=Smooth.None),Line(
+                      points={{34.5,80},{94.5,-24}},
+                      color={127,127,127},
+                      pattern=LinePattern.Dash,
+                      smooth=Smooth.None),Line(
+                      points={{-34.5,80},{-94.5,-24}},
+                      color={127,127,127},
+                      pattern=LinePattern.Dash,
+                      smooth=Smooth.None),Text(
+                      extent={{-100,-20},{100,20}},
+                      textString="%name",
+                      lineColor={0,0,0})}),
           Diagram(graphics));
-
       end NullPhase;
     end BaseClasses;
   end Phases;
@@ -5328,16 +5309,17 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
         model Fixed "Fixed properties"
           extends Species(
             redeclare FCSys.Characteristics.'e-'.graphite Data,
-            redeclare parameter Q.Resistivity alpha_N=1e4*Data.beta(),
+            redeclare parameter Q.Resistivity alpha_N=1e5*Data.beta(),
             redeclare parameter Q.Resistivity alpha_Phi=Data.beta(),
             redeclare parameter Q.Resistivity alpha_S=Data.beta(),
             redeclare parameter Q.Resistivity beta_N=Data.beta(),
             redeclare parameter Q.Resistivity beta_Phi=Data.beta(),
             redeclare parameter Q.Resistivity beta_S=Data.beta(),
-            redeclare parameter Q.Permittivity epsilon=1e4*U.epsilon_0,
+            redeclare parameter Q.Permittivity epsilon=1e10*U.epsilon_0,
             partNumInitMeth=InitMethScalar.PotentialElectrochemical,
-            Deltamu(fixed=true));
-
+            Deltamu(fixed=true),
+            Lstar=1e6*product(L)^(1/3));
+          // **temp Lstar
           annotation (
             group="Material properties",
             defaultComponentPrefixes="replaceable",
@@ -5897,16 +5879,18 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
         model Fixed "Fixed properties"
           extends Species(
             redeclare FCSys.Characteristics.'H+'.solid Data,
-            redeclare parameter Q.Resistivity alpha_N=1e4*Data.beta(),
+            redeclare parameter Q.Resistivity alpha_N=1e5*Data.beta(),
             redeclare parameter Q.Resistivity alpha_Phi=Data.beta(),
             redeclare parameter Q.Resistivity alpha_S=U.m*U.K/(0.1661*U.W),
             redeclare parameter Q.Resistivity beta_N=Data.beta(),
             redeclare parameter Q.Resistivity beta_Phi=Data.m/(5.3e-6*U.Pa*U.s),
 
             redeclare parameter Q.Resistivity beta_S=U.m*U.K/(0.1661*U.W),
-            redeclare parameter Q.Permittivity epsilon=1e4*U.epsilon_0,
+            redeclare parameter Q.Permittivity epsilon=1e10*U.epsilon_0,
             partNumInitMeth=InitMethScalar.PotentialElectrochemical,
-            Deltamu(fixed=true));
+            Deltamu(fixed=true),
+            Lstar=1e6*product(L)^(1/3));
+          // **temp Lstar
 
           // See the documentation for a table of values.
 
@@ -6772,7 +6756,7 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
       output Q.Capacitance C=Lstar*epsilon if defaults.analysis and (
         Modelica.Utilities.Strings.find(Data.formula, "+") <> 0 or
         Modelica.Utilities.Strings.find(Data.formula, "-") <> 0)
-        "Double layer capacitance (N/A if neutral species)";
+        "Double layer capacitance";
 
       // Note:  The string find functions are used instead of
       // Data.z <> 0 due to the following error in Dymola 7.4:
@@ -6780,6 +6764,10 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
       //      components with fixed condition."
       // even though Data.z is calculated directly from constants.
       // Peclet numbers
+      output Q.Time RC=C*alpha_N/Lstar if defaults.analysis and (
+        Modelica.Utilities.Strings.find(Data.formula, "+") <> 0 or
+        Modelica.Utilities.Strings.find(Data.formula, "-") <> 0)
+        "**Electrochemical time constant";
       output Q.Number Pe_N[n_lin]=I*beta_N ./ Lstar_trans[cartAxes] if defaults.analysis
         "Material Peclet numbers";
       output Q.Number Pe_Phi[n_lin]=I*beta_Phi ./ Lstar_trans[cartAxes] if
@@ -6810,8 +6798,8 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
           MaterialEntropyOpt.OpenDiabatic, positiveY.matEntOpt ==
           MaterialEntropyOpt.OpenDiabatic; negativeZ.matEntOpt ==
           MaterialEntropyOpt.OpenDiabatic, positiveZ.matEntOpt ==
-          MaterialEntropyOpt.OpenDiabatic][cartAxes[axis], side] then (3 -
-          2*side)*(mu_face[cartAxes[axis], side] - mu + Data.Deltah0_f)*N/L[
+          MaterialEntropyOpt.OpenDiabatic][cartAxes[axis], side] then (3 - 2*
+          side)*(mu_face[cartAxes[axis], side] - mu + Data.Deltah0_f)*N/L[
           cartAxes[axis]] else 0 for side in 1:2) for axis in 1:n_lin} - Data.m
           *sum(Ndot_face)*phi if defaults.analysis
         "Acceleration force through normal faces";
@@ -7277,13 +7265,12 @@ The default global default settings will be used for the current simulation.",
       for axis in 1:3 loop
         for side in 1:2 loop
           // Material
-          if [negativeX.matEntOpt == MaterialEntropyOpt.OpenDiabatic,
-              positiveX.matEntOpt == MaterialEntropyOpt.OpenDiabatic;
-              negativeY.matEntOpt == MaterialEntropyOpt.OpenDiabatic,
-              positiveY.matEntOpt == MaterialEntropyOpt.OpenDiabatic;
-              negativeZ.matEntOpt == MaterialEntropyOpt.OpenDiabatic,
-              positiveZ.matEntOpt == MaterialEntropyOpt.OpenDiabatic][axis,
-              side] then
+          if [negativeX.matEntOpt == MaterialEntropyOpt.OpenDiabatic, positiveX.matEntOpt
+               == MaterialEntropyOpt.OpenDiabatic; negativeY.matEntOpt ==
+              MaterialEntropyOpt.OpenDiabatic, positiveY.matEntOpt ==
+              MaterialEntropyOpt.OpenDiabatic; negativeZ.matEntOpt ==
+              MaterialEntropyOpt.OpenDiabatic, positiveZ.matEntOpt ==
+              MaterialEntropyOpt.OpenDiabatic][axis, side] then
             T*beta_N*(Ndot_face[axis, side] + (2*side - 3)*(if inclLin[axis]
                then I[linAxes[axis]] else 0)) = Lstar_trans[axis]*(mu_face[axis,
               side] - mu + Data.Deltah0_f)*(if upstream[axis] and inclLin[axis]
@@ -7328,8 +7315,8 @@ The default global default settings will be used for the current simulation.",
               negativeZ.matEntOpt == MaterialEntropyOpt.OpenDiabatic or
               negativeZ.matEntOpt == MaterialEntropyOpt.ClosedDiabatic,
               positiveZ.matEntOpt == MaterialEntropyOpt.OpenDiabatic or
-              positiveZ.matEntOpt == MaterialEntropyOpt.ClosedDiabatic][
-              axis, side] then
+              positiveZ.matEntOpt == MaterialEntropyOpt.ClosedDiabatic][axis,
+              side] then
             beta_S*(Sdot_face[axis, side] + (2*side - 3)*s*(if inclLin[axis]
                then I[linAxes[axis]] else 0)) = 2*Lstar_trans[axis]*(T_face[
               axis, side]/T - 1)*(if upstream[axis] and inclLin[axis] then (exp(
@@ -7436,16 +7423,15 @@ The default global default settings will be used for the current simulation.",
         else
           der(Data.m*N*phi[axis])/U.s = chemical.mPhidot[axis] + inert.mPhidot[
             axis] + sum(if {{negativeX.matEntOpt == MaterialEntropyOpt.OpenDiabatic,
-            positiveX.matEntOpt == MaterialEntropyOpt.OpenDiabatic},{
-            negativeY.matEntOpt == MaterialEntropyOpt.OpenDiabatic,
-            positiveY.matEntOpt == MaterialEntropyOpt.OpenDiabatic},{
-            negativeZ.matEntOpt == MaterialEntropyOpt.OpenDiabatic,
-            positiveZ.matEntOpt == MaterialEntropyOpt.OpenDiabatic}}[
-            cartAxes[axis], side] then (3 - 2*side)*(mu_face[cartAxes[axis],
-            side] - mu + Data.Deltah0_f)*N/L[cartAxes[axis]] else 0 for side
-             in 1:2) + sum(Sigma(mPhidot_face[cartWrap(cartAxes[axis] -
-            orientation), :, orientation]) for orientation in 1:2)
-            "Conservation of linear momentum";
+            positiveX.matEntOpt == MaterialEntropyOpt.OpenDiabatic},{negativeY.matEntOpt
+             == MaterialEntropyOpt.OpenDiabatic,positiveY.matEntOpt ==
+            MaterialEntropyOpt.OpenDiabatic},{negativeZ.matEntOpt ==
+            MaterialEntropyOpt.OpenDiabatic,positiveZ.matEntOpt ==
+            MaterialEntropyOpt.OpenDiabatic}}[cartAxes[axis], side] then (3 - 2
+            *side)*(mu_face[cartAxes[axis], side] - mu + Data.Deltah0_f)*N/L[
+            cartAxes[axis]] else 0 for side in 1:2) + sum(Sigma(mPhidot_face[
+            cartWrap(cartAxes[axis] - orientation), :, orientation]) for
+            orientation in 1:2) "Conservation of linear momentum";
         end if;
       end for;
 

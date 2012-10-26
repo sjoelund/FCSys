@@ -1,6 +1,9 @@
 within FCSys;
 package BCs "Models for boundary conditions"
   extends Modelica.Icons.SourcesPackage;
+
+  // TODO: Recheck this package, fix errors and warnings.
+
   package Examples "Examples and tests"
     extends Modelica.Icons.ExamplesPackage;
     model Environment "<html>Test the <code>Environment</code> model</html>"
@@ -1391,11 +1394,11 @@ package BCs "Models for boundary conditions"
                   {160,160}}), graphics),
           Icon(coordinateSystem(preserveAspectRatio=true, extent={{-160,-160},{
                   160,160}}), graphics={Rectangle(
-                extent={{-160,160},{160,-160}},
-                lineColor={191,191,191},
-                fillColor={255,255,255},
-                fillPattern=FillPattern.Backward), Rectangle(extent={{-160,160},
-                    {160,-160}}, lineColor={0,0,0})}));
+                      extent={{-160,160},{160,-160}},
+                      lineColor={191,191,191},
+                      fillColor={255,255,255},
+                      fillPattern=FillPattern.Backward),Rectangle(extent={{-160,
+                160},{160,-160}}, lineColor={0,0,0})}));
       end PartialTestStand;
 
       partial model PartialTestStandNoIO "Partial test stand"
@@ -2419,9 +2422,9 @@ package BCs "Models for boundary conditions"
                   {120,100}}), graphics),
           Icon(coordinateSystem(preserveAspectRatio=true, extent={{-120,-100},{
                   120,100}}), graphics={Text(
-                extent={{0,-76},{100,-46}},
-                lineColor={127,127,127},
-                textString="%formula")}));
+                      extent={{0,-76},{100,-46}},
+                      lineColor={127,127,127},
+                      textString="%formula")}));
       end Species;
 
       package BaseClasses "Base classes (not for direct use)"
@@ -3769,8 +3772,8 @@ boundary condition</a> models.
             __Dymola_descriptionLabel=true,
             __Dymola_joinNext=true));
         replaceable FCSys.BCs.Face.Species.Species C(matEntOpt=
-              MaterialEntropyOpt.ClosedDiabatic) if inclC "Model"
-          annotation (Dialog(
+              MaterialEntropyOpt.ClosedDiabatic) if inclC "Model" annotation (
+            Dialog(
             group="Species",
             __Dymola_descriptionLabel=true,
             enable=inclC), Placement(transformation(extent={{-10,-10},{10,10}})));
@@ -4557,8 +4560,8 @@ boundary condition</a> models.
             __Dymola_descriptionLabel=true,
             __Dymola_joinNext=true));
         replaceable FCSys.BCs.Face.Species.Species C(matEntOpt=
-              MaterialEntropyOpt.ClosedDiabatic) if inclC "Model"
-          annotation (Dialog(
+              MaterialEntropyOpt.ClosedDiabatic) if inclC "Model" annotation (
+            Dialog(
             group="Species",
             __Dymola_descriptionLabel=true,
             enable=inclC), Placement(transformation(extent={{-10,-10},{10,10}})));
@@ -5717,8 +5720,8 @@ boundary condition</a> model.
             __Dymola_descriptionLabel=true,
             __Dymola_joinNext=true));
         replaceable FCSys.BCs.FaceDifferential.Species.Species C(matEntOpt=
-              MaterialEntropyOpt.ClosedDiabatic) if inclC "Model"
-          annotation (Dialog(
+              MaterialEntropyOpt.ClosedDiabatic) if inclC "Model" annotation (
+            Dialog(
             group="Species",
             __Dymola_descriptionLabel=true,
             enable=inclC), Placement(transformation(extent={{-10,-10},{10,10}})));
@@ -7045,8 +7048,8 @@ boundary condition</a> model.
             __Dymola_descriptionLabel=true,
             __Dymola_joinNext=true));
         replaceable FCSys.BCs.FaceDifferential.Species.Species C(matEntOpt=
-              MaterialEntropyOpt.ClosedDiabatic) if inclC "Model"
-          annotation (Dialog(
+              MaterialEntropyOpt.ClosedDiabatic) if inclC "Model" annotation (
+            Dialog(
             group="Species",
             __Dymola_descriptionLabel=true,
             enable=inclC), Placement(transformation(extent={{-10,-10},{10,10}})));
@@ -8450,6 +8453,7 @@ The default global default settings will be used for the current simulation.",
             color={127,127,127},
             smooth=Smooth.None)}),
       Diagram(graphics));
+
   end Defaults;
 
   model ClosedVolume

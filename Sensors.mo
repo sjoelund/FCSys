@@ -3,6 +3,8 @@ package Sensors "Models to measure conditions"
 
   extends Modelica.Icons.SensorsPackage;
 
+  // TODO: Recheck this package, fix errors and warnings.
+
   package Chemical
     "<html>Sensors for the <a href=\"modelica://FCSys.Connectors.BaseClasses.Chemical\">Chemical</a> and <a href=\"modelica://FCSys.Connectors.ChemicalBus\">ChemicalBus</a> connectors</html>"
     extends Modelica.Icons.Package;
@@ -894,13 +896,12 @@ package Sensors "Models to measure conditions"
         Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},
                 {100,100}}), graphics),
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
-                100,100}}), graphics={
-            Line(points={{-40,-100},{-40,-58}}, color={0,0,127}),
-            Line(points={{40,-100},{40,-58}}, color={0,0,127}),
-            Text(
-              extent={{-100,-20},{100,-50}},
-              lineColor={127,127,127},
-              textString="mu mphi sT ")}));
+                100,100}}), graphics={Line(points={{-40,-100},{-40,-58}}, color
+              ={0,0,127}),Line(points={{40,-100},{40,-58}}, color={0,0,127}),
+              Text(
+                  extent={{-100,-20},{100,-50}},
+                  lineColor={127,127,127},
+                  textString="mu mphi sT ")}));
     end Species;
     annotation (Documentation(info="<html><p>Since the connectors in
 <a href=\"modelica://FCSys\">FCSys</a> are hierarchical
