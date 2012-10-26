@@ -558,7 +558,6 @@ package Subregions
 
         experiment(StopTime=300, Algorithm="Dassl"),
         experimentSetupOutput);
-
     end ThermalConduction;
 
     model ThermalConductionConvection
@@ -596,7 +595,6 @@ package Subregions
 
         experiment(StopTime=200, Algorithm="Dassl"),
         experimentSetupOutput);
-
     end ThermalConductionConvection;
 
     model ReactionRamp
@@ -1139,7 +1137,6 @@ package Subregions
         Commands(file(ensureSimulated=true) =
             "resources/scripts/Dymola/Subregions.Examples.SubregionH2.mos"));
     end Species;
-
   end Examples;
 
   model Subregion "Subregion with all phases included"
@@ -1150,7 +1147,7 @@ package Subregions
       HideResult=true,
       Dialog(tab="Assumptions"),
       choices(__Dymola_checkBox=true));
-    // Note:  This is listed above the extends clause so that it's
+    // Note:  This is listed above the extends clause so that it is
     // listed first in the parameter dialog.
     extends BaseClasses.PartialSubregion;
 
@@ -1440,7 +1437,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
       HideResult=true,
       choices(__Dymola_checkBox=true),
       Dialog(tab="Assumptions"));
-    // Note:  This is listed above the extension clause so that it's
+    // Note:  This is listed above the extension clause so that it is
     // listed first in the parameter dialog.
     extends BaseClasses.PartialSubregion;
 
@@ -1567,7 +1564,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
       HideResult=true,
       choices(__Dymola_checkBox=true),
       Dialog(tab="Assumptions"));
-    // Note:  This is listed above the extends clause so that it's
+    // Note:  This is listed above the extends clause so that it is
     // listed first in the parameter dialog.
     extends BaseClasses.PartialSubregion;
 
@@ -5335,7 +5332,6 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
     <p>For more information, see the <a href=\"modelica://FCSys.Subregions.BaseClasses.PartialSpecies\">PartialSpecies</a> model.</p></html>"),
 
             Diagram(graphics));
-
         end Fixed;
       end graphite;
     end 'e-';
@@ -5535,7 +5531,6 @@ and <code>beta_S=U.m*U.K/(183e-3*U.W)</code>) are based on data of H<sub>2</sub>
 <p>For more information, see the <a href=\"modelica://FCSys.Subregions.BaseClasses.PartialSpeciesAmagat\">PartialSpeciesAmagat</a> model.</p></html>"),
 
             Diagram(graphics));
-
         end Fixed;
       end gas;
     end H2;
@@ -6534,8 +6529,8 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
       parameter Q.ParticleNumber N_IC(start=V_IC/v_IC)
         "<html>Initial particle number (<i>N</i><sub>IC</sub>)</html>"
         annotation (Dialog(tab="Initialization",group="Scalar properties"));
-      // Note:  This parameter is left enabled even if it'sn't used to
-      // explicitly initialize any states, since it's used as a guess value.
+      // Note:  This parameter is left enabled even if it isn't used to
+      // explicitly initialize any states, since it is used as a guess value.
       // Similar notes apply to some other initial conditions below.
       parameter Q.Current derN_IC=0
         "<html>Initial rate of particle number ((&part;<i>N</i>/&part;<i>t</i>)<sub>IC</sub>)</html>"
@@ -6719,7 +6714,7 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
       Q.Potential Deltamu(final start=Deltamu_IC)
         "Electrochemical potential of exchange relative to bulk";
       // Note:  The initial condition isn't fixed because the state
-      // only appears if the species is charged and it's involved in a
+      // only appears if the species is charged and it is involved in a
       // reaction.
 
       // Material properties
@@ -6989,8 +6984,8 @@ For simulation, specify global default settings by dragging FCSys.BCs.Defaults i
 The default global default settings will be used for the current simulation.",
           Placement(transformation(extent={{40,40},{60,60}}),
             iconTransformation(extent={{-10,90},{10,110}})));
-      // Note:  In Deymola 7.4, it's necessary to add the missing inner message
-      // here to give a warning message, even though it's included in the Defaults
+      // Note:  In Deymola 7.4, it is necessary to add the missing inner message
+      // here to give a warning message, even though it is included in the Defaults
       // model too.
     initial equation
       // Check that the initialization methods are valid.
@@ -7487,7 +7482,7 @@ The default global default settings will be used for the current simulation.",
               3,
               2)) .* Ndot_face) + sum(phi_face .* mPhidot_face) + sum(T_face
            .* Sdot_face) "Conservation of energy";
-        // Note:  Although it's mathematically equivalent,
+        // Note:  Although it is mathematically equivalent,
         // der(Data.p_vT(inert.V/N, T)) is used instead of der(Data.p_vT(v, T))
         // or der(inert.p) or der(inert.p) so that the term can be expanded to
         // eliminate the need for dynamic state selection.
@@ -7790,7 +7785,7 @@ The default global default settings will be used for the current simulation.",
       "Stoichiometric coefficients";
     //  Q.MassSpecific m[n_spec]=chemical.m "Specific masses";
     // Note:  As of Modelica 3.2 and Dymola 7.4, this cannot be a parameter or
-    // constant even though it'sn't time-varying.  The strings that
+    // constant even though it isn't time-varying.  The strings that
     // represent the chemical formulas cannnot be passed through the
     // connectors with parameter or constant prefixes.  However, the
     // translator should recognize that these equations are static.
@@ -8129,7 +8124,6 @@ The default global default settings will be used for the current simulation.",
               points={{40,40},{16,16}},
               color={127,127,127},
               smooth=Smooth.None)}));
-
     end PartialSubregion;
 
     type InitMethScalar = enumeration(

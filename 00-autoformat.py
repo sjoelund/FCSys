@@ -27,11 +27,12 @@ rpls = [# Remove extra spacing.
         (r'([0-9]+)E(-?)([0-9]+)', r'\1e\2\3'),
         # Don't use a "+" for positive powers of 10 in engineering notation.
         (r'([0-9]+)e+?([0-9]+)', r'\1e\2'),
-        # Use contractions in comments.
+        # Use some contractions in comments,
         (r'(// .*)do not', r"\1don't"),
         (r'(// .*)does not', r"\1doesn't"),
         (r'(// .*)is not', r"\1isn't"),
-        (r'(// .*)it is', r"\1it's"),
+        # but not others.
+        (r"(// .*)it's", r'\1it is'),
        ]
 
 # Directory specification

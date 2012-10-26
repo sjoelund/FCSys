@@ -8453,7 +8453,6 @@ The default global default settings will be used for the current simulation.",
             color={127,127,127},
             smooth=Smooth.None)}),
       Diagram(graphics));
-
   end Defaults;
 
   model ClosedVolume
