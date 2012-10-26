@@ -20,19 +20,25 @@ package Regions "3D arrays of discrete, interconnected subregions"
         "Number of regions across the channel" annotation (HideResult=true);
       inner FCSys.BCs.Defaults defaults(analysis=true)
         annotation (Placement(transformation(extent={{70,70},{90,90}})));
-      AnFPs.AnFP anFP(final L_y=L_y, final L_z=L_z)
+      AnFPs.AnFP anFP(
+        final L_y=L_y,
+        final L_z=L_z,
+        subregions(each graphite('e-'(partNumInitMeth=InitMethScalar.None))))
         annotation (Placement(transformation(extent={{-70,-10},{-50,10}})));
 
-      AnGDLs.AnGDL anGDL(final L_y=L_y, final L_z=L_z)
+      AnGDLs.AnGDL anGDL(
+        final L_y=L_y,
+        final L_z=L_z,
+        subregions(each graphite('e-'(partNumInitMeth=InitMethScalar.None))))
         annotation (Placement(transformation(extent={{-50,-10},{-30,10}})));
 
-      AnCLs.AnCL anCL(final L_y=L_y, final L_z=L_z)
-        annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
-
-      PEMs.PEM pEM(
+      AnCLs.AnCL anCL(
         final L_y=L_y,
         final L_z=L_z,
         subregions(each ionomer('H+'(partNumInitMeth=InitMethScalar.None))))
+        annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
+
+      PEMs.PEM pEM(final L_y=L_y, final L_z=L_z)
         annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
 
       CaCLs.CaCL caCL(
@@ -105,6 +111,8 @@ package Regions "3D arrays of discrete, interconnected subregions"
             rotation=0,
             origin={60,24})));
     initial equation
+      anFP.subregions.graphite.'e-'.mu = anGDL.subregions.graphite.'e-'.mu;
+      anGDL.subregions.graphite.'e-'.mu = anCL.subregions.graphite.'e-'.mu;
       anCL.subregions.ionomer.'H+'.mu = pEM.subregions.ionomer.'H+'.mu;
       pEM.subregions.ionomer.'H+'.mu = caCL.subregions.ionomer.'H+'.mu;
 
@@ -186,6 +194,7 @@ package Regions "3D arrays of discrete, interconnected subregions"
           Tolerance=1e-06,
           Algorithm="Dassl"),
         experimentSetupOutput);
+
     end FPToFP;
 
     model GDLToGDL "Test one GDL to the other"
@@ -202,10 +211,16 @@ package Regions "3D arrays of discrete, interconnected subregions"
         "Number of regions along the channel" annotation (HideResult=true);
       final parameter Integer n_z=size(L_z, 1)
         "Number of regions across the channel" annotation (HideResult=true);
-      AnGDLs.AnGDL anGDL(final L_y=L_y, final L_z=L_z)
+      AnGDLs.AnGDL anGDL(
+        final L_y=L_y,
+        final L_z=L_z,
+        subregions(each graphite('e-'(partNumInitMeth=InitMethScalar.None))))
         annotation (Placement(transformation(extent={{-56,-12},{-36,8}})));
 
-      AnCLs.AnCL anCL(final L_y=L_y, final L_z=L_z)
+      AnCLs.AnCL anCL(
+        final L_y=L_y,
+        final L_z=L_z,
+        subregions(each ionomer('H+'(partNumInitMeth=InitMethScalar.None))))
         annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
 
       PEMs.PEM pEM(
@@ -214,10 +229,7 @@ package Regions "3D arrays of discrete, interconnected subregions"
         subregions(each ionomer('H+'(partNumInitMeth=InitMethScalar.None))))
         annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
 
-      CaCLs.CaCL caCL(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each ionomer('H+'(partNumInitMeth=InitMethScalar.None))))
+      CaCLs.CaCL caCL(final L_y=L_y, final L_z=L_z)
         annotation (Placement(transformation(extent={{10,-10},{30,10}})));
 
       CaGDLs.CaGDL caGDL(final L_y=L_y, final L_z=L_z)
@@ -256,6 +268,7 @@ package Regions "3D arrays of discrete, interconnected subregions"
       inner FCSys.BCs.Defaults defaults(analysis=true)
         annotation (Placement(transformation(extent={{70,70},{90,90}})));
     initial equation
+      anGDL.subregions.graphite.'e-'.mu = anCL.subregions.graphite.'e-'.mu;
       anCL.subregions.ionomer.'H+'.mu = pEM.subregions.ionomer.'H+'.mu;
       pEM.subregions.ionomer.'H+'.mu = caCL.subregions.ionomer.'H+'.mu;
 
@@ -304,6 +317,7 @@ package Regions "3D arrays of discrete, interconnected subregions"
           Tolerance=1e-06,
           Algorithm="Dassl"),
         experimentSetupOutput);
+
     end GDLToGDL;
 
     model CLToCL "Test one catalyst layer to the other"
@@ -321,7 +335,10 @@ package Regions "3D arrays of discrete, interconnected subregions"
       final parameter Integer n_z=size(L_z, 1)
         "Number of regions across the channel" annotation (HideResult=true);
 
-      AnCLs.AnCL anCL(final L_y=L_y, final L_z=L_z)
+      AnCLs.AnCL anCL(
+        final L_y=L_y,
+        final L_z=L_z,
+        subregions(each ionomer('H+'(partNumInitMeth=InitMethScalar.None))))
         annotation (Placement(transformation(extent={{-30,-10},{-10,10}})));
 
       PEMs.PEM pEM(
@@ -330,10 +347,7 @@ package Regions "3D arrays of discrete, interconnected subregions"
         subregions(each ionomer('H+'(partNumInitMeth=InitMethScalar.None))))
         annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
 
-      CaCLs.CaCL caCL(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each ionomer('H+'(partNumInitMeth=InitMethScalar.None))))
+      CaCLs.CaCL caCL(final L_y=L_y, final L_z=L_z)
         annotation (Placement(transformation(extent={{10,-10},{30,10}})));
 
       FCSys.BCs.Face.Subregion0Current bC1[n_y, n_z](
@@ -418,6 +432,7 @@ package Regions "3D arrays of discrete, interconnected subregions"
           Tolerance=1e-06,
           Algorithm="Dassl"),
         experimentSetupOutput);
+
     end CLToCL;
 
     model AnFP "Test the anode flow plate"
@@ -2194,7 +2209,7 @@ the z axis extends across the width of the channel.</p>
               Ndot_IC=0*U.A,
               negativeY(viscousX=false),
               positiveY(viscousX=false)))));
-
+      // **temp nonzero Ndot_IC
       //'e-'(negativeX(matEntOpt=MaterialEntropyOpt.ClosedAdiabatic),
       //'H+'(positiveX(matEntOpt=MaterialEntropyOpt.ClosedAdiabatic),
       //N_IC=1*U.q,
