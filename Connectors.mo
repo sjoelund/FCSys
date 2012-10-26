@@ -54,7 +54,6 @@ package Connectors "Declarative and imperative connectors"
               extent={{-100,20},{100,60}},
               textString="%name",
               lineColor={0,0,0})}));
-
   end ChemicalBusInternal;
 
   connector ChemicalInput
@@ -80,7 +79,6 @@ package Connectors "Declarative and imperative connectors"
               fillColor={255,255,255},
               fillPattern=FillPattern.Solid,
               pattern=LinePattern.None)}));
-
   end ChemicalInput;
 
   connector ChemicalOutput
@@ -97,7 +95,6 @@ package Connectors "Declarative and imperative connectors"
       Icon(graphics={Ellipse(extent={{-100,100},{100,-100}}, lineColor={208,104,
             0})}),
       Diagram(graphics));
-
   end ChemicalOutput;
 
   expandable connector FaceBus
@@ -175,7 +172,6 @@ package Connectors "Declarative and imperative connectors"
               extent={{-100,20},{100,60}},
               textString="%name",
               lineColor={0,0,0})}));
-
   end FaceBusInternal;
 
   connector FaceX
@@ -211,7 +207,6 @@ package Connectors "Declarative and imperative connectors"
       Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,
               100}}), graphics={Ellipse(extent={{-100,100},{100,-100}},
             lineColor={127,127,127})}));
-
   end FaceX;
 
   connector FaceY
@@ -246,7 +241,6 @@ package Connectors "Declarative and imperative connectors"
       Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,
               100}}), graphics={Ellipse(extent={{-100,100},{100,-100}},
             lineColor={127,127,127})}));
-
   end FaceY;
 
   connector FaceZ
@@ -281,7 +275,6 @@ package Connectors "Declarative and imperative connectors"
       Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,
               100}}), graphics={Ellipse(extent={{-100,100},{100,-100}},
             lineColor={127,127,127})}));
-
   end FaceZ;
 
   connector FaceGeneric
@@ -323,7 +316,6 @@ package Connectors "Declarative and imperative connectors"
       Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,
               100}}), graphics={Ellipse(extent={{-100,100},{100,-100}},
             lineColor={127,127,127})}));
-
   end FaceGeneric;
 
   connector InertAmagat
@@ -373,7 +365,6 @@ package Connectors "Declarative and imperative connectors"
               extent={{-100,80},{100,-90}},
               lineColor={0,0,0},
               textString="A")}));
-
   end InertAmagat;
 
   connector InertDalton
@@ -414,7 +405,6 @@ package Connectors "Declarative and imperative connectors"
               extent={{-100,80},{100,-90}},
               lineColor={0,0,0},
               textString="D")}));
-
   end InertDalton;
 
   connector Material "Connector for material"
@@ -445,7 +435,6 @@ package Connectors "Declarative and imperative connectors"
               points={{-100,0},{100,0}},
               color={0,0,0},
               smooth=Smooth.None)}));
-
   end Material;
 
   connector LinearMomentum
@@ -482,7 +471,6 @@ package Connectors "Declarative and imperative connectors"
               points={{0,100},{0,-100}},
               color={0,0,0},
               smooth=Smooth.None)}));
-
   end LinearMomentum;
 
   connector Entropy "Connector for entropy"
@@ -517,7 +505,6 @@ package Connectors "Declarative and imperative connectors"
               points={{-100,-100},{100,100}},
               color={0,0,0},
               smooth=Smooth.None)}));
-
   end Entropy;
 
   connector RealInput = input Real
@@ -610,7 +597,6 @@ Protected connector with one input signal of type <code>Real</code>.</p>
               extent={{-200,50},{200,90}},
               textString="%name",
               lineColor={0,0,0})}));
-
   end RealInputBus;
 
   expandable connector RealInputBusInternal
@@ -646,7 +632,6 @@ Protected connector with one input signal of type <code>Real</code>.</p>
               fillColor={0,0,127},
               fillPattern=FillPattern.Solid,
               lineThickness=0.5)}));
-
   end RealInputBusInternal;
 
   connector RealOutput = output Real
@@ -733,7 +718,6 @@ Protected connector with one output signal of type <code>Real</code>.</p>
               extent={{-200,50},{200,90}},
               textString="%name",
               lineColor={0,0,0})}));
-
   end RealOutputBus;
 
   expandable connector RealOutputBusInternal
@@ -767,7 +751,6 @@ Protected connector with one output signal of type <code>Real</code>.</p>
               extent={{-200,24},{200,64}},
               textString="%name",
               lineColor={0,0,0})}));
-
   end RealOutputBusInternal;
 
   package BaseClasses "Base classes (not for direct use)"
@@ -812,7 +795,6 @@ Protected connector with one output signal of type <code>Real</code>.</p>
                   lineColor={208,104,0},
                   fillPattern=FillPattern.Solid,
                   fillColor={255,128,0})}));
-
     end Chemical;
 
     connector PartialFace
@@ -847,7 +829,6 @@ Protected connector with one output signal of type <code>Real</code>.</p>
                   lineColor={127,127,127},
                   fillColor={191,191,191},
                   fillPattern=FillPattern.Solid)}));
-
     end PartialFace;
 
     partial connector PartialInert
@@ -891,7 +872,6 @@ Protected connector with one output signal of type <code>Real</code>.</p>
                   lineColor={72,90,180},
                   fillPattern=FillPattern.Solid,
                   fillColor={102,128,255})}));
-
     end PartialInert;
 
     type MaterialEntropyOpt = enumeration(

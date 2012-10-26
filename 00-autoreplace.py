@@ -44,7 +44,7 @@ rpls = [# Remove extra spacing.
 if (len(sys.argv) > 1):
     directory = sys.argv[1]
 else:
-    directory = '.'
+    directory = ''
 
 ## Procedure
 # Method to remove non-ASCII characters.
@@ -59,13 +59,14 @@ for i, rpl in enumerate(rpls):
 # Replace strings.
 for fname in glob.glob(os.path.join(directory, '*.mo')):
     # Read the source file.
-    print "Processing " + fname + "..."
+    print("Processing %s ... " % fname)
     src = open(fname, 'r')
     text = src.read()
     src.close()
     #text = removeNonAscii(text)
     # **Add a method to warn about non-ASCII characters before removing them.
 
+    print len(text)
     # Make the replacements.
     for rpl in rpls:
         text = rpl[0].sub(rpl[1], text)

@@ -1,15 +1,15 @@
 #!/usr/bin/env python
-# Make custom replacements in files.
+# Rewrap the lines of Modelica files in a folder.
 #
 # The first argument is the directory.
 #
-# Created by Kevin Davies, 5/30/12
+# Created by Kevin Davies, 10/26/12
 
 import re
 import glob
 import sys
 import os
-from textrwap import TextWrapper
+from textwrap import TextWrapper
 
 ## Settings
 textWrapper = TextWrapper(width=77, drop_whitespace=False,
@@ -19,25 +19,20 @@ textWrapper = TextWrapper(width=77, drop_whitespace=False,
 if (len(sys.argv) > 1):
     directory = sys.argv[1]
 else:
-    directory = '.'
+    directory = ''
 
-# Compile the regular expressions.
-for i, rpl in enumerate(rpls):
-    rpls[i] = (re.compile(rpl[0]), rpl[1])
-
-# Replace strings.
+# Process the files.
 for fname in glob.glob(os.path.join(directory, '*.mo')):
     # Read the source file.
-    print "Processing " + fname + "..."
+    print("Processing %s ... " % fname)
     src = open(fname, 'r')
     text = src.read()
     src.close()
 
     # Wrap the text.
+    print type(text)
+    print len(text)
     text = textWrapper.wrap(text)
-
-    for rpl in rpls:
-        text = rpl[0].sub(rpl[1], text)
 
     # Re-write the file.
     src = open(fname, 'w')

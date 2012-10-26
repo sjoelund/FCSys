@@ -1238,7 +1238,6 @@ used as the inlet. The z axis extends across the width of the channel.</p></html
                   visible=not inclYFaces,
                   lineColor={0,0,0})}),
         Diagram(graphics));
-
     end AnFP;
 
     model GM "General Motors cathodic test flow plate and current collector"
