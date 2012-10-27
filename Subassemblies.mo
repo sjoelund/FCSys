@@ -31,10 +31,10 @@ package Subassemblies "Combinations of regions (e.g., cells)"
 
         extends FCSys.BCs.TestStands.TestProfile(anEnd(each graphite('incle-'=
                   true, 'e-'(redeclare Modelica.Blocks.Sources.Ramp
-                  materialSpec(height=100*U.A, duration=50)))), caEnd(each
+                  materialSpec(height=10000*U.A, duration=500)))), caEnd(each
               graphite('incle-'=true, 'e-'(redeclare
-                  Modelica.Blocks.Sources.Ramp materialSpec(height=-100*U.A,
-                    duration=50)))));
+                  Modelica.Blocks.Sources.Ramp materialSpec(height=-10000*U.A,
+                    duration=500)))));
         replaceable FCSys.Subassemblies.Cells.Cell cell annotation (
             __Dymola_choicesFromPackage=true, Placement(transformation(extent={
                   {-10,-10},{10,10}})));
