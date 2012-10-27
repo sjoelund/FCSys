@@ -87,7 +87,6 @@ package Subassemblies "Combinations of regions (e.g., cells)"
           experiment(StopTime=600, Tolerance=1e-08),
           experimentSetupOutput,
           Icon(graphics));
-
       end CellProfile;
 
       model Polarization "Run a cell polarization"
@@ -730,7 +729,6 @@ of a PEMFC is given in the top-level documentation of <a href=\"modelica://FCSys
               thickness=0.5)}),
         experimentSetupOutput,
         experiment(StopTime=120, Tolerance=1e-06));
-
     end Cell;
 
     model CalibratedCell

@@ -1583,7 +1583,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
   equation
     // Gas
     connect(gas.inert, volume.inert) annotation (Line(
-        points={{8,-8},{12.375,-12.375}},
+        points={{8,-8},{11,-11}},
         color={72,90,180},
         smooth=Smooth.None));
     connect(gas.negativeX, negativeX.gas) annotation (Line(
@@ -1627,7 +1627,7 @@ Error: Failed to expand the variable ORR.chemical[2].mphi
 
     // Graphite
     connect(graphite.inert, volume.inert) annotation (Line(
-        points={{8,-8},{12.375,-12.375}},
+        points={{8,-8},{11,-11}},
         color={72,90,180},
         smooth=Smooth.None));
     connect(graphite.negativeX, negativeX.graphite) annotation (Line(
@@ -6427,8 +6427,8 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
         annotation (HideResult=true, Dialog(group="Geometry"));
       parameter Q.Length Lstar(
         min=0,
-        nominal=10*U.m,
-        start=1e3*product(L)^(1/3))
+        nominal=1e5*U.m,
+        start=1e7*product(L)^(1/3))
         "<html>Characteristic length for exchange (<i>L</i><sup>&#9733;</sup>)</html>"
         annotation (Dialog(group="Geometry"));
 
@@ -6747,6 +6747,8 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
       // Note:  The properties are defined as inputs so that they can be
       // redeclared as parameters or acausal time-varying variables.
 
+      output Q.Time t=beta_Phi*Lstar/N if defaults.analysis "**";
+
       // Nonessential variables (for analysis)
       // General
       output Q.Mass M=Data.m*N if defaults.analysis "Mass";
@@ -6856,8 +6858,8 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
         matEntOpt=MaterialEntropyOpt.OpenDiabatic,
         viscousY=inclLin[2],
         viscousZ=inclLin[3],
-        material(final mu(start=mu_IC) = mu_face[1, 1],final Ndot(start=I_IC[1])
-             = Ndot_face[1, 1]),
+        material(final mu(start=mu_IC - Data.Deltah0_f) = mu_face[1, 1], final
+            Ndot(start=I_IC[1]) = Ndot_face[1, 1]),
         momentumY(final phi(start=phi_IC[2]) = phi_face[1, 1, 1],final mPhidot=
               mPhidot_face[1, 1, 1]),
         momentumZ(final phi(start=phi_IC[3]) = phi_face[1, 1, 2],final mPhidot=
@@ -6873,8 +6875,8 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
         matEntOpt=negativeX.matEntOpt,
         viscousY=inclLin[2],
         viscousZ=inclLin[3],
-        material(final mu(start=mu_IC) = mu_face[1, 2],final Ndot(start=-I_IC[1])
-             = Ndot_face[1, 2]),
+        material(final mu(start=mu_IC - Data.Deltah0_f) = mu_face[1, 2], final
+            Ndot(start=-I_IC[1]) = Ndot_face[1, 2]),
         momentumY(final phi(start=phi_IC[2]) = phi_face[1, 2, 1],final mPhidot=
               mPhidot_face[1, 2, 1]),
         momentumZ(final phi(start=phi_IC[3]) = phi_face[1, 2, 2],final mPhidot=
@@ -6890,8 +6892,8 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
       replaceable FCSys.Connectors.FaceY negativeY(
         viscousZ=inclLin[3],
         viscousX=inclLin[1],
-        material(final mu(start=mu_IC) = mu_face[2, 1],final Ndot(start=I_IC[2])
-             = Ndot_face[2, 1]),
+        material(final mu(start=mu_IC - Data.Deltah0_f) = mu_face[2, 1], final
+            Ndot(start=I_IC[2]) = Ndot_face[2, 1]),
         momentumZ(final phi(start=phi_IC[3]) = phi_face[2, 1, 1],final mPhidot=
               mPhidot_face[2, 1, 1]),
         momentumX(final phi(start=phi_IC[1]) = phi_face[2, 1, 2],final mPhidot=
@@ -6907,8 +6909,8 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
         matEntOpt=negativeY.matEntOpt,
         viscousZ=inclLin[3],
         viscousX=inclLin[1],
-        material(final mu(start=mu_IC) = mu_face[2, 2],final Ndot(start=-I_IC[2])
-             = Ndot_face[2, 2]),
+        material(final mu(start=mu_IC - Data.Deltah0_f) = mu_face[2, 2], final
+            Ndot(start=-I_IC[2]) = Ndot_face[2, 2]),
         momentumZ(final phi(start=phi_IC[3]) = phi_face[2, 2, 1],final mPhidot=
               mPhidot_face[2, 2, 1]),
         momentumX(final phi(start=phi_IC[1]) = phi_face[2, 2, 2],final mPhidot=
@@ -6924,8 +6926,8 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
       replaceable FCSys.Connectors.FaceZ negativeZ(
         viscousX=inclLin[1],
         viscousY=inclLin[2],
-        material(final mu(start=mu_IC) = mu_face[3, 1],final Ndot(start=I_IC[3])
-             = Ndot_face[3, 1]),
+        material(final mu(start=mu_IC - Data.Deltah0_f) = mu_face[3, 1], final
+            Ndot(start=I_IC[3]) = Ndot_face[3, 1]),
         momentumX(final phi(start=phi_IC[1]) = phi_face[3, 1, 1],final mPhidot=
               mPhidot_face[3, 1, 1]),
         momentumY(final phi(start=phi_IC[2]) = phi_face[3, 1, 2],final mPhidot=
@@ -6941,8 +6943,8 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
         matEntOpt=negativeZ.matEntOpt,
         viscousX=inclLin[1],
         viscousY=inclLin[2],
-        material(final mu(start=mu_IC) = mu_face[3, 2],final Ndot(start=-I_IC[3])
-             = Ndot_face[3, 2]),
+        material(final mu(start=mu_IC - Data.Deltah0_f) = mu_face[3, 2], final
+            Ndot(start=-I_IC[3]) = Ndot_face[3, 2]),
         momentumX(final phi(start=phi_IC[1]) = phi_face[3, 2, 1],final mPhidot=
               mPhidot_face[3, 2, 1]),
         momentumY(final phi(start=phi_IC[2]) = phi_face[3, 2, 2],final mPhidot=
@@ -6971,7 +6973,7 @@ and <code>beta_S=U.m*U.K/(19.6e-3*U.W)</code>) are of H<sub>2</sub>O gas at satu
       Boolean depleted "true, if nearly no material remains";
 
       // Efforts and flows of the conditional faces
-      Q.Potential mu_face[3, 2](each start=mu_IC)
+      Q.Potential mu_face[3, 2](each start=mu_IC - Data.Deltah0_f)
         "Electrochemical potentials at the faces";
       Q.Current Ndot_face[3, 2](start=outerProduct(I_IC, {1,-1}))
         "Currents into the faces";
@@ -7432,6 +7434,9 @@ The default global default settings will be used for the current simulation.",
             cartAxes[axis]] else 0 for side in 1:2) + sum(Sigma(mPhidot_face[
             cartWrap(cartAxes[axis] - orientation), :, orientation]) for
             orientation in 1:2) "Conservation of linear momentum";
+          // **Delta(Ndot_face[cartAxes[axis],:].^2)*N/L[cartAxes[axis]]?
+          // **+2*T*N^2*beta_N*phi[axis]/V
+          // **Data.m*sum(Ndot_face)*phi[axis]
         end if;
       end for;
 
@@ -8008,13 +8013,13 @@ The default global default settings will be used for the current simulation.",
               extent={{-30,-30},{-10,-10}}), iconTransformation(extent={{-60,-60},
                 {-40,-40}})));
 
+      FCSys.Subregions.Volume volume(final n_lin=n_lin,final V=V)
+        "Model to establish space for species"
+        annotation (Placement(transformation(extent={{-16,-16},{16,16}})));
     protected
       final parameter Integer n_lin=countTrue({inclXMom,inclYMom,inclZMom})
         "Number of components of linear momentum" annotation (Evaluate=true);
 
-      FCSys.Subregions.Volume volume(final n_lin=n_lin, final V=V)
-        "Model to establish space for species"
-        annotation (Placement(transformation(extent={{-16,-16},{16,16}})));
       annotation (
         Documentation(info="<html><p>Notes:
 <ul><li>This model must be be extended so that models can be added for
@@ -8028,76 +8033,91 @@ The default global default settings will be used for the current simulation.",
   <li>The x-axis component of linear momentum is included by default.  At least one component must be included.</li></ul></p></html>"),
 
         Diagram(graphics),
-        Icon(graphics={Line(
-                  points={{-100,0},{-40,0}},
-                  color={127,127,127},
-                  thickness=0.5,
-                  visible=inclXFaces,
-                  smooth=Smooth.None),Line(
-                  points={{0,-40},{0,-100}},
-                  color={127,127,127},
-                  thickness=0.5,
-                  visible=inclYFaces,
-                  smooth=Smooth.None),Line(
-                  points={{40,40},{50,50}},
-                  color={127,127,127},
-                  thickness=0.5,
-                  visible=inclZFaces,
-                  smooth=Smooth.None),Polygon(
-                  points={{-40,16},{-16,40},{40,40},{40,-16},{16,-40},{-40,-40},
-                {-40,16}},
-                  lineColor={127,127,127},
-                  smooth=Smooth.None,
-                  fillColor={255,255,255},
-                  fillPattern=FillPattern.Solid),Line(
-                  points={{-40,-40},{-16,-16}},
-                  color={127,127,127},
-                  smooth=Smooth.None,
-                  pattern=LinePattern.Dash),Line(
-                  points={{-16,40},{-16,-16},{40,-16}},
-                  color={127,127,127},
-                  smooth=Smooth.None,
-                  pattern=LinePattern.Dash),Line(
-                  points={{-40,0},{28,0}},
-                  color={210,210,210},
-                  visible=inclXFaces,
-                  smooth=Smooth.None,
-                  thickness=0.5),Line(
-                  points={{0,28},{0,-40}},
-                  color={210,210,210},
-                  visible=inclYFaces,
-                  smooth=Smooth.None,
-                  thickness=0.5),Line(
-                  points={{28,0},{100,0}},
-                  color={127,127,127},
-                  thickness=0.5,
-                  visible=inclXFaces,
-                  smooth=Smooth.None),Line(
-                  points={{0,100},{0,28}},
-                  color={127,127,127},
-                  thickness=0.5,
-                  visible=inclYFaces,
-                  smooth=Smooth.None),Line(
-                  points={{-12,-12},{40,40}},
-                  color={210,210,210},
-                  visible=inclZFaces,
-                  smooth=Smooth.None,
-                  thickness=0.5),Line(
-                  points={{-40,16},{16,16},{16,-40}},
-                  color={127,127,127},
-                  smooth=Smooth.None),Line(
-                  points={{-50,-50},{-12,-12}},
-                  color={127,127,127},
-                  thickness=0.5,
-                  visible=inclZFaces,
-                  smooth=Smooth.None),Polygon(
-                  points={{-40,16},{-16,40},{40,40},{40,-16},{16,-40},{-40,-40},
-                {-40,16}},
-                  lineColor={127,127,127},
-                  smooth=Smooth.None),Line(
-                  points={{40,40},{16,16}},
-                  color={127,127,127},
-                  smooth=Smooth.None)}));
+        Icon(graphics={
+            Line(
+              points={{-100,0},{-40,0}},
+              color={127,127,127},
+              thickness=0.5,
+              visible=inclXFaces,
+              smooth=Smooth.None),
+            Line(
+              points={{0,-40},{0,-100}},
+              color={127,127,127},
+              thickness=0.5,
+              visible=inclYFaces,
+              smooth=Smooth.None),
+            Line(
+              points={{40,40},{50,50}},
+              color={127,127,127},
+              thickness=0.5,
+              visible=inclZFaces,
+              smooth=Smooth.None),
+            Polygon(
+              points={{-40,16},{-16,40},{40,40},{40,-16},{16,-40},{-40,-40},{-40,
+                  16}},
+              lineColor={127,127,127},
+              smooth=Smooth.None,
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Line(
+              points={{-40,-40},{-16,-16}},
+              color={127,127,127},
+              smooth=Smooth.None,
+              pattern=LinePattern.Dash),
+            Line(
+              points={{-16,40},{-16,-16},{40,-16}},
+              color={127,127,127},
+              smooth=Smooth.None,
+              pattern=LinePattern.Dash),
+            Line(
+              points={{-40,0},{28,0}},
+              color={210,210,210},
+              visible=inclXFaces,
+              smooth=Smooth.None,
+              thickness=0.5),
+            Line(
+              points={{0,28},{0,-40}},
+              color={210,210,210},
+              visible=inclYFaces,
+              smooth=Smooth.None,
+              thickness=0.5),
+            Line(
+              points={{28,0},{100,0}},
+              color={127,127,127},
+              thickness=0.5,
+              visible=inclXFaces,
+              smooth=Smooth.None),
+            Line(
+              points={{0,100},{0,28}},
+              color={127,127,127},
+              thickness=0.5,
+              visible=inclYFaces,
+              smooth=Smooth.None),
+            Line(
+              points={{-12,-12},{40,40}},
+              color={210,210,210},
+              visible=inclZFaces,
+              smooth=Smooth.None,
+              thickness=0.5),
+            Line(
+              points={{-40,16},{16,16},{16,-40}},
+              color={127,127,127},
+              smooth=Smooth.None),
+            Line(
+              points={{-50,-50},{-12,-12}},
+              color={127,127,127},
+              thickness=0.5,
+              visible=inclZFaces,
+              smooth=Smooth.None),
+            Polygon(
+              points={{-40,16},{-16,40},{40,40},{40,-16},{16,-40},{-40,-40},{-40,
+                  16}},
+              lineColor={127,127,127},
+              smooth=Smooth.None),
+            Line(
+              points={{40,40},{16,16}},
+              color={127,127,127},
+              smooth=Smooth.None)}));
 
     end PartialSubregion;
 
