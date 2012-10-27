@@ -1210,7 +1210,7 @@ package Figures "Layouts for documentation"
 
   model CellIcon
 
-    FCSys.Subassemblies.Cells.Cell Cell
+    FCSys.Assemblies.Cells.Cell Cell
       annotation (Placement(transformation(extent={{-100,-100},{100,100}})));
   end CellIcon;
 

@@ -1,5 +1,5 @@
 within FCSys;
-package Subassemblies "Combinations of regions (e.g., cells)"
+package Assemblies "Combinations of regions (e.g., cells)"
   extends Modelica.Icons.Package;
   package Cells "Single-cell PEMFC models"
     extends Modelica.Icons.Package;
@@ -12,7 +12,7 @@ package Subassemblies "Combinations of regions (e.g., cells)"
           p=149.6*U.kPa,
           T=333.15*U.K)
           annotation (Placement(transformation(extent={{24,-8},{44,12}})));
-        replaceable FCSys.Subassemblies.Cells.CellSSIC cell annotation (
+        replaceable FCSys.Assemblies.Cells.CellSSIC cell annotation (
             __Dymola_choicesFromPackage=true, Placement(transformation(extent={
                   {-10,-10},{10,10}})));
         annotation (
@@ -35,7 +35,7 @@ package Subassemblies "Combinations of regions (e.g., cells)"
               graphite('incle-'=true, 'e-'(redeclare
                   Modelica.Blocks.Sources.Ramp materialSpec(height=-10000*U.A,
                     duration=500)))));
-        replaceable FCSys.Subassemblies.Cells.Cell cell annotation (
+        replaceable FCSys.Assemblies.Cells.Cell cell annotation (
             __Dymola_choicesFromPackage=true, Placement(transformation(extent={
                   {-10,-10},{10,10}})));
 
@@ -97,7 +97,7 @@ package Subassemblies "Combinations of regions (e.g., cells)"
 
       model CellProfileIO
         "Apply BCs to a cell according to a test profile, with inputs and outputs"
-        extends FCSys.Subassemblies.Cells.Examples.CellProfile(testStand(final
+        extends FCSys.Assemblies.Cells.Examples.CellProfile(testStand(final
               inclIO=true));
         extends FCSys.BaseClasses.Icons.Blocks.Continuous;
 
@@ -144,11 +144,11 @@ package Subassemblies "Combinations of regions (e.g., cells)"
         "<html>Cell interfaced to components from the <a href=\"modelica://Modelica\">Modelica</a> package</html>"
         extends Modelica.Icons.Example;
         extends Modelica.Icons.UnderConstruction;
-        FCSys.Subassemblies.Cells.Cell cell(anFP(redeclare
+        FCSys.Assemblies.Cells.Cell cell(anFP(redeclare
               FCSys.Subregions.Subregion subregions(
               each final inclX=true,
               each inclY=true,
-              each graphite('incle-'=true,'e-'(perfectMaterialDiff={{{{true,
+              each graphite('incle-'=true, 'e-'(perfectMaterialDiff={{{{true,
                       false}}}})),
               each gas(inclH2=true, inclH2O=true))))
           annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
@@ -207,7 +207,7 @@ package Subassemblies "Combinations of regions (e.g., cells)"
           T=333.15*U.K,
           analysis=true)
           annotation (Placement(transformation(extent={{24,-8},{44,12}})));
-        replaceable FCSys.Subassemblies.Cells.CellSSIC cell annotation (
+        replaceable FCSys.Assemblies.Cells.CellSSIC cell annotation (
             __Dymola_choicesFromPackage=true, Placement(transformation(extent={
                   {-10,-10},{10,10}})));
 
@@ -252,7 +252,7 @@ package Subassemblies "Combinations of regions (e.g., cells)"
           T=333.15*U.K,
           analysis=true)
           annotation (Placement(transformation(extent={{24,-8},{44,12}})));
-        replaceable FCSys.Subassemblies.Cells.CellSSIC cell annotation (
+        replaceable FCSys.Assemblies.Cells.CellSSIC cell annotation (
             __Dymola_choicesFromPackage=true, Placement(transformation(extent={
                   {-10,-10},{10,10}})));
 
@@ -318,7 +318,7 @@ package Subassemblies "Combinations of regions (e.g., cells)"
           "Test stand to apply BCs to cell" annotation (
             __Dymola_choicesFromPackage=true, Placement(transformation(extent={
                   {-16,-16},{16,16}})));
-        replaceable FCSys.Subassemblies.Cells.CellSSIC cell annotation (
+        replaceable FCSys.Assemblies.Cells.CellSSIC cell annotation (
             __Dymola_choicesFromPackage=true, Placement(transformation(extent={
                   {-10,-10},{10,10}})));
 
@@ -352,7 +352,7 @@ package Subassemblies "Combinations of regions (e.g., cells)"
           T=333.15*U.K,
           analysis=true)
           annotation (Placement(transformation(extent={{24,-8},{44,12}})));
-        replaceable FCSys.Subassemblies.Cells.CellSSIC cell annotation (
+        replaceable FCSys.Assemblies.Cells.CellSSIC cell annotation (
             __Dymola_choicesFromPackage=true, Placement(transformation(extent={
                   {-10,-10},{10,10}})));
 
@@ -388,7 +388,7 @@ package Subassemblies "Combinations of regions (e.g., cells)"
           T=333.15*U.K,
           analysis=true)
           annotation (Placement(transformation(extent={{24,-8},{44,12}})));
-        replaceable FCSys.Subassemblies.Cells.CellSSIC cell annotation (
+        replaceable FCSys.Assemblies.Cells.CellSSIC cell annotation (
             __Dymola_choicesFromPackage=true, Placement(transformation(extent={
                   {-10,-10},{10,10}})));
 
@@ -1652,4 +1652,4 @@ FCSys.UsersGuide.ModelicaLicense2</a> or visit <a href=\"http://www.modelica.org
 http://www.modelica.org/licenses/ModelicaLicense2</a>.</i>
 </p>
 </html>"));
-end Subassemblies;
+end Assemblies;

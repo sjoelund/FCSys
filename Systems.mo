@@ -158,8 +158,7 @@ package Systems
       // TODO: Use inner/outer expandable connectors for control buses.
       FCSys.Systems.Humidifier.Humidifier anHumidifier annotation (Placement(
             transformation(extent={{-50,-14},{-30,6}}, rotation=0)));
-      FCSys.Subassemblies.ClosedTank tankH2 annotation (Placement(
-            transformation(
+      FCSys.Assemblies.ClosedTank tankH2 annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
             origin={-190,-10})));
@@ -171,7 +170,7 @@ package Systems
             extent={{10,-10},{-10,10}},
             rotation=270,
             origin={174,-12})));
-      FCSys.Subassemblies.OpenTank H2OTank annotation (Placement(transformation(
+      FCSys.Assemblies.OpenTank H2OTank annotation (Placement(transformation(
               extent={{-30,10},{-10,30}}, rotation=0)));
       FCSys.Systems.Pump.Pump compressor annotation (Placement(transformation(
               extent={{-110,-60},{-90,-40}}, rotation=0)));
@@ -194,7 +193,7 @@ package Systems
             transformation(extent={{-180,-22},{-160,-2}}, rotation=0)));
       FCSys.Systems.FluidHeater.FluidHeater anPreheater
         annotation (Placement(transformation(extent={{-110,-24},{-90,-4}})));
-      FCSys.Subassemblies.Condenser condenser
+      FCSys.Assemblies.Condenser condenser
         annotation (Placement(transformation(extent={{70,-54},{90,-34}})));
       FCSys.Systems.Humidifier.Humidifier caHumidifier
         annotation (Placement(transformation(extent={{-50,-54},{-30,-34}})));
