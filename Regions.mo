@@ -1065,7 +1065,7 @@ package Regions "3D arrays of discrete, interconnected subregions"
       parameter Q.NumberAbsolute x(nominal=1) = 0.1 "Volumetric porosity";
 
       // Nonessential variables (for analysis)
-      output Q.Number x_H2[n_x, n_y, n_z]=subregions.gas.H2.N/(subregions.gas.H2.N
+      output Q.Number x_H2[n_x, n_y, n_z]=subregions.gas.H2.N ./ (subregions.gas.H2.N
            + subregions.gas.H2O.N) if defaults.analysis and hasSubregions
         "Molar concentration of H2";
       output Q.Number x_H2O[n_x, n_y, n_z]=ones(
@@ -1355,7 +1355,7 @@ In reality, there are cut-outs and holes for thermocouples, hardware, etc.</li>
       // and Verbrugge give x = 0.4 [Bernardi1992, p. 2483, Table 3].
 
       // Nonessential variables (for analysis)
-      output Q.Number x_H2[n_x, n_y, n_z]=subregions.gas.H2.N/(subregions.gas.H2.N
+      output Q.Number x_H2[n_x, n_y, n_z]=subregions.gas.H2.N ./ (subregions.gas.H2.N
            + subregions.gas.H2O.N) if defaults.analysis and hasSubregions
         "Molar concentration of H2";
       output Q.Number x_H2O[n_x, n_y, n_z]=ones(
@@ -1677,11 +1677,12 @@ the z axis extends across the width of the channel.</p></html>"),
           each ionomer(
             inclC19HF37O5S=true,
             'inclH+'=true,
-            C19HF37O5S(V_IC=(V - xV)/2),
+            C19HF37O5S(Lstar=1e7*U.m,V_IC=(V - xV)/2),
             'H+'(
               Lstar=1e7*U.m,
               negativeY(viscousX=false),
               positiveY(viscousX=false)))));
+      //**       alpha_Phi=1e10*subregions[1, 1, 1].gas.H2.Data.beta(),
 
       //'e-'( positiveX(matEntOpt=MaterialEntropyOpt.ClosedAdiabatic),
       //'H+'negativeX(matEntOpt=MaterialEntropyOpt.ClosedAdiabatic),
@@ -1705,7 +1706,7 @@ the z axis extends across the width of the channel.</p></html>"),
         annotation (Dialog(group="Initialization"));
 
       // Nonessential variables (for analysis)
-      output Q.Number x_H2[n_x, n_y, n_z]=subregions.gas.H2.N/(subregions.gas.H2.N
+      output Q.Number x_H2[n_x, n_y, n_z]=subregions.gas.H2.N ./ (subregions.gas.H2.N
            + subregions.gas.H2O.N) if defaults.analysis and hasSubregions
         "Molar concentration of H2";
       output Q.Number x_H2O[n_x, n_y, n_z]=ones(
@@ -2012,75 +2013,89 @@ the z axis extends across the width of the channel.</p>
         Icon(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
-            initialScale=0.1), graphics={Rectangle(
-                  extent={{-100,60},{100,100}},
-                  fillColor={255,255,255},
-                  visible=not inclYFaces,
-                  fillPattern=FillPattern.Solid,
-                  pattern=LinePattern.None),Rectangle(
-                  extent={{-99.092,-21.1179},{-84.9489,-63.5448}},
-                  lineColor={200,200,200},
-                  fillColor={255,255,255},
-                  rotation=-45,
-                  fillPattern=FillPattern.VerticalCylinder,
-                  origin={95.001,14.864}),Rectangle(
-                  extent={{-20,40},{0,-60}},
-                  lineColor={200,200,200},
-                  fillColor={255,255,255},
-                  fillPattern=FillPattern.VerticalCylinder),Polygon(
-                  points={{20,0},{42,0},{42,80},{-42,80},{-42,0},{-20,0},{-20,
-                40},{0,60},{20,60},{20,0}},
-                  smooth=Smooth.None,
-                  fillColor={255,255,255},
-                  fillPattern=FillPattern.Solid,
-                  pattern=LinePattern.None),Polygon(
-                  points={{20,0},{42,0},{42,-80},{-42,-80},{-42,0},{-20,0},{-20,
-                -60},{0,-60},{20,-40},{20,0}},
-                  smooth=Smooth.None,
-                  fillColor={255,255,255},
-                  fillPattern=FillPattern.Solid,
-                  pattern=LinePattern.None),Polygon(
-                  points={{0,40},{20,60},{20,-40},{0,-60},{0,40}},
-                  lineColor={0,0,0},
-                  smooth=Smooth.None,
-                  fillPattern=FillPattern.Solid,
-                  fillColor={200,200,200}),Rectangle(extent={{-20,40},{0,-60}},
-              lineColor={0,0,0}),Polygon(
-                  points={{0,60},{20,60},{0,40},{-20,40},{0,60}},
-                  lineColor={0,0,0},
-                  smooth=Smooth.None),Line(
-                  points={{-20,0},{-100,0}},
-                  color={240,0,0},
-                  visible=inclXFaces,
-                  thickness=0.5),Line(
-                  points={{10,0},{100,0}},
-                  color={0,0,240},
-                  visible=inclXFaces,
-                  thickness=0.5),Line(
-                  points={{0,-60},{0,-100}},
-                  color={127,127,127},
-                  visible=inclYFaces,
-                  smooth=Smooth.None,
-                  thickness=0.5),Line(
-                  points={{0,100},{0,50}},
-                  color={127,127,127},
-                  visible=inclYFaces,
-                  smooth=Smooth.None,
-                  thickness=0.5),Line(
-                  points={{-50,-50},{-10,-10}},
-                  color={127,127,127},
-                  visible=inclZFaces,
-                  smooth=Smooth.None,
-                  thickness=0.5),Line(
-                  points={{20,20},{50,50}},
-                  color={127,127,127},
-                  visible=inclZFaces,
-                  smooth=Smooth.None,
-                  thickness=0.5),Text(
-                  extent={{-100,60},{100,100}},
-                  textString="%name",
-                  visible=not inclYFaces,
-                  lineColor={0,0,0})}));
+            initialScale=0.1), graphics={
+            Rectangle(
+              extent={{-100,60},{100,100}},
+              fillColor={255,255,255},
+              visible=not inclYFaces,
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None),
+            Rectangle(
+              extent={{-99.092,-21.1179},{-84.9489,-63.5448}},
+              lineColor={200,200,200},
+              fillColor={255,255,255},
+              rotation=-45,
+              fillPattern=FillPattern.VerticalCylinder,
+              origin={95.001,14.864}),
+            Rectangle(
+              extent={{-20,40},{0,-60}},
+              lineColor={200,200,200},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.VerticalCylinder),
+            Polygon(
+              points={{20,0},{42,0},{42,80},{-42,80},{-42,0},{-20,0},{-20,40},{
+                  0,60},{20,60},{20,0}},
+              smooth=Smooth.None,
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None),
+            Polygon(
+              points={{20,0},{42,0},{42,-80},{-42,-80},{-42,0},{-20,0},{-20,-60},
+                  {0,-60},{20,-40},{20,0}},
+              smooth=Smooth.None,
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None),
+            Polygon(
+              points={{0,40},{20,60},{20,-40},{0,-60},{0,40}},
+              lineColor={0,0,0},
+              smooth=Smooth.None,
+              fillPattern=FillPattern.Solid,
+              fillColor={200,200,200}),
+            Rectangle(extent={{-20,40},{0,-60}}, lineColor={0,0,0}),
+            Polygon(
+              points={{0,60},{20,60},{0,40},{-20,40},{0,60}},
+              lineColor={0,0,0},
+              smooth=Smooth.None),
+            Line(
+              points={{-20,0},{-100,0}},
+              color={240,0,0},
+              visible=inclXFaces,
+              thickness=0.5),
+            Line(
+              points={{10,0},{100,0}},
+              color={0,0,240},
+              visible=inclXFaces,
+              thickness=0.5),
+            Line(
+              points={{0,-60},{0,-100}},
+              color={127,127,127},
+              visible=inclYFaces,
+              smooth=Smooth.None,
+              thickness=0.5),
+            Line(
+              points={{0,100},{0,50}},
+              color={127,127,127},
+              visible=inclYFaces,
+              smooth=Smooth.None,
+              thickness=0.5),
+            Line(
+              points={{-50,-50},{-10,-10}},
+              color={127,127,127},
+              visible=inclZFaces,
+              smooth=Smooth.None,
+              thickness=0.5),
+            Line(
+              points={{20,20},{50,50}},
+              color={127,127,127},
+              visible=inclZFaces,
+              smooth=Smooth.None,
+              thickness=0.5),
+            Text(
+              extent={{-100,60},{100,100}},
+              textString="%name",
+              visible=not inclYFaces,
+              lineColor={0,0,0})}));
     end PEM;
 
     model DuPontN112 "<html>DuPont<sup>TM</sup> Nafion&reg; N-112</html>"
@@ -2191,8 +2206,8 @@ the z axis extends across the width of the channel.</p>
               negativeY(viscousX=false),
               positiveY(viscousX=false)),
             N2(
-              setXVel=true,
-              Lstar=1e7*U.m,
+              setXVel=false,
+              Lstar=1e8*U.m,
               p_IC=(1 - defaults.x_H2O)*(1 - defaults.x_O2_dry)*defaults.p,
               negativeY(viscousX=false),
               positiveY(viscousX=false)),
@@ -2204,8 +2219,9 @@ the z axis extends across the width of the channel.</p>
           each graphite(
             inclC=true,
             'incle-'=true,
-            C(Lstar=1e7*U.m,V_IC=(V - xV)/2),
+            C(Lstar=1e8*U.m,V_IC=(V - xV)/2),
             'e-'(
+              Lstar=1e8*U.m,
               mu_IC=-0.3*U.V,
               negativeY(viscousX=false),
               positiveY(viscousX=false),
@@ -2213,7 +2229,7 @@ the z axis extends across the width of the channel.</p>
           each ionomer(
             inclC19HF37O5S=true,
             'inclH+'=true,
-            C19HF37O5S(V_IC=(V - xV)/2),
+            C19HF37O5S(Lstar=1e7*U.m,V_IC=(V - xV)/2),
             'H+'(
               Lstar=1e7*U.m,
               partNumInitMeth=InitMethScalar.ReactionRate,
@@ -2249,10 +2265,10 @@ the z axis extends across the width of the channel.</p>
       // Assume zero volume of H2O in the ionomer?
 
       // Nonessential variables (for analysis)
-      output Q.Number x_H2O[n_x, n_y, n_z]=subregions.gas.H2O.N/(subregions.gas.H2O.N
+      output Q.Number x_H2O[n_x, n_y, n_z]=subregions.gas.H2O.N ./ (subregions.gas.H2O.N
            + subregions.gas.N2.N + subregions.gas.O2.N) if defaults.analysis
          and hasSubregions "Molar concentration of H2";
-      output Q.Number x_N2[n_x, n_y, n_z]=subregions.gas.N2.N/(subregions.gas.H2O.N
+      output Q.Number x_N2[n_x, n_y, n_z]=subregions.gas.N2.N ./ (subregions.gas.H2O.N
            + subregions.gas.N2.N + subregions.gas.O2.N) if defaults.analysis
          and hasSubregions "Molar concentration of N2";
       output Q.Number x_O2[n_x, n_y, n_z]=ones(
@@ -2459,10 +2475,10 @@ the z axis extends across the width of the channel.</p>
       // The default porosity is for Sigracet 24 BC.
 
       // Nonessential variables (for analysis)
-      output Q.Number x_H2O[n_x, n_y, n_z]=subregions.gas.H2O.N/(subregions.gas.H2O.N
+      output Q.Number x_H2O[n_x, n_y, n_z]=subregions.gas.H2O.N ./ (subregions.gas.H2O.N
            + subregions.gas.N2.N + subregions.gas.O2.N) if defaults.analysis
          and hasSubregions "Molar concentration of H2";
-      output Q.Number x_N2[n_x, n_y, n_z]=subregions.gas.N2.N/(subregions.gas.H2O.N
+      output Q.Number x_N2[n_x, n_y, n_z]=subregions.gas.N2.N ./ (subregions.gas.H2O.N
            + subregions.gas.N2.N + subregions.gas.O2.N) if defaults.analysis
          and hasSubregions "Molar concentration of N2";
       output Q.Number x_O2[n_x, n_y, n_z]=ones(
@@ -2800,10 +2816,10 @@ the z axis extends across the width of the channel.</p>
       parameter Q.NumberAbsolute x(nominal=1) = 0.1 "Volumetric porosity";
 
       // Nonessential variables (for analysis)
-      output Q.Number x_H2O[n_x, n_y, n_z]=subregions.gas.H2O.N/(subregions.gas.H2O.N
+      output Q.Number x_H2O[n_x, n_y, n_z]=subregions.gas.H2O.N ./ (subregions.gas.H2O.N
            + subregions.gas.N2.N + subregions.gas.O2.N) if defaults.analysis
          and hasSubregions "Molar concentration of H2";
-      output Q.Number x_N2[n_x, n_y, n_z]=subregions.gas.N2.N/(subregions.gas.H2O.N
+      output Q.Number x_N2[n_x, n_y, n_z]=subregions.gas.N2.N ./ (subregions.gas.H2O.N
            + subregions.gas.N2.N + subregions.gas.O2.N) if defaults.analysis
          and hasSubregions "Molar concentration of N2";
       output Q.Number x_O2[n_x, n_y, n_z]=ones(

@@ -199,255 +199,12 @@ package Assemblies "Combinations of regions (e.g., cells)"
           experimentSetupOutput);
       end CellModelica;
 
-      model CellProfile2
-        "Apply boundary conditions to a cell according to a test profile"
-        extends Modelica.Icons.Example;
-        inner FCSys.BCs.Defaults defaults(
-          p=149.6*U.kPa,
-          T=333.15*U.K,
-          analysis=true)
-          annotation (Placement(transformation(extent={{24,-8},{44,12}})));
-        replaceable FCSys.Assemblies.Cells.CellSSIC cell annotation (
-            __Dymola_choicesFromPackage=true, Placement(transformation(extent={
-                  {-10,-10},{10,10}})));
 
-        replaceable BCs.Face.Subregion0Current subregionFaceBC[1, 1](graphite(
-            each inclC=true,
-            each 'incle-'=true,
-            each 'e-'(redeclare FCSys.BCs.Face.Species.Material.Current
-                materialBC, redeclare Modelica.Blocks.Sources.Ramp materialSpec(
-                  height=1*U.A, duration=50)))) annotation (Placement(
-              transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=90,
-              origin={-24,0})));
-      equation
 
-        connect(subregionFaceBC.face, cell.anFPX) annotation (Line(
-            points={{-20,3.65701e-16},{-16,3.65701e-16},{-16,6.10623e-16},{-10,
-                6.10623e-16}},
-            color={127,127,127},
-            thickness=0.5,
-            smooth=Smooth.None));
 
-        annotation (
-          Diagram(graphics),
-          experiment(StopTime=100, Tolerance=1e-06),
-          experimentSetupOutput,
-          Commands(file=
-                "resources/scripts/Dymola/Subassemblies.Cells.Examples.CellProfile.mos"),
 
-          Icon(graphics),
-          Diagram(graphics),
-          experiment(StopTime=600, Tolerance=1e-08),
-          experimentSetupOutput,
-          Icon(graphics));
-      end CellProfile2;
 
-      model CellProfile3
-        "Apply boundary conditions to a cell according to a test profile"
-        extends Modelica.Icons.Example;
-        inner FCSys.BCs.Defaults defaults(
-          p=149.6*U.kPa,
-          T=333.15*U.K,
-          analysis=true)
-          annotation (Placement(transformation(extent={{24,-8},{44,12}})));
-        replaceable FCSys.Assemblies.Cells.CellSSIC cell annotation (
-            __Dymola_choicesFromPackage=true, Placement(transformation(extent={
-                  {-10,-10},{10,10}})));
 
-        test test1[1, 1]
-          annotation (Placement(transformation(extent={{-60,-20},{-40,0}})));
-      equation
-
-        connect(test1.face, cell.anFPX) annotation (Line(
-            points={{-44.4,-9.6},{-27.2,-9.6},{-27.2,6.10623e-16},{-10,
-                6.10623e-16}},
-            color={127,127,127},
-            thickness=0.5,
-            smooth=Smooth.None));
-
-        annotation (
-          Diagram(graphics),
-          experiment(StopTime=100, Tolerance=1e-06),
-          experimentSetupOutput,
-          Commands(file=
-                "resources/scripts/Dymola/Subassemblies.Cells.Examples.CellProfile.mos"),
-
-          Icon(graphics),
-          Diagram(graphics),
-          experiment(StopTime=600, Tolerance=1e-08),
-          experimentSetupOutput,
-          Icon(graphics));
-      end CellProfile3;
-
-      model test
-        replaceable BCs.Face.Subregion0Current subregionFaceBC(graphite(
-            each inclC=true,
-            each 'incle-'=true,
-            each 'e-'(redeclare FCSys.BCs.Face.Species.Material.Current
-                materialBC, redeclare Modelica.Blocks.Sources.Ramp materialSpec(
-                  height=1*U.A, duration=50)))) annotation (Placement(
-              transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=90,
-              origin={-14,10})));
-        Connectors.FaceBus face
-          annotation (Placement(transformation(extent={{46,-6},{66,14}})));
-      equation
-        connect(subregionFaceBC.face, face) annotation (Line(
-            points={{-10,10},{24,10},{24,4},{56,4}},
-            color={127,127,127},
-            thickness=0.5,
-            smooth=Smooth.None), Text(
-            string="%second",
-            index=1,
-            extent={{6,3},{6,3}}));
-        annotation (Diagram(graphics));
-      end test;
-
-      model CellProfile4
-        "Apply boundary conditions to a cell according to a test profile"
-        extends Modelica.Icons.Example;
-        inner FCSys.BCs.Defaults defaults(
-          p=149.6*U.kPa,
-          T=333.15*U.K,
-          analysis=true)
-          annotation (Placement(transformation(extent={{24,-8},{44,12}})));
-        replaceable FCSys.BCs.TestStands.TestProfile testStand
-          "Test stand to apply BCs to cell" annotation (
-            __Dymola_choicesFromPackage=true, Placement(transformation(extent={
-                  {-16,-16},{16,16}})));
-        replaceable FCSys.Assemblies.Cells.CellSSIC cell annotation (
-            __Dymola_choicesFromPackage=true, Placement(transformation(extent={
-                  {-10,-10},{10,10}})));
-
-      equation
-        connect(cell.anFPX, testStand.anEnd) annotation (Line(
-            points={{-10,6.10623e-16},{-14,6.10623e-16},{-14,9.4369e-16},{-16,
-                9.4369e-16}},
-            color={127,127,127},
-            thickness=0.5,
-            smooth=Smooth.None));
-
-        annotation (
-          Diagram(graphics),
-          experiment(StopTime=100, Tolerance=1e-06),
-          experimentSetupOutput,
-          Commands(file=
-                "resources/scripts/Dymola/Subassemblies.Cells.Examples.CellProfile.mos"),
-
-          Icon(graphics),
-          Diagram(graphics),
-          experiment(StopTime=600, Tolerance=1e-08),
-          experimentSetupOutput,
-          Icon(graphics));
-      end CellProfile4;
-
-      model CellProfile5
-        "Apply boundary conditions to a cell according to a test profile"
-        extends Modelica.Icons.Example;
-        inner FCSys.BCs.Defaults defaults(
-          p=149.6*U.kPa,
-          T=333.15*U.K,
-          analysis=true)
-          annotation (Placement(transformation(extent={{24,-8},{44,12}})));
-        replaceable FCSys.Assemblies.Cells.CellSSIC cell annotation (
-            __Dymola_choicesFromPackage=true, Placement(transformation(extent={
-                  {-10,-10},{10,10}})));
-
-        test test1[1, 1]
-          annotation (Placement(transformation(extent={{-56,-10},{-36,10}})));
-
-      equation
-        connect(test1.face, cell.anFPX) annotation (Line(
-            points={{-40.4,0.4},{-33.2,0.4},{-33.2,6.10623e-16},{-10,
-                6.10623e-16}},
-            color={127,127,127},
-            thickness=0.5,
-            smooth=Smooth.None));
-        annotation (
-          Diagram(graphics),
-          experiment(StopTime=100, Tolerance=1e-06),
-          experimentSetupOutput,
-          Commands(file=
-                "resources/scripts/Dymola/Subassemblies.Cells.Examples.CellProfile.mos"),
-
-          Icon(graphics),
-          Diagram(graphics),
-          experiment(StopTime=600, Tolerance=1e-08),
-          experimentSetupOutput,
-          Icon(graphics));
-      end CellProfile5;
-
-      model CellProfile6
-        "Apply boundary conditions to a cell according to a test profile"
-        extends Modelica.Icons.Example;
-        inner FCSys.BCs.Defaults defaults(
-          p=149.6*U.kPa,
-          T=333.15*U.K,
-          analysis=true)
-          annotation (Placement(transformation(extent={{24,-8},{44,12}})));
-        replaceable FCSys.Assemblies.Cells.CellSSIC cell annotation (
-            __Dymola_choicesFromPackage=true, Placement(transformation(extent={
-                  {-10,-10},{10,10}})));
-
-        replaceable BCs.Face.Subregion0Current subregionFaceBC[1, 1](graphite(
-            each inclC=true,
-            each 'incle-'=true,
-            each 'e-'(redeclare FCSys.BCs.Face.Species.Material.Current
-                materialBC, redeclare Modelica.Blocks.Sources.Ramp materialSpec(
-                  height=1*U.A, duration=50)))) annotation (Placement(
-              transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=90,
-              origin={-38,0})));
-
-      equation
-        connect(subregionFaceBC.face, cell.anFPX) annotation (Line(
-            points={{-34,3.65701e-16},{-22,3.65701e-16},{-22,6.10623e-16},{-10,
-                6.10623e-16}},
-            color={127,127,127},
-            thickness=0.5,
-            smooth=Smooth.None));
-        annotation (
-          Diagram(graphics),
-          experiment(StopTime=100, Tolerance=1e-06),
-          experimentSetupOutput,
-          Commands(file=
-                "resources/scripts/Dymola/Subassemblies.Cells.Examples.CellProfile.mos"),
-
-          Icon(graphics),
-          Diagram(graphics),
-          experiment(StopTime=600, Tolerance=1e-08),
-          experimentSetupOutput,
-          Icon(graphics));
-      end CellProfile6;
-
-      model test2
-        replaceable BCs.Face.Subregion0Current subregionFaceBC[1, 1](graphite(
-            each inclC=true,
-            each 'incle-'=true,
-            each 'e-'(redeclare FCSys.BCs.Face.Species.Material.Current
-                materialBC, redeclare Modelica.Blocks.Sources.Ramp materialSpec(
-                  height=1*U.A, duration=50)))) annotation (Placement(
-              transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=90,
-              origin={-14,10})));
-        Connectors.FaceBus face[1, 1]
-          annotation (Placement(transformation(extent={{46,-6},{66,14}})));
-      equation
-        connect(subregionFaceBC.face, face) annotation (Line(
-            points={{-10,10},{24,10},{24,4},{56,4}},
-            color={127,127,127},
-            thickness=0.5,
-            smooth=Smooth.None), Text(
-            string="%second",
-            index=1,
-            extent={{6,3},{6,3}}));
-        annotation (Diagram(graphics));
-      end test2;
     end Examples;
 
     model Cell "Default single-cell PEMFC"
@@ -690,37 +447,43 @@ of a PEMFC is given in the top-level documentation of <a href=\"modelica://FCSys
         Icon(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
-            initialScale=0.1), graphics={Line(
-                  points={{-40,-58},{-40,-100}},
-                  color={240,0,0},
-                  visible=inclY,
-                  smooth=Smooth.None,
-                  thickness=0.5),Line(
-                  points={{-8,-1},{28,-1}},
-                  color={0,0,240},
-                  visible=inclX,
-                  thickness=0.5,
-                  origin={39,-92},
-                  rotation=90),Line(
-                  points={{-40,100},{-40,60}},
-                  color={240,0,0},
-                  visible=inclY,
-                  smooth=Smooth.None,
-                  thickness=0.5),Line(
-                  points={{-66,0},{-100,0}},
-                  color={127,127,127},
-                  visible=inclX,
-                  thickness=0.5),Line(
-                  points={{-8,-1},{44,-1}},
-                  color={0,0,240},
-                  visible=inclX,
-                  thickness=0.5,
-                  origin={39,56},
-                  rotation=90),Line(
-                  points={{100,0},{56,0}},
-                  color={127,127,127},
-                  visible=inclX,
-                  thickness=0.5)}),
+            initialScale=0.1), graphics={
+            Line(
+              points={{-40,-58},{-40,-100}},
+              color={240,0,0},
+              visible=inclY,
+              smooth=Smooth.None,
+              thickness=0.5),
+            Line(
+              points={{-8,-1},{28,-1}},
+              color={0,0,240},
+              visible=inclX,
+              thickness=0.5,
+              origin={39,-92},
+              rotation=90),
+            Line(
+              points={{-40,100},{-40,60}},
+              color={240,0,0},
+              visible=inclY,
+              smooth=Smooth.None,
+              thickness=0.5),
+            Line(
+              points={{-66,0},{-100,0}},
+              color={127,127,127},
+              visible=inclX,
+              thickness=0.5),
+            Line(
+              points={{-8,-1},{44,-1}},
+              color={0,0,240},
+              visible=inclX,
+              thickness=0.5,
+              origin={39,56},
+              rotation=90),
+            Line(
+              points={{100,0},{56,0}},
+              color={127,127,127},
+              visible=inclX,
+              thickness=0.5)}),
         experimentSetupOutput,
         experiment(StopTime=120, Tolerance=1e-06));
     end Cell;
@@ -1554,37 +1317,43 @@ of a PEMFC is given in the top-level documentation of <a href=\"modelica://FCSys
         Icon(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
-            initialScale=0.1), graphics={Line(
-                  points={{-40,100},{-40,60}},
-                  color={255,128,0},
-                  visible=inclY,
-                  smooth=Smooth.None,
-                  thickness=0.5),Line(
-                  points={{-8,-1},{44,-1}},
-                  color={0,128,255},
-                  visible=inclX,
-                  thickness=0.5,
-                  origin={39,56},
-                  rotation=90),Line(
-                  points={{100,0},{56,0}},
-                  color={127,127,127},
-                  visible=inclX,
-                  thickness=0.5),Line(
-                  points={{-8,-1},{28,-1}},
-                  color={0,128,255},
-                  visible=inclX,
-                  thickness=0.5,
-                  origin={39,-92},
-                  rotation=90),Line(
-                  points={{-40,-58},{-40,-100}},
-                  color={255,128,0},
-                  visible=inclY,
-                  smooth=Smooth.None,
-                  thickness=0.5),Line(
-                  points={{-66,0},{-100,0}},
-                  color={127,127,127},
-                  visible=inclX,
-                  thickness=0.5)}),
+            initialScale=0.1), graphics={
+            Line(
+              points={{-40,100},{-40,60}},
+              color={255,128,0},
+              visible=inclY,
+              smooth=Smooth.None,
+              thickness=0.5),
+            Line(
+              points={{-8,-1},{44,-1}},
+              color={0,128,255},
+              visible=inclX,
+              thickness=0.5,
+              origin={39,56},
+              rotation=90),
+            Line(
+              points={{100,0},{56,0}},
+              color={127,127,127},
+              visible=inclX,
+              thickness=0.5),
+            Line(
+              points={{-8,-1},{28,-1}},
+              color={0,128,255},
+              visible=inclX,
+              thickness=0.5,
+              origin={39,-92},
+              rotation=90),
+            Line(
+              points={{-40,-58},{-40,-100}},
+              color={255,128,0},
+              visible=inclY,
+              smooth=Smooth.None,
+              thickness=0.5),
+            Line(
+              points={{-66,0},{-100,0}},
+              color={127,127,127},
+              visible=inclX,
+              thickness=0.5)}),
         experimentSetupOutput);
     end IntegratedCell;
 
