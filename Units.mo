@@ -591,7 +591,7 @@ package Units "Constants and units of physical measure"
   // Note:  Numerically, this doesn't evaluate to Hz = 1/s as stated by
   // BIPM (that relation isn't dimensionally correct when considering
   // angle as a dimension), but allows the conversion of frequency into as
-  // cycles per second (Hz) or radians per second (rad/s). Since BIPM
+  // cycles per second (Hz) or radians per second (rad/s).  Since BIPM
   // defines rad = 1 (also dimensionally incorrect) and given that
   // cyc = 2*pi*rad, Hz evaluates numerically to 2*pi/s [BIPM2006].
   final constant Q.Angle2 sr=rad^2 "steradian";

@@ -55,7 +55,7 @@ package UsersGuide "User's Guide"
       <tr bgcolor=#f7f7f7>
         <td>
         <a href=\"modelica://FCSys\">FCSys</a> should be compatible with any
-        modeling environment that supports Modelica 3.2.  The following tools have been tested:
+        modeling environment that supports Modelica 3.1.  The following tools have been tested:
         <ul>
           <li>Dymola: Supported by versions 7.4 and 2012 FD01.
           Dymola's annotations for parameter dialogs and replaceable choices are included.</li>
@@ -105,7 +105,7 @@ package UsersGuide "User's Guide"
         </ul>In general, overviews are given in the documentation of containing packages and
         specific information is given at the appropriate level of inheritance.  If a model does not
         have sufficient documentation, please look at its base model(s) and the package(s) that
-        contain it.  Assumptions are only listed at the lowest level of ineritance at which they apply.  Therefore, the
+        contain it.  Assumptions are only listed at the lowest level of inheritance at which they apply.  Therefore, the
         list of assumptions in a model should be considered in conjunction with the assumptions in all
         the models it inherits from.
         </li>

@@ -13,20 +13,20 @@ package Connectors "Declarative and imperative connectors"
     <a href=\"modelica://FCSys.Connectors.ChemicalOutput\">ChemicalOutput</a>).
     </p></html>"),
       Icon(graphics={Ellipse(
-              extent={{-100,100},{100,-100}},
-              lineColor={208,104,0},
-              fillPattern=FillPattern.Solid,
-              fillColor={255,128,0},
-              lineThickness=0.5)}),
+            extent={{-100,100},{100,-100}},
+            lineColor={208,104,0},
+            fillPattern=FillPattern.Solid,
+            fillColor={255,128,0},
+            lineThickness=0.5)}),
       Diagram(graphics={Text(
-              extent={{-100,36},{100,76}},
-              textString="%name",
-              lineColor={0,0,0}),Ellipse(
-              extent={{-30,30},{30,-30}},
-              lineColor={208,104,0},
-              fillPattern=FillPattern.Solid,
-              fillColor={255,128,0},
-              lineThickness=0.5)}));
+            extent={{-100,36},{100,76}},
+            textString="%name",
+            lineColor={0,0,0}), Ellipse(
+            extent={{-30,30},{30,-30}},
+            lineColor={208,104,0},
+            fillPattern=FillPattern.Solid,
+            fillColor={255,128,0},
+            lineThickness=0.5)}));
   end ChemicalBus;
 
   expandable connector ChemicalBusInternal
@@ -70,16 +70,16 @@ package Connectors "Declarative and imperative connectors"
     <a href=\"modelica://FCSys.Connectors\">Connectors</a> package.</p></html>"),
 
       Icon(graphics={Ellipse(
-              extent={{-60,60},{60,-60}},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid,
-              pattern=LinePattern.None),Ellipse(extent={{-100,100},{100,-100}},
-            lineColor={208,104,0})}),
+            extent={{-60,60},{60,-60}},
+            fillColor={255,255,255},
+            fillPattern=FillPattern.Solid,
+            pattern=LinePattern.None), Ellipse(extent={{-100,100},{100,-100}},
+              lineColor={208,104,0})}),
       Diagram(graphics={Ellipse(
-              extent={{-18,18},{18,-18}},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Solid,
-              pattern=LinePattern.None)}));
+            extent={{-18,18},{18,-18}},
+            fillColor={255,255,255},
+            fillPattern=FillPattern.Solid,
+            pattern=LinePattern.None)}));
 
   end ChemicalInput;
 
@@ -95,7 +95,7 @@ package Connectors "Declarative and imperative connectors"
     <a href=\"modelica://FCSys.Connectors\">Connectors</a> package.</p></html>"),
 
       Icon(graphics={Ellipse(extent={{-100,100},{100,-100}}, lineColor={208,104,
-            0})}),
+                0})}),
       Diagram(graphics));
 
   end ChemicalOutput;
@@ -210,7 +210,7 @@ package Connectors "Declarative and imperative connectors"
               100,100}}), graphics),
       Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,
               100}}), graphics={Ellipse(extent={{-100,100},{100,-100}},
-            lineColor={127,127,127})}));
+              lineColor={127,127,127})}));
 
   end FaceX;
 
@@ -245,7 +245,7 @@ package Connectors "Declarative and imperative connectors"
               100,100}}), graphics),
       Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,
               100}}), graphics={Ellipse(extent={{-100,100},{100,-100}},
-            lineColor={127,127,127})}));
+              lineColor={127,127,127})}));
 
   end FaceY;
 
@@ -280,7 +280,7 @@ package Connectors "Declarative and imperative connectors"
               100,100}}), graphics),
       Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,
               100}}), graphics={Ellipse(extent={{-100,100},{100,-100}},
-            lineColor={127,127,127})}));
+              lineColor={127,127,127})}));
 
   end FaceZ;
 
@@ -322,7 +322,7 @@ package Connectors "Declarative and imperative connectors"
               100,100}}), graphics),
       Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,
               100}}), graphics={Ellipse(extent={{-100,100},{100,-100}},
-            lineColor={127,127,127})}));
+              lineColor={127,127,127})}));
 
   end FaceGeneric;
 
@@ -365,14 +365,14 @@ package Connectors "Declarative and imperative connectors"
     <a href=\"modelica://FCSys.Connectors\">Connectors</a> package.</p></html>"),
 
       Diagram(graphics={Text(
-              extent={{-30,20},{30,-20}},
-              lineColor={0,0,0},
-              textString="A")}),
+            extent={{-30,20},{30,-20}},
+            lineColor={0,0,0},
+            textString="A")}),
       Icon(graphics={Ellipse(extent={{-100,100},{100,-100}}, lineColor={72,90,
-            180}),Text(
-              extent={{-100,80},{100,-90}},
-              lineColor={0,0,0},
-              textString="A")}));
+                180}), Text(
+            extent={{-100,80},{100,-90}},
+            lineColor={0,0,0},
+            textString="A")}));
 
   end InertAmagat;
 
@@ -406,14 +406,14 @@ package Connectors "Declarative and imperative connectors"
   <a href=\"modelica://FCSys.Connectors\">Connectors</a> package.</p></html>"),
 
       Diagram(graphics={Text(
-              extent={{-30,20},{30,-20}},
-              lineColor={0,0,0},
-              textString="D")}),
+            extent={{-30,20},{30,-20}},
+            lineColor={0,0,0},
+            textString="D")}),
       Icon(graphics={Ellipse(extent={{-100,100},{100,-100}}, lineColor={72,90,
-            180}),Text(
-              extent={{-100,80},{100,-90}},
-              lineColor={0,0,0},
-              textString="D")}));
+                180}), Text(
+            extent={{-100,80},{100,-90}},
+            lineColor={0,0,0},
+            textString="D")}));
 
   end InertDalton;
 
@@ -800,18 +800,18 @@ Protected connector with one output signal of type <code>Real</code>.</p>
     <a href=\"modelica://FCSys.Connectors\">Connectors</a> package.</p></html>"),
 
         Icon(graphics={Ellipse(
-                  extent={{-100,100},{100,-100}},
-                  lineColor={208,104,0},
-                  fillPattern=FillPattern.Solid,
-                  fillColor={255,128,0})}),
+              extent={{-100,100},{100,-100}},
+              lineColor={208,104,0},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,128,0})}),
         Diagram(graphics={Text(
-                  extent={{-100,36},{100,76}},
-                  textString="%name",
-                  lineColor={0,0,0}),Ellipse(
-                  extent={{-30,30},{30,-30}},
-                  lineColor={208,104,0},
-                  fillPattern=FillPattern.Solid,
-                  fillColor={255,128,0})}));
+              extent={{-100,36},{100,76}},
+              textString="%name",
+              lineColor={0,0,0}), Ellipse(
+              extent={{-30,30},{30,-30}},
+              lineColor={208,104,0},
+              fillPattern=FillPattern.Solid,
+              fillColor={255,128,0})}));
 
     end Chemical;
 
@@ -834,19 +834,19 @@ Protected connector with one output signal of type <code>Real</code>.</p>
 
         Diagram(coordinateSystem(preserveAspectRatio=true,extent={{-100,-100},{
                 100,100}}), graphics={Text(
-                  extent={{-100,36},{100,76}},
-                  textString="%name",
-                  lineColor={0,0,0}),Ellipse(
-                  extent={{-30,30},{30,-30}},
-                  lineColor={127,127,127},
-                  fillColor={191,191,191},
-                  fillPattern=FillPattern.Solid)}),
+              extent={{-100,36},{100,76}},
+              textString="%name",
+              lineColor={0,0,0}), Ellipse(
+              extent={{-30,30},{30,-30}},
+              lineColor={127,127,127},
+              fillColor={191,191,191},
+              fillPattern=FillPattern.Solid)}),
         Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
                 100,100}}), graphics={Ellipse(
-                  extent={{-100,100},{100,-100}},
-                  lineColor={127,127,127},
-                  fillColor={191,191,191},
-                  fillPattern=FillPattern.Solid)}));
+              extent={{-100,100},{100,-100}},
+              lineColor={127,127,127},
+              fillColor={191,191,191},
+              fillPattern=FillPattern.Solid)}));
 
     end PartialFace;
 
@@ -879,18 +879,18 @@ Protected connector with one output signal of type <code>Real</code>.</p>
     <a href=\"modelica://FCSys.Connectors\">Connectors</a> package.</p></html>"),
 
         Diagram(graphics={Text(
-                  extent={{-100,36},{100,76}},
-                  textString="%name",
-                  lineColor={0,0,0}),Ellipse(
-                  extent={{-30,30},{30,-30}},
-                  lineColor={72,90,180},
-                  fillPattern=FillPattern.Solid,
-                  fillColor={102,128,255})}),
+              extent={{-100,36},{100,76}},
+              textString="%name",
+              lineColor={0,0,0}), Ellipse(
+              extent={{-30,30},{30,-30}},
+              lineColor={72,90,180},
+              fillPattern=FillPattern.Solid,
+              fillColor={102,128,255})}),
         Icon(graphics={Ellipse(
-                  extent={{-100,100},{100,-100}},
-                  lineColor={72,90,180},
-                  fillPattern=FillPattern.Solid,
-                  fillColor={102,128,255})}));
+              extent={{-100,100},{100,-100}},
+              lineColor={72,90,180},
+              fillPattern=FillPattern.Solid,
+              fillColor={102,128,255})}));
 
     end PartialInert;
 

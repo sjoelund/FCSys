@@ -7004,7 +7004,7 @@ For simulation, specify global default settings by dragging FCSys.BCs.Defaults i
 The default global default settings will be used for the current simulation.",
           Placement(transformation(extent={{40,40},{60,60}}),
             iconTransformation(extent={{-10,90},{10,110}})));
-      // Note:  In Deymola 7.4, it is necessary to add the missing inner message
+      // Note:  In Dymola 7.4, it is necessary to add the missing inner message
       // here to give a warning message, even though it is included in the Defaults
       // model too.
     initial equation
@@ -7505,7 +7505,7 @@ The default global default settings will be used for the current simulation.",
         // Note:  Although it is mathematically equivalent,
         // der(Data.p_vT(inert.V/N, T)) is used instead of der(Data.p_vT(v, T))
         // or der(inert.p) or der(inert.p) so that the term can be expanded to
-        // eliminate the need for dynamic state selection.
+        // avoid dynamic state selection.
       end if;
       annotation (
         defaultComponentPrefixes="replaceable",

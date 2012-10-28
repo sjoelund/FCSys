@@ -2465,7 +2465,6 @@ the z axis extends across the width of the channel.</p>
             'incle-'=true,
             C(V_IC=V - xV),
             'e-'(
-              Lstar=1e6*U.m,
               setTemp=true,
               mu_IC=-0.3*U.V,
               final epsilon=0,
