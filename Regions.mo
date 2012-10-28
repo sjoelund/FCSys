@@ -2202,6 +2202,7 @@ the z axis extends across the width of the channel.</p>
             inclO2=true,
             H2O(
               setXVel=true,
+              alpha_Phi=1e2*subregions[1, 1, 1].gas.H2.Data.beta(),
               p_IC=defaults.x_H2O*defaults.p,
               negativeY(viscousX=false),
               positiveY(viscousX=false)),
@@ -2219,13 +2220,13 @@ the z axis extends across the width of the channel.</p>
           each graphite(
             inclC=true,
             'incle-'=true,
-            C(Lstar=1e8*U.m,V_IC=(V - xV)/2),
+            C(Lstar=1e8*U.m, V_IC=(V - xV)/2),
             'e-'(
               Lstar=1e8*U.m,
               mu_IC=-0.3*U.V,
+              setTemp=true,
               negativeY(viscousX=false),
-              positiveY(viscousX=false),
-              setTemp=true)),
+              positiveY(viscousX=false))),
           each ionomer(
             inclC19HF37O5S=true,
             'inclH+'=true,
