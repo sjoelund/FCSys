@@ -20,7 +20,7 @@ package Assemblies "Combinations of regions (e.g., cells)"
           experiment(StopTime=1e-24, Tolerance=1e-06),
           experimentSetupOutput,
           Commands(file=
-                "resources/scripts/Dymola/Subassemblies.Cells.Examples.Cell.mos"),
+                "resources/scripts/Dymola/Assemblies.Cells.Examples.Cell.mos"),
 
           Icon(graphics));
 
@@ -80,7 +80,7 @@ package Assemblies "Combinations of regions (e.g., cells)"
           experiment(StopTime=100, Tolerance=1e-06),
           experimentSetupOutput,
           Commands(file=
-                "resources/scripts/Dymola/Subassemblies.Cells.Examples.CellProfile.mos"),
+                "resources/scripts/Dymola/Assemblies.Cells.Examples.CellProfile.mos"),
 
           Icon(graphics),
           Diagram(graphics),
@@ -92,7 +92,7 @@ package Assemblies "Combinations of regions (e.g., cells)"
       model Polarization "Run a cell polarization"
         extends CellProfile;
         annotation (Commands(file=
-                "resources/scripts/Dymola/Subassemblies.Cells.Examples.Polarization.mos"));
+                "resources/scripts/Dymola/Assemblies.Cells.Examples.Polarization.mos"));
       end Polarization;
 
       model CellProfileIO
@@ -135,7 +135,7 @@ package Assemblies "Combinations of regions (e.g., cells)"
           experiment(StopTime=600, Tolerance=1e-08),
           experimentSetupOutput,
           Commands(file=
-                "resources/scripts/Dymola/Subassemblies.Examples.CellPolarizationstoich.mos"),
+                "resources/scripts/Dymola/Assemblies.Examples.CellPolarizationstoich.mos"),
 
           Icon(graphics));
       end CellProfileIO;
@@ -441,43 +441,37 @@ of a PEMFC is given in the top-level documentation of <a href=\"modelica://FCSys
         Icon(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
-            initialScale=0.1), graphics={
-            Line(
-              points={{-40,-58},{-40,-100}},
-              color={240,0,0},
-              visible=inclY,
-              smooth=Smooth.None,
-              thickness=0.5),
-            Line(
-              points={{-8,-1},{28,-1}},
-              color={0,0,240},
-              visible=inclX,
-              thickness=0.5,
-              origin={39,-92},
-              rotation=90),
-            Line(
-              points={{-40,100},{-40,60}},
-              color={240,0,0},
-              visible=inclY,
-              smooth=Smooth.None,
-              thickness=0.5),
-            Line(
-              points={{-66,0},{-100,0}},
-              color={127,127,127},
-              visible=inclX,
-              thickness=0.5),
-            Line(
-              points={{-8,-1},{44,-1}},
-              color={0,0,240},
-              visible=inclX,
-              thickness=0.5,
-              origin={39,56},
-              rotation=90),
-            Line(
-              points={{100,0},{56,0}},
-              color={127,127,127},
-              visible=inclX,
-              thickness=0.5)}),
+            initialScale=0.1), graphics={Line(
+                  points={{-40,-58},{-40,-100}},
+                  color={240,0,0},
+                  visible=inclY,
+                  smooth=Smooth.None,
+                  thickness=0.5),Line(
+                  points={{-8,-1},{28,-1}},
+                  color={0,0,240},
+                  visible=inclX,
+                  thickness=0.5,
+                  origin={39,-92},
+                  rotation=90),Line(
+                  points={{-40,100},{-40,60}},
+                  color={240,0,0},
+                  visible=inclY,
+                  smooth=Smooth.None,
+                  thickness=0.5),Line(
+                  points={{-66,0},{-100,0}},
+                  color={127,127,127},
+                  visible=inclX,
+                  thickness=0.5),Line(
+                  points={{-8,-1},{44,-1}},
+                  color={0,0,240},
+                  visible=inclX,
+                  thickness=0.5,
+                  origin={39,56},
+                  rotation=90),Line(
+                  points={{100,0},{56,0}},
+                  color={127,127,127},
+                  visible=inclX,
+                  thickness=0.5)}),
         experimentSetupOutput,
         experiment(StopTime=120, Tolerance=1e-06));
     end Cell;
@@ -1098,7 +1092,7 @@ of a PEMFC is given in the top-level documentation of <a href=\"modelica://FCSys
                 80,20}}), graphics),
         Documentation(info="
 <html><p>For more information, see the
-  <a href=\"modelica://FCSys.Subassemblies.Cells.Cell\">Cell</a> model.</p></html>"));
+  <a href=\"modelica://FCSys.Assemblies.Cells.Cell\">Cell</a> model.</p></html>"));
     end CalibratedCell;
 
     model IntegratedCell "Baseline cell, with integrated CLs and GDLs"
@@ -1304,50 +1298,44 @@ of a PEMFC is given in the top-level documentation of <a href=\"modelica://FCSys
         Documentation(info="
 
 <html><p>For more information, see the
-  <a href=\"modelica://FCSys.Subassemblies.Cells.Cell\">Cell</a> model.</p></html>"),
+  <a href=\"modelica://FCSys.Assemblies.Cells.Cell\">Cell</a> model.</p></html>"),
 
         Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-60,-20},{
                 60,20}}), graphics),
         Icon(coordinateSystem(
             preserveAspectRatio=true,
             extent={{-100,-100},{100,100}},
-            initialScale=0.1), graphics={
-            Line(
-              points={{-40,100},{-40,60}},
-              color={255,128,0},
-              visible=inclY,
-              smooth=Smooth.None,
-              thickness=0.5),
-            Line(
-              points={{-8,-1},{44,-1}},
-              color={0,128,255},
-              visible=inclX,
-              thickness=0.5,
-              origin={39,56},
-              rotation=90),
-            Line(
-              points={{100,0},{56,0}},
-              color={127,127,127},
-              visible=inclX,
-              thickness=0.5),
-            Line(
-              points={{-8,-1},{28,-1}},
-              color={0,128,255},
-              visible=inclX,
-              thickness=0.5,
-              origin={39,-92},
-              rotation=90),
-            Line(
-              points={{-40,-58},{-40,-100}},
-              color={255,128,0},
-              visible=inclY,
-              smooth=Smooth.None,
-              thickness=0.5),
-            Line(
-              points={{-66,0},{-100,0}},
-              color={127,127,127},
-              visible=inclX,
-              thickness=0.5)}),
+            initialScale=0.1), graphics={Line(
+                  points={{-40,100},{-40,60}},
+                  color={255,128,0},
+                  visible=inclY,
+                  smooth=Smooth.None,
+                  thickness=0.5),Line(
+                  points={{-8,-1},{44,-1}},
+                  color={0,128,255},
+                  visible=inclX,
+                  thickness=0.5,
+                  origin={39,56},
+                  rotation=90),Line(
+                  points={{100,0},{56,0}},
+                  color={127,127,127},
+                  visible=inclX,
+                  thickness=0.5),Line(
+                  points={{-8,-1},{28,-1}},
+                  color={0,128,255},
+                  visible=inclX,
+                  thickness=0.5,
+                  origin={39,-92},
+                  rotation=90),Line(
+                  points={{-40,-58},{-40,-100}},
+                  color={255,128,0},
+                  visible=inclY,
+                  smooth=Smooth.None,
+                  thickness=0.5),Line(
+                  points={{-66,0},{-100,0}},
+                  color={127,127,127},
+                  visible=inclX,
+                  thickness=0.5)}),
         experimentSetupOutput);
     end IntegratedCell;
 

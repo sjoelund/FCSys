@@ -147,8 +147,7 @@ package Units "Constants and units of physical measure"
   establish the values of the units in order to convert values to numbers for display.</p>
   <p>For more information, see the documentation in the
   <a href=\"modelica://FCSys.Units\">FCSys.Units</a> package.</p></html>"),
-        Commands(file="resources/scripts/units.mos"
-          "Re-initialize the units."));
+        Commands(file="resources/scripts/units.mos" "Re-initialize the units."));
   end Evaluate;
 
   package Bases "Sets of base constants and units"
@@ -451,8 +450,7 @@ package Units "Constants and units of physical measure"
   There are eight possible sets of this type.</p>
   <p>For more information, see the documentation in the
   <a href=\"modelica://FCSys.Units\">FCSys.Units</a> package.</p></html>"),
-        Commands(file="resources/scripts/units.mos"
-          "Re-initialize the units."));
+        Commands(file="resources/scripts/units.mos" "Re-initialize the units."));
   end Bases;
 
   // -----------------------------------------------------------------------

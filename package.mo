@@ -76,7 +76,7 @@ package UsersGuide "User's Guide"
         ordered by level of model and physical hierarchy (high-level at the top).
         <li>Run the \"FCSys/resources/scripts/units.mos\" script to establish the display units (see below).  This is
         automatic if <a href=\"modelica://FCSys\">FCSys</a> is loaded via the \"FCSys/load.mos\" script.
-        <li>Simulate the <a href=\"modelica://FCSys.Subassemblies.Cells.Examples.CellProfile\">FCSys.Subassemblies.Cells.Examples.CellProfile</a>
+        <li>Simulate the <a href=\"modelica://FCSys.Assemblies.Cells.Examples.CellProfile\">FCSys.Assemblies.Cells.Examples.CellProfile</a>
         model.
         There are scripts in \"FCSys/resources/scripts/Dymola/\" to create plots of that model and others.
         The scripts should be accessible from the \"Command\" menu of the Modelica environment.
@@ -886,6 +886,18 @@ printing and shipping costs may be recovered.</p>
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 annotation (
   uses(Modelica(version="3.2"), Modelica_LinearSystems2(version="2.1")),
   preferedView="info",
@@ -964,12 +976,12 @@ annotation (
 
     <a name=\"Fig1\"></a>
     <p align=center><img src=\"modelica://FCSys/resources/images/cell.png\">
-    <br>Figure 1: Layers of a PEMFC</p>
+    <br>Figure 1: Layers and primary flows of a PEMFC</p>
 
     <a name=\"Fig2\"></a>
-    <!--<p align=center><img src=\"modelica://FCSys/help/FCSys.Subassemblies.Cells.CellD.png\" width=600>-->
-    <p align=center><a href=\"modelica://FCSys.Subassemblies.Cells.Cell\"><img src=\"modelica://FCSys/resources/images/FCSys.Subassemblies.Cells.CellD.png\"></a>
-    <br>Figure 2: Diagram of the PEMFC model (<a href=\"modelica://FCSys.Subassemblies.Cells.Cell\">FCSys.Subassemblies.Cells.Cell</a>).</p>
+    <!--<p align=center><img src=\"modelica://FCSys/help/FCSys.Assemblies.Cells.CellD.png\" width=600>-->
+    <p align=center><a href=\"modelica://FCSys.Assemblies.Cells.Cell\"><img src=\"modelica://FCSys/resources/images/FCSys.Assemblies.Cells.CellD.png\"></a>
+    <br>Figure 2: Diagram of the PEMFC model (<a href=\"modelica://FCSys.Assemblies.Cells.Cell\">FCSys.Assemblies.Cells.Cell</a>).</p>
 
     <p>The models describe the advection, diffusion, and storage of
     material, linear momentum, and energy.  Upstream
@@ -992,8 +1004,8 @@ annotation (
     <a href=\"modelica://Modelica.Fluid\">Modelica.Fluid</a>.</p>
 
     <a name=\"Fig3\"></a>
-    <p align=center><a href=\"modelica://FCSys.Subassemblies.Cells.Examples.CellProfile\"><img src=\"modelica://FCSys/help/FCSys.Subassemblies.Cells.Examples.CellProfileD.png\"></a>
-    <br>Figure 3: Diagram of a test model (<a href=\"modelica://FCSys.Subassemblies.Cells.Examples.CellProfile\">FCSys.Subassemblies.Cells.Examples.CellProfile</a>).</p>
+    <p align=center><a href=\"modelica://FCSys.Assemblies.Cells.Examples.CellProfile\"><img src=\"modelica://FCSys/help/FCSys.Assemblies.Cells.Examples.CellProfileD.png\"></a>
+    <br>Figure 3: Diagram of a test model (<a href=\"modelica://FCSys.Assemblies.Cells.Examples.CellProfile\">FCSys.Assemblies.Cells.Examples.CellProfile</a>).</p>
 
     <p><b>Licensed by Kevin Davies under the Modelica License 2</b>
     <br>Copyright 2007&ndash;2012, Kevin Davies.</p>
@@ -1188,7 +1200,6 @@ annotation (
         fillColor={0,0,0},
         pattern=LinePattern.None)}),
   Commands(file="resources/scripts/units.mos" "Re-initialize the units."),
-
   version="2.0 beta",
   versionBuild=0,
   dateModified="",

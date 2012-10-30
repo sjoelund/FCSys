@@ -197,7 +197,7 @@ package Systems
         annotation (Placement(transformation(extent={{70,-54},{90,-34}})));
       FCSys.Systems.Humidifier.Humidifier caHumidifier
         annotation (Placement(transformation(extent={{-50,-54},{-30,-34}})));
-      FCSys.WorkInProgress.SubassembliesHeatExchanger radiator
+      FCSys.WorkInProgress.AssembliesHeatExchanger radiator
         annotation (Placement(transformation(extent={{-60,66},{-40,86}})));
       FCSys.Connectors.FaceBus ambientP annotation (Placement(transformation(
               extent={{190,70},{210,90}}), iconTransformation(extent={{-110,50},
