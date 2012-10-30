@@ -544,6 +544,7 @@ package Characteristics "Data and functions to correlate physical properties"
       //b_v=[0, 1e-3; 0*1*U.cm^3/(2*U.micro*U.F), 0]);
       // TODO: Enter an appropriate value for the capacitance and IG terms.
       // **temp offsets in terms of H2O
+
       annotation (Documentation(info="<html><p>The enthalpy of formation (<code>Deltah0_f</code>) and the additional enthalpy
   offset (<code>h_offset</code>) are specified such that the enthalpy in the
   <a href=\"modelica://FCSys.Subregiosn.BaseClasses.PartialSpecies\">PartialSpecies</a> model is referenced to zero at 0 &deg;C.

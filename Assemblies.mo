@@ -315,17 +315,11 @@ package Assemblies "Combinations of regions (e.g., cells)"
             rotation=180,
             origin={-40,-100})));
 
-      replaceable FCSys.Regions.AnFPs.AnFP anFP(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each graphite('e-'(partNumInitMeth=InitMethScalar.None))))
+      replaceable FCSys.Regions.AnFPs.AnFP anFP(final L_y=L_y, final L_z=L_z)
         "Anode flow plate" annotation (Dialog(group="Layers"), Placement(
             transformation(extent={{-70,-10},{-50,10}})));
 
-      replaceable FCSys.Regions.AnGDLs.AnGDL anGDL(
-        final L_y=L_y,
-        final L_z=L_z,
-        subregions(each graphite('e-'(partNumInitMeth=InitMethScalar.None))))
+      replaceable FCSys.Regions.AnGDLs.AnGDL anGDL(final L_y=L_y, final L_z=L_z)
         "Anode gas diffusion layer" annotation (Dialog(group="Layers"),
           Placement(transformation(extent={{-50,-10},{-30,10}})));
 
@@ -347,21 +341,27 @@ package Assemblies "Combinations of regions (e.g., cells)"
         "Cathode catalyst layer" annotation (Dialog(group="Layers"), Placement(
             transformation(extent={{10,-10},{30,10}})));
 
-      replaceable FCSys.Regions.CaGDLs.CaGDL caGDL(final L_y=L_y,final L_z=L_z)
+      replaceable FCSys.Regions.CaGDLs.CaGDL caGDL(
+        final L_y=L_y,
+        final L_z=L_z,
+        subregions(each graphite('e-'(partNumInitMeth=InitMethScalar.None))))
         "Cathode gas diffusion layer" annotation (Dialog(group="Layers"),
           Placement(transformation(extent={{30,-10},{50,10}})));
 
-      replaceable FCSys.Regions.CaFPs.CaFP caFP(final L_y=L_y,final L_z=L_z)
+      replaceable FCSys.Regions.CaFPs.CaFP caFP(
+        final L_y=L_y,
+        final L_z=L_z,
+        subregions(each graphite('e-'(partNumInitMeth=InitMethScalar.None))))
         "Cathode flow plate" annotation (Dialog(group="Layers"), Placement(
             transformation(extent={{50,-10},{70,10}})));
 
     protected
       outer FCSys.BCs.Defaults defaults "Environmental properties and settings";
     initial equation
-      anFP.subregions.graphite.'e-'.mu = anGDL.subregions.graphite.'e-'.mu;
-      anGDL.subregions.graphite.'e-'.mu = anCL.subregions.graphite.'e-'.mu;
       anCL.subregions.ionomer.'H+'.mu = pEM.subregions.ionomer.'H+'.mu;
       pEM.subregions.ionomer.'H+'.mu = caCL.subregions.ionomer.'H+'.mu;
+      caCL.subregions.graphite.'e-'.mu = caGDL.subregions.graphite.'e-'.mu;
+      caGDL.subregions.graphite.'e-'.mu = caFP.subregions.graphite.'e-'.mu;
       // TODO: Allow for multiple subregions in each layer
     equation
       // Internal connections (between layers)
