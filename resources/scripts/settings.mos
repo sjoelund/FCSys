@@ -2,7 +2,7 @@
 cd("../");
 
 // Establish the system of units.
-RunScript("FCSys/resources/configuration/units.mos");
+RunScript("FCSys/resources/scripts/units.mos");
 
 // Misc settings
 // Note:  Dymola's list() function lists all possible settings.

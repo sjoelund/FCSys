@@ -143,11 +143,11 @@ package Units "Constants and units of physical measure"
     final constant Q.Length cm=U.cm "centimeter";
     final constant Q.Length mm=U.mm "millimeter";
     final constant Q.Number '%'=U.'%' "percent";
-    annotation (Documentation(info="<html><p>This model is used by the units script (\"FCSys/resources/configuration/units.mos\") to
+    annotation (Documentation(info="<html><p>This model is used by the units script (\"FCSys/resources/scripts/units.mos\") to
   establish the values of the units in order to convert values to numbers for display.</p>
   <p>For more information, see the documentation in the
   <a href=\"modelica://FCSys.Units\">FCSys.Units</a> package.</p></html>"),
-        Commands(file="resources/configuration/units.mos"
+        Commands(file="resources/scripts/units.mos"
           "Re-initialize the units."));
   end Evaluate;
 
@@ -179,7 +179,7 @@ package Units "Constants and units of physical measure"
        <li>10 m/s &asymp; 1</li>
        <li>9.872e-5 atm &asymp; 1</li></ul></p>  <p>For more information, see the documentation in the
   <a href=\"modelica://FCSys.Units\">FCSys.Units</a> package.</p></html>"),
-          Commands(file="resources/configuration/units.mos"
+          Commands(file="resources/scripts/units.mos"
             "Re-initialize the units."));
     end ScaledFC;
 
@@ -203,7 +203,7 @@ package Units "Constants and units of physical measure"
   </ul>
   </p>  <p>For more information, see the documentation in the
   <a href=\"modelica://FCSys.Units\">FCSys.Units</a> package.</p></html>"),
-          Commands(file="resources/configuration/units.mos"
+          Commands(file="resources/scripts/units.mos"
             "Re-initialize the units."));
     end AK;
 
@@ -227,7 +227,7 @@ package Units "Constants and units of physical measure"
   </ul>
   </p>  <p>For more information, see the documentation in the
   <a href=\"modelica://FCSys.Units\">FCSys.Units</a> package.</p></html>"),
-          Commands(file="resources/configuration/units.mos"
+          Commands(file="resources/scripts/units.mos"
             "Re-initialize the units."));
     end Am;
 
@@ -252,7 +252,7 @@ package Units "Constants and units of physical measure"
 
   <p>For more information, see the documentation in the
   <a href=\"modelica://FCSys.Units\">FCSys.Units</a> package.</p></html>"),
-          Commands(file="resources/configuration/units.mos"
+          Commands(file="resources/scripts/units.mos"
             "Re-initialize the units."));
     end As;
 
@@ -275,7 +275,7 @@ package Units "Constants and units of physical measure"
   </ul>
   </p>  <p>For more information, see the documentation in the
   <a href=\"modelica://FCSys.Units\">FCSys.Units</a> package.</p></html>"),
-          Commands(file="resources/configuration/units.mos"
+          Commands(file="resources/scripts/units.mos"
             "Re-initialize the units."));
     end Kmol;
 
@@ -298,7 +298,7 @@ package Units "Constants and units of physical measure"
   </ul></p>
   <p>For more information, see the documentation in the
   <a href=\"modelica://FCSys.Units\">FCSys.Units</a> package.</p></html>"),
-          Commands(file="resources/configuration/units.mos"
+          Commands(file="resources/scripts/units.mos"
             "Re-initialize the units."));
     end Ks;
 
@@ -321,7 +321,7 @@ package Units "Constants and units of physical measure"
   </ul>
   </p>  <p>For more information, see the documentation in the
   <a href=\"modelica://FCSys.Units\">FCSys.Units</a> package.</p></html>"),
-          Commands(file="resources/configuration/units.mos"
+          Commands(file="resources/scripts/units.mos"
             "Re-initialize the units."));
     end mmol;
 
@@ -344,7 +344,7 @@ package Units "Constants and units of physical measure"
   </ul></p>
   <p>For more information, see the documentation in the
   <a href=\"modelica://FCSys.Units\">FCSys.Units</a> package.</p></html>"),
-          Commands(file="resources/configuration/units.mos"
+          Commands(file="resources/scripts/units.mos"
             "Re-initialize the units."));
     end ms;
 
@@ -367,7 +367,7 @@ package Units "Constants and units of physical measure"
   </ul></p>
   <p>For more information, see the documentation in the
   <a href=\"modelica://FCSys.Units\">FCSys.Units</a> package.</p></html>"),
-          Commands(file="resources/configuration/units.mos"
+          Commands(file="resources/scripts/units.mos"
             "Re-initialize the units."));
     end mols;
 
@@ -442,7 +442,7 @@ package Units "Constants and units of physical measure"
 
       annotation (Documentation(info="<html>For more information, see the notes in the Modelica code and the documentation in the
   <a href=\"modelica://FCSys.Units\">FCSys.Units</a> package.</p></html>"),
-          Commands(file="resources/configuration/units.mos"
+          Commands(file="resources/scripts/units.mos"
             "Re-initialize the units."));
     end Base;
     annotation (Documentation(info="<html><p>The International System of Units (SI)-like
@@ -451,7 +451,7 @@ package Units "Constants and units of physical measure"
   There are eight possible sets of this type.</p>
   <p>For more information, see the documentation in the
   <a href=\"modelica://FCSys.Units\">FCSys.Units</a> package.</p></html>"),
-        Commands(file="resources/configuration/units.mos"
+        Commands(file="resources/scripts/units.mos"
           "Re-initialize the units."));
   end Bases;
 
@@ -581,7 +581,7 @@ package Units "Constants and units of physical measure"
   // Coherent derived units in the SI with special names and symbols
   // [BIPM2006, Table 3]
   // Note:  rad, S, C, Wb, V, J, and Sv have already been defined.  Degree
-  // Celsius is defined in FCSys/resources/configuration/units.mos since it includes
+  // Celsius is defined in FCSys/resources/scripts/units.mos since it includes
   // an offset.
 
   final constant Q.Angle cyc=2*pi*rad "cycle";
@@ -805,7 +805,7 @@ package Units "Constants and units of physical measure"
 
     <p>The user should be aware of several aspects of the implementation.
     A script
-    (\"FCSys/resources/configuration/units.mos\") runs a model (<a href=\"modelica://U.Evaluate\">U.Evaluate</a>)
+    (\"FCSys/resources/scripts/units.mos\") runs a model (<a href=\"modelica://U.Evaluate\">U.Evaluate</a>)
     to determine the values of the units and defines the conversions to display values as numbers
     in units.  This script is set to run when <a href=\"modelica://FCSys\">FCSys</a> is loaded via
     \"FCSys/load.mos\" or from a link in the \"Commands\" menu of <a href=\"modelica://FCSys.Units\">FCSys.Units</a> (when viewed within
@@ -836,6 +836,6 @@ package Units "Constants and units of physical measure"
   disclaimer of warranty) see <a href=\"modelica://FCSys.UsersGuide.ModelicaLicense2\">
   FCSys.UsersGuide.ModelicaLicense2</a> or visit <a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">
   http://www.modelica.org/licenses/ModelicaLicense2</a>.</i>
-  </p></html>"), Commands(file="resources/configuration/units.mos"
+  </p></html>"), Commands(file="resources/scripts/units.mos"
         "Re-initialize the units."));
 end Units;

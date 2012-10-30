@@ -74,7 +74,7 @@ package UsersGuide "User's Guide"
         <li>Read the overview in the top-level documentation of <a href=\"modelica://FCSys\">FCSys</a>.</li>
         <li>Browse the subpackages of <a href=\"modelica://FCSys\">FCSys</a>.  In general, the packages are
         ordered by level of model and physical hierarchy (high-level at the top).
-        <li>Run the \"FCSys/resources/configuration/units.mos\" script to establish the display units (see below).  This is
+        <li>Run the \"FCSys/resources/scripts/units.mos\" script to establish the display units (see below).  This is
         automatic if <a href=\"modelica://FCSys\">FCSys</a> is loaded via the \"FCSys/load.mos\" script.
         <li>Simulate the <a href=\"modelica://FCSys.Subassemblies.Cells.Examples.CellProfile\">FCSys.Subassemblies.Cells.Examples.CellProfile</a>
         model.
@@ -1187,7 +1187,7 @@ annotation (
         fillPattern=FillPattern.Solid,
         fillColor={0,0,0},
         pattern=LinePattern.None)}),
-  Commands(file="resources/configuration/units.mos" "Re-initialize the units."),
+  Commands(file="resources/scripts/units.mos" "Re-initialize the units."),
 
   version="2.0 beta",
   versionBuild=0,

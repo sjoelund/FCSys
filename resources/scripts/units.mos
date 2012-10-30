@@ -84,14 +84,14 @@ defineDefaultDisplayUnit("A/l", "rad/m");
 // then run "units-values.mos" as a script.
 Advanced.OutputModelicaCode = true "Output dsmodel in Modelica style";
 translateModel("FCSys.Units.Evaluate");
-Modelica.Utilities.Files.copy("dsmodel.mof", "FCSys/resources/configuration/units-values.mos", true);
+Modelica.Utilities.Files.copy("dsmodel.mof", "FCSys/resources/scripts/units-values.mos", true);
 
 // ***********************************************************************
 // Check the constants and units (conditional).
 // ***********************************************************************
 
 if checkUnits then
-    assert(RunScript(script="FCSys/resources/configuration/units-check.mos", silent=true), "The constants and units did not pass the check.\nThe unit conversions have not been updated.");
+    assert(RunScript(script="FCSys/resources/scripts/units-check.mos", silent=true), "The constants and units did not pass the check.\nThe unit conversions have not been updated.");
 end if;
 
 // ***********************************************************************

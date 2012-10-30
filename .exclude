@@ -23,7 +23,7 @@ Systems.mo
 help/FCSys_Systems*.html
 help/FCSys.Systems*.png
 resources/images/system.png
-install/*qpOASES*
+install
 
 # Figures (for documentation only)
 *Figures*
@@ -40,8 +40,6 @@ test/Morris
 
 # Built and compiled files
 build
-Python/control/build
-Python/doc
 *.pyc
 
 # Support for MATLAB and model-predictive control (MPC)
