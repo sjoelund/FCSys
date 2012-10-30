@@ -23,7 +23,7 @@ status
 *.exe
 
 # Internal link to demos
-/resources/source/Python/doc/demos
+/resources/source/Python/fcres/examples
 
 # Mathematica notebooks
 *.nb

@@ -11,8 +11,8 @@ with those results preloaded.
 
    .. code-block:: sh
 
-      $ ./fcres.py demos/Polarization.mat
-      Cell simulation results have been loaded from "demos/Polarization.mat".
+      $ ./fcres.py examples/Polarization.mat
+      Cell simulation results have been loaded from "examples/Polarization.mat".
       The CellSimRes instance is sim.
       In [1]:
 
@@ -35,16 +35,17 @@ __version__ = "0.1"
 __email__ = "kld@alumni.carnegiemellon.edu"
 __status__ = "Development"
 
-import os, res
+import os
 import numpy as np
 import matplotlib.pyplot as plt
+import modelicares
 
 from matplotlib import rcParams
 from matplotlib.cbook import iterable
 from collections import namedtuple
 from texunit import unit2tex, label_number, label_quantity
-import modelicares
-from modelicares import LinRes, flatten
+from modelicares.helpers import (flatten, figure_w_label, setup_subplots,
+                                 get_pow10, plot, convert)
 
 # Create a container class for conditions to display in the subtitles.
 Conditions = namedtuple('Conditions',
@@ -55,64 +56,63 @@ Conditions = namedtuple('Conditions',
 # attribute is empty ('').  Each key is a dimension string and each entry is a
 # unit string.  Both are formatted in Modelica unit notation.
 # Generated from FCSys/resources/quantities.xls, 10/8/2012
-default_units = {
-    'l/(T.s)': 'cm/s2',
-    'l/T2': 'cm/s2',
-    'A': 'rad',
-    'A2': 'sr',
-    'l2': 'cm2',
-    'N2.T2/(l2.m)': 'uF',
-    'N2.T/(l2.m)': 'S',
-    'N/s': 'A',
-    'N/T': 'A',
-    'N/(l2.T)': 'A/cm2',
-    'N/(T.s)': 'A/s',
-    'N/T2': 'A/s',
-    'l2.m/T2': 'J',
-    'l2/T2': 'Sv',
-    'l.m/(T.s)': 'N',
-    'l.m/T2': 'N',
-    'l2.m/N2': 'uH',
-    'l': 'cm',
-    'l/N': 'm/mol',
-    'l2.m/(A.N.T)': 'Wb',
-    'm/(A.N.T)': 'T',
-    'A.N.T/(l2.m)': '1/Wb',
-    'm': 'g',
-    'm/N': 'g/mol',
-    'l2.m/(A.T)': 'J.s/rad',
-    's-1': '1/s',
-    '1/T': '1/s',
-    'N': 'C',
-    '1/N': '1/mol',
-    'N/l3': 'mol/cm3',
-    'l.m/N2': 'H/m',
-    'N2.T2/(l3.m)': 'F/m',
-    'l3.m/(N2.T2)': 'm/H',
-    'l2.m/(N.T2)': 'V',
-    'l3.m/(A.N.T2)': 'V.m/rad',
-    'l2.m/(N.T2.s)': 'V/s',
-    'l2.m/(N.T3)': 'V/s',
-    'l2.m/T3': 'W',
-    'l4.m/T3': 'W.m2',
-    'm/T3': 'W/m2',
-    'm.T5/l8': 'W/(m2.K4)',
-    'l2.m/(A2.T3)': 'cd',
-    'm/(l.T2)': 'kPa',
-    'm/(l.T2.s)': 'Pa/s',
-    'm/(l.T3)': 'Pa/s',
-    'T/N': '1/A',
-    'l2.m/(N2.T)': 'ohm',
-    'l.T/N': 'cm/A',
-    'T': 's',
-    'l/T': 'cm/s',
-    'l.m/(N.T)': 'kg.m/(C.s)',
-    'l3': 'cm3',
-    'l3/T': 'L/min',
-    'l3/N': 'cm3/C',
-    'l3/(N.s)': 'cm3/(mol.s)',
-    'l3/(N.T)': 'cm3/(mol.s)',
-    'A/l': 'rad/m'}
+default_units = {'l/(T.s)': 'cm/s2',
+                 'l/T2': 'cm/s2',
+                 'A': 'rad',
+                 'A2': 'sr',
+                 'l2': 'cm2',
+                 'N2.T2/(l2.m)': 'uF',
+                 'N2.T/(l2.m)': 'S',
+                 'N/s': 'A',
+                 'N/T': 'A',
+                 'N/(l2.T)': 'A/cm2',
+                 'N/(T.s)': 'A/s',
+                 'N/T2': 'A/s',
+                 'l2.m/T2': 'J',
+                 'l2/T2': 'Sv',
+                 'l.m/(T.s)': 'N',
+                 'l.m/T2': 'N',
+                 'l2.m/N2': 'uH',
+                 'l': 'cm',
+                 'l/N': 'm/mol',
+                 'l2.m/(A.N.T)': 'Wb',
+                 'm/(A.N.T)': 'T',
+                 'A.N.T/(l2.m)': '1/Wb',
+                 'm': 'g',
+                 'm/N': 'g/mol',
+                 'l2.m/(A.T)': 'J.s/rad',
+                 's-1': '1/s',
+                 '1/T': '1/s',
+                 'N': 'C',
+                 '1/N': '1/mol',
+                 'N/l3': 'mol/cm3',
+                 'l.m/N2': 'H/m',
+                 'N2.T2/(l3.m)': 'F/m',
+                 'l3.m/(N2.T2)': 'm/H',
+                 'l2.m/(N.T2)': 'V',
+                 'l3.m/(A.N.T2)': 'V.m/rad',
+                 'l2.m/(N.T2.s)': 'V/s',
+                 'l2.m/(N.T3)': 'V/s',
+                 'l2.m/T3': 'W',
+                 'l4.m/T3': 'W.m2',
+                 'm/T3': 'W/m2',
+                 'm.T5/l8': 'W/(m2.K4)',
+                 'l2.m/(A2.T3)': 'cd',
+                 'm/(l.T2)': 'kPa',
+                 'm/(l.T2.s)': 'Pa/s',
+                 'm/(l.T3)': 'Pa/s',
+                 'T/N': '1/A',
+                 'l2.m/(N2.T)': 'ohm',
+                 'l.T/N': 'cm/A',
+                 'T': 's',
+                 'l/T': 'cm/s',
+                 'l.m/(N.T)': 'kg.m/(C.s)',
+                 'l3': 'cm3',
+                 'l3/T': 'L/min',
+                 'l3/N': 'cm3/C',
+                 'l3/(N.s)': 'cm3/(mol.s)',
+                 'l3/(N.T)': 'cm3/(mol.s)',
+                 'A/l': 'rad/m'}
 
 class SimRes(modelicares.SimRes):
     """Base class for Modelica_-based simulation results and methods to analyze
@@ -155,7 +155,7 @@ class SimRes(modelicares.SimRes):
 
            >>> from fcres import CellSimRes
 
-           >>> sim = CellSimRes('demos/Polarization.mat')
+           >>> sim = CellSimRes('examples/Polarization.mat')
            >>> sim.get_unit('defaults.p')
            'kPa'
            >>> sim.get_unit([[['defaults.p', 'defaults.T']]])
@@ -227,12 +227,13 @@ class SimRes(modelicares.SimRes):
 
                 # Handle the exponent, if any.
                 start = pointer
-                if (pointer < len(unitstr) and (unitstr[pointer] == '+'
-                    or unitstr[pointer] == '-')):
+                if (pointer < len(unitstr) and (unitstr[pointer] == '+' or
+                    unitstr[pointer] == '-')):
                     pointer += 1
-                    assert (pointer < len(unitstr)
-                        and unitstr[pointer].isdigit()), ('"+" or "-" must be '
-                        'followed by a digit in unit substring "%s".' % unitstr
+                    assert (pointer < len(unitstr) and
+                            unitstr[pointer].isdigit()), ('"+" or "-" must be '
+                           'followed by a digit in unit substring "%s".' %
+                        unitstr)
                 while pointer < len(unitstr) and unitstr[pointer].isdigit():
                     pointer += 1
                 if pointer > start:
@@ -247,15 +248,15 @@ class SimRes(modelicares.SimRes):
                         pointer += 1
                     else:
                         print('Factors should be separated by dots (".").  '
-                            'Unit substring "%s" is malformed.' % unitstr)
+                              'Unit substring "%s" is malformed.' % unitstr)
 
             return unitval
 
         # Split the numerator and the denominator (if present).
         parts = unitstr.split('/')
         if len(parts) > 2:
-            print('Unit string "%s" has more than one division sign.'
-                % unitstr)
+            print('Unit string "%s" has more than one division sign.' %
+                  unitstr)
 
         # Remove parentheses.
         for i, part in enumerate(parts):
@@ -264,7 +265,7 @@ class SimRes(modelicares.SimRes):
                     parts[i] = part[1:-1]
                 else:
                     print('Group "%s" in unit string "%s" begins with "(" but '
-                        'does not end with ")".' % (part, unitstr))
+                          'does not end with ")".' % (part, unitstr))
                     parts[i] = part[1::]
         unitval = _simple_unitval(parts[0])
         for part in parts[1::]:
@@ -288,7 +289,7 @@ class SimRes(modelicares.SimRes):
         **Example:**
 
            >>> from fcres import CellSimRes
-           >>> sim = CellSimRes('demos/Polarization.mat')
+           >>> sim = CellSimRes('examples/Polarization.mat')
            >>> kPa = sim.unitmap('kPa')
 
            >>> # Method 1:
@@ -312,9 +313,10 @@ class SimRes(modelicares.SimRes):
            The pressure is 1.496 bar.
         """
         try:
-            # Assume involves an offset or a more complex function.
+            # Assume the unit involves an offset or a more complex function.
             return self.unitmaps[unitstr]
         except KeyError:
+            # The unit is just a factor.
             return lambda x: x/self._unitval(unitstr)
 
     def plotfig(self, title="", label="xy",
@@ -388,8 +390,8 @@ class SimRes(modelicares.SimRes):
         - *prefix*: If *True*, prefix the legend strings with the base filename
           of the class.
 
-        - *\*\*kwargs*: Propagated to :meth:`res.plot` (and thus to
-          :meth:`matplotlib.pyplot.plot`)
+        - *\*\*kwargs*: Propagated to :meth:`modelicares.helpers.plot` (and
+          thus to :meth:`matplotlib.pyplot.plot`)
 
              If both y axes are used (primary and secondary), then the *dashes*
              argument is ignored.  The curves on the primary axis will be solid
@@ -403,30 +405,31 @@ class SimRes(modelicares.SimRes):
 
         **Example:**
 
-           >>> import res
+           >>> from modelicares import helpers
            >>> from fcres import CellSimRes
 
-           >>> sim = CellSimRes('demos/Polarization.mat')
+           >>> sim = CellSimRes('examples/Polarization.mat')
            >>> sim.plotfig(xname='cell.I',
-           ...    ynames1='cell.v', ylabel1="Potential",
-           ...    legends1="Average voltage",
-           ...    ynames2='cell.Wdot', ylabel2="Power",
-           ...    legends2="Power output",
-           ...    title="Cell Polarization", label='demos/Polarization') # doctest: +ELLIPSIS
-           (<matplotlib.axes.AxesSubplot object at 0x...>, <matplotlib.axes.Axes object at 0x...>)
-           >>> res.save_figs()
-           Saved demos/Polarization.pdf
-           Saved demos/Polarization.png
+           ...             ynames1='cell.v', ylabel1="Potential",
+           ...             legends1="Average voltage",
+           ...             ynames2='cell.Wdot', ylabel2="Power",
+           ...             legends2="Power output",
+           ...             title="Cell Polarization",
+           ...             label='examples/Polarization') # doctest: +ELLIPSIS
+           (<matplotlib.axes.AxesSubplot object at 0x...>, <matplotlib.axes.AxesSubplot object at 0x...>)
+           >>> helpers.save_figs()
+           Saved examples/Polarization.pdf
+           Saved examples/Polarization.png
 
         .. only:: html
 
-           .. image:: demos/Polarization.png
+           .. image:: examples/Polarization.png
               :scale: 50 %
               :alt: plot of cell profile
 
         .. only:: latex
 
-           .. figure:: demos/Polarization.pdf
+           .. figure:: examples/Polarization.pdf
               :scale: 70 %
 
               Plot of cell profile
@@ -445,7 +448,7 @@ class SimRes(modelicares.SimRes):
                     legends = ynames
                 if prefix:
                     legends = [self.fbase + ': ' + legend
-                        for legend in legends]
+                               for legend in legends]
                 ylabel = label_number(ylabel, yunit)
 
             return ylabel, legends
@@ -467,7 +470,7 @@ class SimRes(modelicares.SimRes):
 
         # Create primary and secondary axes if necessary.
         if not ax1:
-            fig = res.figure_w_label(label)
+            fig = figure_w_label(label)
             ax1 = fig.add_subplot(111)
         if ynames2 and not ax2:
             ax2 = ax1.twinx()
@@ -490,9 +493,9 @@ class SimRes(modelicares.SimRes):
         else:
             times = self.get_times(xname)
             y1 = self.get_values_at_times(ynames1, times,
-                f=self.unitmap(yunit1))
+                                          f=self.unitmap(yunit1))
             y2 = self.get_values_at_times(ynames2, times,
-                f=self.unitmap(yunit2))
+                                          f=self.unitmap(yunit2))
 
         # Generate the x-axis label.
         if xlabel is None:
@@ -512,14 +515,12 @@ class SimRes(modelicares.SimRes):
                     del kwargs['dashes']
                 except:
                     pass
-                p1 = res.plot(ax1, y1, x, label=legends1, dashes=[(1,0)],
-                    **kwargs)
-                p2 = res.plot(ax2, y2, x, label=legends2, dashes=[(3,3)],
-                    **kwargs)
+                p1 = plot(ax1, y1, x, label=legends1, dashes=[(1,0)], **kwargs)
+                p2 = plot(ax2, y2, x, label=legends2, dashes=[(3,3)], **kwargs)
             else:
-                p1 = res.plot(ax1, y1, x, label=legends1, **kwargs)
+                p1 = plot(ax1, y1, x, label=legends1, **kwargs)
         if ynames2 and not ynames1:
-            p2 = res.plot(ax2, y2, x, label=legends2, **kwargs)
+            p2 = plot(ax2, y2, x, label=legends2, **kwargs)
 
         # Decorate the figure.
         ax1.set_title(title)
@@ -571,7 +572,7 @@ class SimRes(modelicares.SimRes):
 
            >>> from fcres import CellSimRes
 
-           >>> sim = CellSimRes('demos/Polarization.mat')
+           >>> sim = CellSimRes('examples/Polarization.mat')
            >>> sim.get_dimension('defaults.p')
            'm/(l.T2)'
            >>> sim.get_dimension([[['defaults.p', 'defaults.T']]])
@@ -597,7 +598,7 @@ class SimRes(modelicares.SimRes):
         k_F = self.get_IV('defaults.base.k_F')
         R = self.get_IV('defaults.base.R')
         self.U = dict(rad=rad, R_inf=R_inf, c=c, k_J=k_J, R_K=R_K, cd=cd,
-            k_F=k_F, R=R)
+                      k_F=k_F, R=R)
 
         # Mathematical constants
         import math
@@ -645,9 +646,10 @@ class SimRes(modelicares.SimRes):
         zepto = 1e-21
         yocto = 1e-24
         self.U.update(yotta=yotta, zetta=zetta, exa=exa, peta=peta, tera=tera,
-            giga=giga, mega=mega, kilo=kilo, hecto=hecto ,deca=deca, deci=deci,
-            centi=centi, milli=milli, micro=micro, nano=nano, pico=pico,
-            femto=femto, atto=atto, zepto=zepto, yocto=yocto)
+                      giga=giga, mega=mega, kilo=kilo, hecto=hecto ,deca=deca,
+                      deci=deci, centi=centi, milli=milli, micro=micro,
+                      nano=nano, pico=pico, femto=femto, atto=atto,
+                      zepto=zepto, yocto=yocto)
 
         # Coherent derived units in the SI with special names and symbols
         cyc = 2*pi*rad
@@ -667,7 +669,7 @@ class SimRes(modelicares.SimRes):
         kat = mol/s
         g = kg/kilo
         self.U.update(cyc=cyc, Hz=Hz, sr=sr, N=N, Pa=Pa, W=W, F=F, ohm=ohm,
-            H=H,  T=T, lm=lm, lx=lx, Bq=Bq, Gy=Gy, kat=kat, g=g)
+                      H=H,  T=T, lm=lm, lx=lx, Bq=Bq, Gy=Gy, kat=kat, g=g)
 
         # Non-SI units accepted for use with SI units [BIPM2006, Table 6]
         min = 60*s
@@ -692,7 +694,8 @@ class SimRes(modelicares.SimRes):
         E_h = 2*R_inf*h*c
         eV = q*V
         self.U.update(G_0=G_0, Phi_0=Phi_0, q=q, h=h, alpha=alpha, Z_0=Z_0,
-            mu_0=mu_0, epsilon_0=epsilon_0, k_A=k_A, k_e=k_e, E_h=E_h, eV=eV)
+                      mu_0=mu_0, epsilon_0=epsilon_0, k_A=k_A, k_e=k_e,
+                      E_h=E_h, eV=eV)
         # Electrochemistry
         N_A = k_F/q
         self.U.update(N_A=N_A)
@@ -704,7 +707,7 @@ class SimRes(modelicares.SimRes):
         c_3_f = 2.821439372122079*k_B/h
         sigma = 2*pi*(k_B*pi)**4/(15*(h*rad)**3*c**2)
         self.U.update(k_B=k_B, c_1=c_1, c_2=c_2, c_3_lambda=c_3_lambda,
-            c_3_f=c_3_f, sigma=sigma)
+                      c_3_f=c_3_f, sigma=sigma)
 
         # Selected other non-SI units from [BIPM2006, Table 8]
         bar = 1e5*Pa
@@ -751,8 +754,9 @@ def gen_subtitle_conditions(params, details):
     desc = ''
     needs_sep = False
     if details.cell_temp:
-        desc += ('Cell: %s' % label_quantity(res.convert(params['T_cell']),
-            params['T_cell'].unit, format='%.0f'))
+        desc += ('Cell: %s' % label_quantity(convert(params['T_cell']),
+                                             params['T_cell'].unit,
+                                             format='%.0f'))
         needs_sep = True
     if (details.composition or details.pressure or details.inlet_temp
         or details.humidity or idetails.humidity):
@@ -761,44 +765,44 @@ def gen_subtitle_conditions(params, details):
     if details.composition:
         desc += ', ' if needs_sep else ''
         if (params['anSource.Y_H2Dry'].number == 1.0
-            and (params['caSource.Y_O2Dry'].number == 1.0
-                or params['caSource.Y_O2Dry'].number == 0.21)):
+            and (params['caSource.Y_O2Dry'].number == 1.0 or
+                 params['caSource.Y_O2Dry'].number == 0.21)):
             if params['caSource.Y_O2Dry'].number == 1.0:
                 desc += '$H_2$|$O_2$'
             else:
                 desc += '$H_2$|Air'
         else:
-            desc += (label_quantity(res.convert(params['anSource.Y_H2Dry']),
-                params['anSource.Y_H2Dry'].unit, format='%.0f')
-                + ' $H_2$|'
-                + label_quantity(res.convert(params['caSource.Y_O2Dry']),
-                    params['caSource.Y_O2Dry'].unit,
-                    format='%.0f')
-                + ' $O_2$')
+            desc += (label_quantity(convert(params['anSource.Y_H2Dry']),
+                     params['anSource.Y_H2Dry'].unit, format='%.0f') +
+                     ' $H_2$|' +
+                     label_quantity(convert(params['caSource.Y_O2Dry']),
+                                    params['caSource.Y_O2Dry'].unit,
+                                    format='%.0f') +
+                     ' $O_2$')
         needs_sep = True
     if details.pressure:
-        desc += ((', ' if needs_sep else '')
-            + label_quantity(res.convert(params['anSink.P']), format='%.1f')
-            + '|' + label_quantity(res.convert(params['caSink.P']),
-                params['anSink.P'].unit, format='%.1f'))
+        desc += ((', ' if needs_sep else '') +
+                 label_quantity(convert(params['anSink.P']), format='%.1f') +
+                 '|' + label_quantity(convert(params['caSink.P']),
+                 params['anSink.P'].unit, format='%.1f'))
         needs_sep = True
     if details.inlet_temp:
-        desc += ((', ' if needs_sep else '')
-            + label_quantity(res.convert(params['anSource.T']), format='%.0f')
-            + '|' + label_quantity(res.convert(params['caSource.T']),
-                params['caSource.T'].unit, format='%.0f'))
+        desc += ((', ' if needs_sep else '') +
+                 label_quantity(convert(params['anSource.T']), format='%.0f') +
+                 '|' + label_quantity(convert(params['caSource.T']),
+                 params['caSource.T'].unit, format='%.0f'))
         needs_sep = True
     if details.humidity:
-        desc += ((', ' if needs_sep else '')
-            + label_quantity(res.convert(params['anSource.RH']), format='%.0f')
-            + '|' + label_quantity(res.convert(params['caSource.RH']),
-                params['caSource.RH'].unit, format='%.0f'))
+        desc += ((', ' if needs_sep else '') +
+                 label_quantity(convert(params['anSource.RH']), format='%.0f')
+                 + '|' + label_quantity(convert(params['caSource.RH']),
+                 params['caSource.RH'].unit, format='%.0f'))
         needs_sep = True
     if details.flow:
-        desc += ((', ' if needs_sep else '')
-            + label_quantity(res.convert(params['anSource.SR']), format='%.1f')
-            + '|' + label_quantity(res.convert(params['caSource.SR']),
-                params['caSource.SR'].unit, format='%.1f'))
+        desc += ((', ' if needs_sep else '') +
+                 label_quantity(convert(params['anSource.SR']), format='%.1f')
+                 + '|' + label_quantity(convert(params['caSource.SR']),
+                 params['caSource.SR'].unit, format='%.1f'))
     return desc
 
 def presuffix(items, prefix='', suffix=''):
@@ -843,7 +847,7 @@ def multi_load(location):
 
     Either list may be empty.
     """
-    # If updates are made here, consider also making them in modelicares.py.
+    # If updates are made here, consider also making them in modelicares.
 
     from glob import glob
 
@@ -865,16 +869,16 @@ def multi_load(location):
     for fname in fnames:
         try:
             sims.append(CellSimRes(fname))
-            print('Cell simulation results have been loaded from "%s".'
-                % fname)
+            print('Cell simulation results have been loaded from "%s".' %
+                  fname)
         except:
             try:
                 lins.append(CellLinRes(fname))
-                print('Linearization results have been loaded from "%s".'
-                    % fname)
+                print('Linearization results have been loaded from "%s".' %
+                      fname)
             except:
-                print('Could not load cell simulation or linearization '
-                    'data from "%s".  It will be skipped.' % fname)
+                print('Could not load cell simulation or linearization data '
+                      'from "%s".  It will be skipped.' % fname)
     return sims, lins
 
 def multi_plotfig(sims):
@@ -896,7 +900,7 @@ def multi_plotfig(sims):
         #   ylabel1="Temperature", legends1=self.storage_names, ax="1")
         #show()
 
-class CellLinRes(LinRes):
+class CellLinRes(modelicares.LinRes):
     """Fuel cell linearization results from FCSys_ and methods to analyze those
     results
     """
@@ -909,14 +913,13 @@ class CellSimRes(SimRes):
 
     # Global constants
     LAYERS = ['anFP', 'anGDL', 'anCL', 'pEM', 'caCL', 'caGDL', 'caFP']
-    LAYER_INFO = {
-        'anFP':"Anode flow plate",
-        'anGDL':"Anode GDL",
-        'anCL':"Anode catalyst layer",
-        'pEM':"PEM",
-        'caCL':"Cathode catalyst layer",
-        'caGDL':"Cathode GDL",
-        'caFP':"Cathode flow plate"}
+    LAYER_INFO = {'anFP':"Anode flow plate",
+                  'anGDL':"Anode GDL",
+                  'anCL':"Anode catalyst layer",
+                  'pEM':"PEM",
+                  'caCL':"Cathode catalyst layer",
+                  'caGDL':"Cathode GDL",
+                  'caFP':"Cathode flow plate"}
 
     def animate_quiverfig_current(self, times, fname='current_eminus_xy'):
         """Create an animation of the x-direction current in the x-y plane.
@@ -942,7 +945,7 @@ class CellSimRes(SimRes):
 
         # Plot and animate.
         for i, time in enumerate(times):
-            res.figure_w_label(os.path.join(output_dir, '_tmp%03d' % i))
+            figure_w_label(os.path.join(output_dir, '_tmp%03d' % i))
             #self.currentx_at_times(time=time)
             plt.plot(time, np.sin(time), '*') # Temporary; for debug
         save_figs('png')
@@ -1036,7 +1039,7 @@ class CellSimRes(SimRes):
         - *cbar_width*: Width of the colorbar if vertical (or height if
           horizontal)
 
-        - *\*\*kwargs*: Propagated to :meth:`res.color`
+        - *\*\*kwargs*: Propagated to :meth:`modelicares.helpers.color`
         """
         # The procedure for coordinating the images with a single colorbar was
         # copied and modified from
@@ -1053,26 +1056,25 @@ class CellSimRes(SimRes):
         if slice_axis == 'x':
             names = presuffix(self.subregions[slice_index], suffix=suffix)
         elif slice_axis == 'y':
-            names = presuffix(self.subregions[:][slice_index],
-                suffix=suffix)
+            names = presuffix(self.subregions[:][slice_index], suffix=suffix)
         else:
             names = presuffix(self.subregions[:][:][slice_index],
-                suffix=suffix)
+                              suffix=suffix)
         c = self.get_values_at_times(names, times)
 
         # Cast the data into a list of matrices (one at each sample time).
         if slice_axis == 'x':
             c = [np.array([[c[i_y + self.n_y*i_z][i]
-                for i_y in range(self.n_y-1,-1,-1)]
-                for i_z in range(self.n_z)]) for i in range(n_plots)]
+                 for i_y in range(self.n_y-1,-1,-1)]
+                 for i_z in range(self.n_z)]) for i in range(n_plots)]
         elif slice_axis == 'y':
             c = [np.array([[c[i_z + self.n_z*i_x][i]
-                for i_z in range(self.n_z-1,-1,-1)]
-                for i_x in range(self.n_x)]) for i in range(n_plots)]
+                 for i_z in range(self.n_z-1,-1,-1)]
+                 for i_x in range(self.n_x)]) for i in range(n_plots)]
         else:
             c = [np.array([[c[i_y + self.n_y*i_x][i]
-                for i_z in range(self.n_y-1,-1,-1)]
-                for i_x in range(self.n_x)]) for i in range(n_plots)]
+                 for i_z in range(self.n_y-1,-1,-1)]
+                 for i_x in range(self.n_x)]) for i in range(n_plots)]
         [start_time, stop_time] = self.get_times('Time', [0,-1])
 
         # Generate xlabel, xticks, and xticklabels.
@@ -1149,7 +1151,7 @@ class CellSimRes(SimRes):
                     subtitle += " (initial)"
                 elif time == stop_time:
                     subtitle += " (final)"
-        ax, cax = res.setup_subplots(n_plots=n_plots, n_rows=n_rows,
+        ax, cax = setup_subplots(n_plots=n_plots, n_rows=n_rows,
             title=title, subtitles=subtitles, label=label,
             xlabel=xlabel, xticklabels=xticklabels, xticks=xticks,
             ylabel=ylabel, yticklabels=yticklabels, yticks=yticks,
@@ -1184,7 +1186,7 @@ class CellSimRes(SimRes):
             profile.set_norm(norm)
             if i > 0:
                 profiles[0].callbacksSM.connect('changed',
-                    ImageFollower(profile))
+                                                ImageFollower(profile))
 
         # Add the colorbar. (It is also based on the master image.)
         cbar = fig.colorbar(images[0], cax, orientation=cbar_orientation)
@@ -1266,11 +1268,11 @@ class CellSimRes(SimRes):
 
         # Create the plot.
         ax = self.barfig(names=[name_template % (i_y+1) for i_y in range(1)],
-            times=times, xlabel=xlabel, ylabel=ylabel, leg_kwargs=None,
-            **kwargs)
+                         times=times, xlabel=xlabel, ylabel=ylabel,
+                         leg_kwargs=None, **kwargs)
         for a, time in zip(ax, times):
             a.axhline(self.get_values('cell.iprimeprime', time),
-                linestyle='--', color='k', label='Entire cell')
+                      linestyle='--', color='k', label='Entire cell')
 
         # Decorate.
         if title is None:
@@ -1278,7 +1280,7 @@ class CellSimRes(SimRes):
                 plt.title("Current Distribution of Cell Segments")
             else:
                 plt.title("Current Distribution of Cell Segments\n"
-                         "z-axis index %i (of %i)" % (z_index+1, self.n_z))
+                          "z-axis index %i (of %i)" % (z_index+1, self.n_z))
         if leg_kwargs is not None:
             loc = leg_kwargs.pop('loc', 'best')
             if len(ax) == 1:
@@ -1374,7 +1376,7 @@ class CellSimRes(SimRes):
         # If both of the vector components are missing, it's a good indication
         # that the species isn't included in the subregion.  Mark it as blank.
         blanks = [[u_traj[i_x][i_y] is None and v_traj[i_x][i_y] is None
-            for i_y in range(n_y)] for i_x in range(n_x)]
+                  for i_y in range(n_y)] for i_x in range(n_x)]
 
         # Retrieve the vector components.
         u = []
@@ -1440,12 +1442,13 @@ class CellSimRes(SimRes):
             for i in range(self.n_x):
                 if layers[i+1] != layers[i]:
                     ax.text(0.5*(i_start+i)/(n_x-1), y-ygap,
-                        layers[i], ha='center', va='top',
-                        transform=ax.transAxes)
+                            layers[i], ha='center', va='top',
+                            transform=ax.transAxes)
                     ax.annotate('', xy=((i_start-0.5+shrink)/(n_x-1), y),
-                        xytext=((i+0.5-shrink)/(n_x-1), y),
-                        xycoords='axes fraction',
-                        arrowprops=dict(arrowstyle='-', shrinkA=0, shrinkB=0))
+                                xytext=((i+0.5-shrink)/(n_x-1), y),
+                                xycoords='axes fraction',
+                                arrowprops=dict(arrowstyle='-', shrinkA=0,
+                                shrinkB=0))
                     i_start = i + 1
 
     def layer(self, i):
@@ -1476,7 +1479,8 @@ class CellSimRes(SimRes):
              the primary y axis.
 
         - *\*\*kwargs*: Propagated to :meth:`modelicares.plotfig` (and thus to
-          :meth:`res.plot` and finally to :meth:`matplotlib.pyplot.plot`)
+          :meth:`modelicares.helpers.plot` and finally to
+          :meth:`matplotlib.pyplot.plot`)
         """
         # Generate reasonable defaults.
         title = kwargs.pop('title', "%s within Subregions" % prop)
@@ -1572,8 +1576,8 @@ class CellSimRes(SimRes):
         - *hspace*: The amount of height reserved for white space between
           subplots
 
-        - *\*\*kwargs*: Propagated to :meth:`res.quiver` (and thus to
-          :meth:`matplotlib.pyplot.quiver`)
+        - *\*\*kwargs*: Propagated to :meth:`modelicares.helpers.quiver` (and
+          thus to :meth:`matplotlib.pyplot.quiver`)
         """
         # The quiver() scaling is static and manual; therefore, it shouldn't be
         # necessary to coordinate the scaling among subplots like it is for
@@ -1599,8 +1603,8 @@ class CellSimRes(SimRes):
 
         # Generate xlabel, xticks, and xticklabels.
         if xlabel is None:
-            xlabel = ('y-axis index' if slice_axis == 'x' else
-                'z-axis index' if slice_axis == 'y' else 'x-axis index')
+            xlabel = ('y-axis index' if slice_axis == 'x' else 'z-axis index'
+                      if slice_axis == 'y' else 'x-axis index')
         if xticklabels is None:
             xticklabels = [str(i+1) for i in range(n_x)]
         xticks = range(n_x)
@@ -1608,8 +1612,8 @@ class CellSimRes(SimRes):
 
         # Generate ylabel, yticks, and yticklabels.
         if ylabel is None:
-            ylabel = ('z-axis index' if slice_axis == 'x' else
-                'x-axis index' if slice_axis == 'y' else 'y-axis index')
+            ylabel = ('z-axis index' if slice_axis == 'x' else 'x-axis index'
+                      if slice_axis == 'y' else 'y-axis index')
         if yticklabels is None:
             yticklabels = [str(i+1) for i in range(n_y)]
         yticks = range(n_y)
@@ -1618,7 +1622,7 @@ class CellSimRes(SimRes):
         n_plots = len(times) # Number of plots
         if not subtitles:
             subtitles = self.gen_subtitles_time(times)
-        axs, n_cols = res.setup_subplots(n_plots=n_plots, n_rows=n_rows,
+        axs, n_cols = setup_subplots(n_plots=n_plots, n_rows=n_rows,
             title=title, subtitles=subtitles, label=label,
             xlabel=xlabel, xticklabels=xticklabels, xticks=xticks,
             ylabel=ylabel, yticklabels=yticklabels, yticks=yticks,
@@ -1640,7 +1644,7 @@ class CellSimRes(SimRes):
             for i_x in range(n_x):
                 for i_y in range(n_y):
                     ax.plot(i_x, i_y, marker='o', color='k',
-                        markerfacecolor='w' if blanks[i_x][i_y] else 'k')
+                            markerfacecolor='w' if blanks[i_x][i_y] else 'k')
 
             # Find the maximum magnitude of the data.
             scale = max(scale, np.amax(np.abs(u)), np.amax(np.abs(v)))
@@ -1651,10 +1655,11 @@ class CellSimRes(SimRes):
 
         # Add the key.
         # Round the scale to one significant digit.
-        pow10 = res.get_pow10(scale)
+        pow10 = get_pow10(scale)
         scale = np.round(scale/10**pow10)*10**pow10
         axs[n_cols-1].quiverkey(Q=quivers[n_cols-1], X=1, Y=1.15, U=scale,
-            label=label_quantity(scale, unit), labelpos='W')
+                                label=label_quantity(scale, unit),
+                                labelpos='W')
 
         # Label the layers.
         self.label_layers(axs[len(axs)-n_cols:])
@@ -1679,13 +1684,13 @@ class CellSimRes(SimRes):
         # However, it is simpler for now to use the brute-force method.
         if axis == 'x':
             return [[self.subregions[index][i_y][i_z]
-                for i_z in range(self.n_z)] for i_y in range(self.n_y)]
+                    for i_z in range(self.n_z)] for i_y in range(self.n_y)]
         elif axis == 'y':
             return [[self.subregions[i_x][index][i_z]
-                for i_x in range(self.n_x)] for i_z in range(self.n_z)]
+                    for i_x in range(self.n_x)] for i_z in range(self.n_z)]
         else:
             return [[self.subregions[i_x][i_y][index]
-                for i_y in range(self.n_y)] for i_x in range(self.n_x)]
+                    for i_y in range(self.n_y)] for i_x in range(self.n_x)]
 
     def subregions_w_prop(self, prop):
         """Return a list of the names of the subregions appended with the name
@@ -1888,98 +1893,8 @@ class CellSimRes(SimRes):
         # Relative to the root of the simulated model
         self.subregions = presuffix(self.rel_subregions, prefix=cell)
 
-if __name__ == '__main__':
-    """Load results from fuel cell simulation(s) and provide a Python
-    interpreter to analyze the results.
 
-    See the description at the top of this file.  Also, if '-test' or '--test'
-    is passed as a single argument, then the module is tested using the doctest
-    utility.
-    """
-    from pylab import *
-    from sys import argv
-    from time import sleep
-    from res import WxApp
-    from wx import FileSelector, DirSelector
-    import easywx
-
-    default_path = '../../../../'
-
-    # Initialize a dummy wx.App instance.  Dialogs can only be called after
-    # this is done [http://warp.byu.edu/site/content/131, accessed 10/9/12].
-    wxapp = WxApp()
-
-    def _local_exit():
-        """Exit with a message and a delay.
-        """
-        print("Exiting...")
-        sleep(0.5)
-        exit()
-
-    # Determine if one file or multiple files should be loaded.
-    if len(argv) == 1:
-        choice = easywx.boolbox("Open one file or all files from a folder?",
-            title="Choice", choices=('File', 'Folder'), default=0)
-        if choice is None: _local_exit()
-        multi = choice == 1
-    elif len(argv) == 2:
-        if argv[1] in ['-test', '--test']:
-            import doctest
-            doctest.testmod()
-            exit()
-        else:
-            multi = False
-    else:
-        multi = True
-
-    # Load the file(s).
-    if multi:
-        if len(argv) == 1: # Prompt for a directory.
-            loc = DirSelector("Choose the folder with the data file(s).",
-                defaultPath=default_path)
-            if loc == '': _local_exit()
-        else:
-            loc = argv[1:]
-        (sims, lins) = multi_load(loc)
-        n_sim = len(sims)
-        if n_sim == 0:
-            print("No files were loaded.")
-            _local_exit()
-        elif n_sim == 1:
-            print("A simulation result has been loaded into sims[0].")
-            #, end="")
-        else:
-            print("Simulation results have been loaded into sims[0] through "
-                "sims[%i]." % (n_sim-1))#, end="")
-    else:
-        if len(argv) == 1: # Prompt for file.
-            fname = FileSelector("Select a data file.",
-                default_filename="Polarization.mat", default_path=default_path,
-                wildcard='*.mat')
-            if fname == '': _local_exit()
-        else:
-            fname = argv[1]
-        try:
-            sim = CellSimRes(fname)
-            print('Cell simulation results have been loaded from "%s".\n'
-                'The CellSimRes instance is sim.' % fname)
-        except IOError:
-            _local_exit()
-        except:
-            print('The file "%s" could not be opened as a cell simulation '
-                'result.' % fname)
-            _local_exit()
-
-    # Open the IPython or standard Python interpreter.
-    # From
-    # http://writeonly.wordpress.com/2008/09/08/embedding-a-python-shell-in-a-python-script/,
-    # accessed 11/2/2010
-    try:
-        from IPython.Shell import IPShellEmbed
-        IPShellEmbed(argv=['-noconfirm_exit'])()
-        # Note: The -pylab option cannot be embedded (see
-        # http://article.gmane.org/gmane.comp.python.ipython.user/1190/match=pylab)
-    except ImportError:
-        import code
-        # Calling this with globals ensures that we can see the environment.
-        code.InteractiveConsole(globals()).interact()
+if __name__ == "__main__":
+    """Test the contents of this file."""
+    import doctest
+    doctest.testmod()
