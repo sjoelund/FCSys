@@ -16,7 +16,7 @@ rm help/*WorkInProgress*
 
 ## Update the Github web pages.
 branch=`git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3` # Original branch
-git stash save
+stash_msg=`git stash save`
 git checkout gh-pages
 
 # Update the style sheet.
@@ -49,7 +49,9 @@ mv -f FCSys.html index.html
 git commit -am "Auto-update github pages"
 #git push origin gh-pages
 git checkout $branch
-git stash pop
+if [ "$stash_msg" = "No local changes to save" ]; then
+   git stash pop
+fi
 
 # Clean up.
 rm *.html
