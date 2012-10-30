@@ -18,7 +18,6 @@ rm help/*WorkInProgress*
 branch=`git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3` # Original branch
 git stash save
 git checkout gh-pages
-git checkout $branch 00-process-gh-pages.py
 
 # Update the style sheet.
 git checkout $branch resources/www/modelicaDoc.css
