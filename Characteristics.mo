@@ -343,6 +343,7 @@ package Characteristics "Data and functions to correlate physical properties"
         final phase="graphite",
         specVolPow={-1,0},
         b_v=[1]);
+      //**    specVolPow={-1,0},
       //    specVolPow={-1,-1},
       //    b_v=[0, 1e-3; 0*1*U.cm^3/(2*U.micro*U.F), 0]);
       // TODO: Enter an appropriate value for the capacitance term.

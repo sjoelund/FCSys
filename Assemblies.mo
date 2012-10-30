@@ -199,12 +199,6 @@ package Assemblies "Combinations of regions (e.g., cells)"
           experimentSetupOutput);
       end CellModelica;
 
-
-
-
-
-
-
     end Examples;
 
     model Cell "Default single-cell PEMFC"
