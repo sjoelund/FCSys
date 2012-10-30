@@ -80,6 +80,15 @@ rpls = [
     ('<style type="text/css"> *\n\*       \{ font-size: 10pt; font-family: Arial,sans-serif; \} *\npre     \{ font-size:  9pt; font-family: Courier,monospace;\} *\nh4      \{ font-size: 10pt; font-weight: bold; color: green; \} *\nh3      \{ font-size: 11pt; font-weight: bold; color: green; \} *\nh2      \{ font-size: 13pt; font-weight: bold; color: green; \} *\naddress \{                  font-weight: normal} *\ntd      \{ solid \#000; vertical-align:top; \} *\nth      \{ solid \#000; vertical-align:top; font-weight: bold; \} *\ntable   \{ solid \#000; border-collapse: collapse;\}\n</style>', '<link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="%s">' % stylesheet + '\n<link rel="shortcut icon" href="%s">' % favicon),
     # Remove the custom style for the Modelica license.
     #('<style type=\"text/css\">\n\*       \{ font-size: 10pt; font-family: Arial,sans-serif; \}\ncode    \{ font-size:  9pt; font-family: Courier,monospace;\}\nh6      \{ font-size: 10pt; font-weight: bold; color: green; \}\nh5      { font-size: 11pt; font-weight: bold; color: green; \}\nh4      \{ font-size: 13pt; font-weight: bold; color: green; \}\naddress \{                  font-weight: normal\}\ntd      \{ solid #000; vertical-align:top; \}\nth      \{ solid #000; vertical-align:top; font-weight: bold; \}\ntable   \{ solid #000; border-collapse: collapse;\}\n</style>', ''),
+    # Try to replace the internal Modelica references with the proper HTML
+    # page.
+    ('"modelica://([^.]+)"', r'"\1.html"'),
+    ('"modelica://([^.]+)\.([^.]+)"', r'"\1.html#\1.\2"'),
+    ('"modelica://([^.]+)\.([^.]+)\.([^.]+)"', r'"\1_\2.html#\1.\2.\3"'),
+    ('"modelica://([^.]+)\.([^.]+)\.([^.]+)\.([^.]+)"', r'"\1_\2_\3.html#\1.\2.\3.\4"'),
+    ('"modelica://([^.]+)\.([^.]+)\.([^.]+)\.([^.]+)\.([^.]+)"', r'"\1_\2_\3_\4.html#\1.\2.\3.\4.\5"'),
+    ('"modelica://(v)\.([^.]+)\.([^.]+)\.([^.]+)\.([^.]+)\.([^.]+)"', r'"\1_\2_\3_\4_\5.html#\1.\2.\3.\4.\5.\6"'),
+    ('"modelica://([^.]+)\.([^.]+)\.([^.]+)\.([^.]+)\.([^.]+)\.([^.]+)\.([^.]+)"', r'"\1_\2_\3_\4_\5_\6.html#\1.\2.\3.\4.\5.\6.\7"'),
     ]
 
 # Directory specification
