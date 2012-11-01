@@ -15,9 +15,8 @@ import os
 # Replacement pairs
 rpls = [# Remove extra spacing.
         (r' +\n', r'\n'),
-        (r' *\n +\n+', r'\n\n'),
         (r'\n\n\n+', r'\n\n'),
-        (r' *<br> +(<br>)', r'<br><br>'),
+        (r' +<br>', r'<br>'),
         (r'<br><br>(<br>)+', r'<br><br>'),
         # Use shortcuts for Units and Quantities.
         (r'FCSys\.Quantities\.', r'Q.'),
@@ -36,6 +35,7 @@ rpls = [# Remove extra spacing.
         (r'(// .*)is not', r"\1isn't"),
         (r'(// .*)will not', r"\1won't"),
         (r'(// .*)cannot', r"\1can't"),
+        (r'(// .*)there is', r"\1there's"),
         # but not others.
         (r"(// .*)it's", r'\1it is'),
        ]

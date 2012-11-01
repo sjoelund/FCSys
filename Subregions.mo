@@ -7058,7 +7058,7 @@ The default global default settings will be used for the current simulation.",
         assert(partNumInitMeth <> InitMethScalar.None, "The state for particle number is prescribed,
     yet its condition is not defined.\nChoose a condition besides None.");
       else
-        // Initialize only if there is a time-varying state.
+        // Initialize only if there's a time-varying state.
         if partNumInitMeth == InitMethScalar.ParticleNumber then
           N = N_IC;
         elseif partNumInitMeth == InitMethScalar.ParticleNumberRate then
@@ -7105,7 +7105,7 @@ The default global default settings will be used for the current simulation.",
         assert(tempInitMeth <> InitMethScalar.None, "The state for temperature is prescribed,
     yet its condition is not defined.\nChoose a condition besides None.");
       else
-        // Initialize only if there is a time-varying state.
+        // Initialize only if there's a time-varying state.
         if tempInitMeth == InitMethScalar.ParticleNumber then
           N = N_IC;
         elseif tempInitMeth == InitMethScalar.ParticleNumberRate then
@@ -7155,7 +7155,7 @@ The default global default settings will be used for the current simulation.",
             assert(xInitMeth <> InitMethLinear.None, "The state for the x-axis component of linear momentum is prescribed,
         yet its condition is not defined.\nChoose any condition besides None.");
           else
-            // Initialize only if there is a time-varying state.
+            // Initialize only if there's a time-varying state.
             if xInitMeth == InitMethLinear.Velocity then
               phi[axis] = phi_IC[1];
             elseif xInitMeth == InitMethLinear.Acceleration then
@@ -7176,7 +7176,7 @@ The default global default settings will be used for the current simulation.",
             assert(yInitMeth <> InitMethLinear.None, "The state for the y-axis component of linear momentum is prescribed,
         yet its condition is not defined.\nChoose any condition besides None.");
           else
-            // Initialize only if there is a time-varying state.
+            // Initialize only if there's a time-varying state.
             if yInitMeth == InitMethLinear.Velocity then
               phi[axis] = phi_IC[2];
             elseif yInitMeth == InitMethLinear.Acceleration then
@@ -7197,7 +7197,7 @@ The default global default settings will be used for the current simulation.",
             assert(zInitMeth <> InitMethLinear.None, "The state for the z-axis component of linear momentum is prescribed,
         yet its condition is not defined.\nChoose any condition besides None.");
           else
-            // Initialize only if there is a time-varying state.
+            // Initialize only if there's a time-varying state.
             if zInitMeth == InitMethLinear.Velocity then
               phi[axis] = phi_IC[3];
             elseif zInitMeth == InitMethLinear.Acceleration then

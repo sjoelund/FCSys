@@ -5173,7 +5173,7 @@ sensor</a> model.
           y = negative.mu - positive.mu "Measurement";
           0 = negative.Ndot "Condition of no current";
           // Note:  In conjunction with the momentum rate balance, this means
-          // that there is no current into either face.
+          // that there's no current into either face.
           annotation (Icon(graphics={Text(
                           extent={{-100,-20},{100,-50}},
                           lineColor={127,127,127},
@@ -5245,7 +5245,7 @@ sensor</a> model.
           y = negative.phi - positive.phi "Measurement";
           0 = negative.mPhidot "Condition of no compressive force";
           // Note:  In conjunction with the momentum rate balance, this means
-          // that there is no force on either face.
+          // that there's no force on either face.
           annotation (
             Documentation(info="<html><p>If <code>ax=1</code>, then the difference in normal velocity
   is measured.  The relative first

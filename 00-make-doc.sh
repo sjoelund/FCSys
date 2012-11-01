@@ -49,7 +49,7 @@ mv -f FCSys.html index.html
 git commit -am "Auto-update github pages"
 #git push origin gh-pages
 git checkout $branch
-if [ "$stash_msg" = "No local changes to save" ]; then
+if [ "$stash_msg" != "No local changes to save" ]; then
    git stash pop
 fi
 
