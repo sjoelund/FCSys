@@ -1,7 +1,10 @@
+.. warning:: This package is still in development.  There are likely to be many
+   bugs.  Please check back soon.
+
 FCRes is a Python_ package to load, analyze, and plot simulation results from
-FCSys_ (a Modelica_ package).  It is based on and requires ModelicaRes_.  For
-more information about the functions of FCRes, see the HTML or PDF
-documentation in the doc folder.
+FCSys_---a Modelica_ library for modeling fuel cells and electrochemistry.  It
+is based on and requires ModelicaRes_.  For more information about the
+functions of FCRes, see the HTML or PDF documentation in the doc folder.
 
 Credits
 -------
