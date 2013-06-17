@@ -21,6 +21,9 @@ status
 *.exe
 *.mat
 
+# Development scripts
+00-*
+
 # Internal link to demos
 /Resources/Source/Python/fcres/examples
 
@@ -35,12 +38,9 @@ status
 /Old/
 /help/
 build/
-
-# Images
-*.pdf
-*.png
-*.gif
-*.ico
+Resources/Documentation/Systems/
+Resources/Source/Python/doc/_static/
+Resources/Source/Python/examples/
 
 # Python-generated and compiled files
 MANIFEST
@@ -49,3 +49,8 @@ MANIFEST
 # Georgia Tech files
 # TODO:  Ask Chris Paredis if they can be shared, and include them.
 /Test/Morris
+
+# Other
+*qpOASES*
+*.pdf
+/images
